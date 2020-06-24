@@ -17,8 +17,8 @@ I have outlined below some of the information which will be collected and displa
     - Username - sensitive to be secured
     - Email - sensitive to be secured
     - Password - sensitive to be secured
-    - Country - sensitive to be secured
-    - State - sensitive to be secured
+    - Country
+    - State
   
 2. STOCKS TABLE
    - Stock Symbol - primary key
@@ -31,8 +31,8 @@ I have outlined below some of the information which will be collected and displa
     - notification period - daily, weekly, monthly
     - start date
     - stock price start date
-    - end date (first day this will be the same as start date)
-    - stock price end date (first day this will be the same as start date)
+    - current date (first day this will be the same as start date, otherwise it will update to be the date the notification is issued)
+    - stock price current date (first day this will be the same as start date)
     - Number of stocks to track - sensitive to be secured
 
 **Outline**  
