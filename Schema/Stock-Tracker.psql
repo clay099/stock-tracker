@@ -1,0 +1,31 @@
+CREATE TABLE "users" (
+  "id" SERIAL PRIMARY KEY,
+  "username" varchar UNIQUE NOT NULL,
+  "email" varchar UNIQUE NOT NULL,
+  "password" varchar NOT NULL,
+  "country" varchar NOT NULL,
+  "state" varchar
+);
+
+CREATE TABLE "stocks" (
+  "stock_symbol" varchar PRIMARY KEY,
+  "stock_name" varchar
+);
+
+CREATE TABLE "user_stocks" (
+  "id" SERIAL PRIMARY KEY,
+  "stock_symbol" varchar NOT NULL,
+  "user_id" int NOT NULL,
+  "notification_period" varchar NOT NULL,
+  "start_date" timestamp DEFAULT (now()),
+  "start_stock_price" decimal NOT NULL,
+  "current_date" timestamp NOT NULL DEFAULT (now()),
+  "curr_stock_price" decimal NOT NULL,
+  "stock_num" int
+);
+
+ALTER TABLE "stocks" ADD FOREIGN KEY ("stock_symbol") REFERENCES "user_stocks" ("stock_symbol");
+
+ALTER TABLE "users" ADD FOREIGN KEY ("id") REFERENCES "user_stocks" ("user_id");
+
+COMMENT ON COLUMN "user_stocks"."notification_period" IS 'daily, monthly, or weekly options';
