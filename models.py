@@ -1,4 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
+from enum import Enum
+from sqlalchemy_utils import EmailType, PasswordType
+from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 
 db = SQLAlchemy()
@@ -6,20 +9,30 @@ db = SQLAlchemy()
 bcrypt = Bcrypt()
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """User model"""
 
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
-    email = db.Column(db.String, nullable=False, unique=True)
-    password = db.Column(db.String, nullable=False)
+    email = db.Column(EmailType, nullable=False, unique=True)
+    password = db.Column(PasswordType, nullable=False)
     country = db.Column(db.String, nullable=False)
     state = db.Column(db.String)
 
     stocks = db.relationship(
         'Stock', secondary="user_stocks", primaryjoin=(), secondaryjoin=(), backref='users')
+
+    @classmethod
+    def set_password(cls, password):
+        """create hashed password"""
+        cls.password = bcrypt.generate_password_hash(password).decode('UTF-8')
+
+    @classmethod
+    def check_password(cls, username, password):
+        """check hashed password"""
+        cls.password = bcrypt.check_password_hash(cls.password, password)
 
     def __repr__(self):
         u = self
@@ -39,6 +52,12 @@ class Stock(db.Model):
         return f'< Stock: stock_symbol={s.stock_symbol}, stock_name={s.stock_name} >'
 
 
+class Notify_Period_Enum(Enum):
+    daily = 'daily'
+    weekly = 'weekly'
+    monthly = 'monthly'
+
+
 class User_Stock(db.Model):
     """user_stock model"""
 
@@ -47,11 +66,12 @@ class User_Stock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     stock_symbol = db.Column(db.String, db.ForeignKey('stocks.stock_symbol'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    notification_period = db.Column(db.String, nullable=False)
-    start_date = db.Column(db.Timestamp, nullable=False)
-    start_stock_price = db.Column(db.Decimal, nullable=False)
-    current_date = db.Column(db.Timestamp, nullable=False)
-    curr_stock_price = db.Column(db.decimal, nullable=False)
+    notification_period = db.Column(
+        db.Enum(Notify_Period_Enum), nullable=False, default=Notify_Period_Enum.weekly.value)
+    start_date = db.Column(db.DateTime, nullable=False)
+    start_stock_price = db.Column(db.Numeric, nullable=False)
+    current_date = db.Column(db.DateTime, nullable=False)
+    curr_stock_price = db.Column(db.Numeric, nullable=False)
     stock_num = db.Column(db.Integer, default=None)
 
     def __repr__(self):
