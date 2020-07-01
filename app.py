@@ -7,6 +7,7 @@ from secrets import API_KEY, APP_KEY
 from flask_login import LoginManager
 
 from models import db, connect_db, User, Stock, User_Stock
+from forms import NewUserForm, LoginForm, Stock, UserStockForm
 
 app = Flask(__name__)
 
@@ -20,7 +21,7 @@ app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', APP_KEY)
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
-# db.create_all()
+db.create_all()
 
 # Configure API key
 configuration = finnhub.Configuration(
@@ -42,5 +43,21 @@ def load_user(user_id):
 
 
 @app.route('/')
-def index():
+def homepage():
     return render_template('home.html')
+
+
+@app.route('/login')
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect(url_for("homepage"))
+    return render_template('login.html', form=form)
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = NewUserForm()
+    if form.validate_on_submit():
+        return redirect(url_for("homepage"))
+    return render_template('signup.html', form=form)

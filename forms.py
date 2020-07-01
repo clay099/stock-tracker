@@ -19,6 +19,13 @@ class NewUserForm(ModelForm):
         model = User
 
 
+class LoginForm(FlaskForm):
+    """Login form."""
+
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+
+
 class Stock(ModelForm):
     """stock form"""
     class Meta:
@@ -29,10 +36,3 @@ class UserStockForm(ModelForm):
     """user stock form"""
     class Meta:
         model = User_Stock
-
-
-class LoginForm(FlaskForm):
-    """Login form."""
-
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])

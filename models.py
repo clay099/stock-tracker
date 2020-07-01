@@ -15,14 +15,14 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False, unique=True)
-    email = db.Column(EmailType, nullable=False, unique=True)
-    password = db.Column(PasswordType, nullable=False)
-    country = db.Column(db.String, nullable=False)
-    state = db.Column(db.String)
+    Username = db.Column(db.String, nullable=False, unique=True)
+    Email = db.Column(EmailType, nullable=False, unique=True)
+    Password = db.Column(PasswordType, nullable=False)
+    Country = db.Column(db.String, nullable=False)
+    State = db.Column(db.String)
 
-    stocks = db.relationship(
-        'Stock', secondary="user_stocks", primaryjoin=(), secondaryjoin=(), backref='users')
+    Stocks = db.relationship(
+        'Stock', secondary="user_stocks",  backref='users')
 
     @classmethod
     def set_password(cls, password):
@@ -44,8 +44,8 @@ class Stock(db.Model):
 
     __tablename__ = "stocks"
 
-    stock_symbol = db.Column(db.String, primary_key=True)
-    stock_name = db.Column(db.String, nullable=False)
+    Stock_symbol = db.Column(db.String, primary_key=True)
+    Stock_name = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         s = self
@@ -64,15 +64,15 @@ class User_Stock(db.Model):
     __tablename__ = "user_stocks"
 
     id = db.Column(db.Integer, primary_key=True)
-    stock_symbol = db.Column(db.String, db.ForeignKey('stocks.stock_symbol'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    Stock_symbol = db.Column(db.String, db.ForeignKey('stocks.Stock_symbol'))
+    User_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     notification_period = db.Column(
         db.Enum(Notify_Period_Enum), nullable=False, default=Notify_Period_Enum.weekly.value)
-    start_date = db.Column(db.DateTime, nullable=False)
-    start_stock_price = db.Column(db.Numeric, nullable=False)
-    current_date = db.Column(db.DateTime, nullable=False)
-    curr_stock_price = db.Column(db.Numeric, nullable=False)
-    stock_num = db.Column(db.Integer, default=None)
+    Start_date = db.Column(db.DateTime, nullable=False)
+    Start_stock_price = db.Column(db.Numeric, nullable=False)
+    Current_date = db.Column(db.DateTime, nullable=False)
+    Curr_stock_price = db.Column(db.Numeric, nullable=False)
+    Stock_num = db.Column(db.Integer, default=None)
 
     def __repr__(self):
         u = self
