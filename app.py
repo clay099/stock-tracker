@@ -9,6 +9,7 @@ from secrets import APP_KEY
 
 from models import db, connect_db, User, Stock, User_Stock, finnhub_client
 from forms import NewUserForm, LoginForm, NewStockForm
+from sqlalchemy.exc import IntegrityError
 
 
 app = Flask(__name__)
@@ -120,7 +121,9 @@ def portfolio():
 def add_stock():
 
     form = NewStockForm()
+
     if form.validate_on_submit():
+
         user_id = current_user.id
 
         new_stock = User_Stock.add_stock(
@@ -134,6 +137,6 @@ def add_stock():
             flash('Stock added', 'success')
             return redirect(url_for('portfolio'))
 
-        flash('error occurred', 'danger')
+        flash('Stock Symbol Not Recognized', 'danger')
 
     return redirect(url_for('homepage'))

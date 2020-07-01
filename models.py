@@ -6,7 +6,7 @@ from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 import finnhub
 from secrets import API_KEY
-
+from sqlalchemy.exc import IntegrityError
 
 # Configure API key
 configuration = finnhub.Configuration(
@@ -116,16 +116,20 @@ class User_Stock(db.Model):
 
         check_stock = Stock.query.get(stock_symbol)
         if not check_stock:
-            new_stock_profile = finnhub_client.company_profile2(
-                symbol=stock_symbol)
-            stock_name = new_stock_profile.name
+            try:
+                new_stock_profile = finnhub_client.company_profile2(
+                    symbol=stock_symbol)
+                stock_name = new_stock_profile.name
 
-            new_stock = Stock(stock_name=stock_name, stock_symbol=stock_symbol)
+                new_stock = Stock(stock_name=stock_name,
+                                  stock_symbol=stock_symbol)
 
-            db.session.add(new_stock)
-            db.session.commit()
+                db.session.add(new_stock)
+                db.session.commit()
+            except IntegrityError:
+                return None
 
-        add_stock = User_Stock(
+        add_user_stock = User_Stock(
             stock_symbol=stock_symbol,
             user_id=user_id,
             notification_period=notification_period,
@@ -135,8 +139,8 @@ class User_Stock(db.Model):
             curr_stock_price=price,
             stock_num=stock_num
         )
-        db.session.add(add_stock)
-        return add_stock
+        db.session.add(add_user_stock)
+        return add_user_stock
 
     def __repr__(self):
         u = self

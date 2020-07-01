@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms_alchemy import model_form_factory
 from models import db, User, Stock, User_Stock
 from wtforms import StringField, PasswordField, SelectField, IntegerField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Optional
 
 BaseModelForm = model_form_factory(FlaskForm)
 
@@ -30,6 +30,7 @@ class NewStockForm(FlaskForm):
     """add a new stock form"""
 
     stock_symbol = StringField('Stock Symbol', validators=[DataRequired()])
-    stock_num = IntegerField('Number of Stocks')
+    stock_num = IntegerField(
+        'Number of Stocks (optional)', validators=[Optional()])
     notification_period = SelectField("Notification Period", choices=[
         ('daily', 'Daily'), ('weekly', 'Weekly'), ('monthly', 'Monthly')])
