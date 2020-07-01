@@ -1,15 +1,15 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, g, url_for, abort
+from flask import Flask, render_template, request, flash, redirect, session, url_for, abort
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, logout_user, current_user, login_user, login_required
 from sqlalchemy.exc import IntegrityError
 
-import finnhub
-from secrets import API_KEY, APP_KEY
+from secrets import APP_KEY
 
-from models import db, connect_db, User, Stock, User_Stock
-from forms import NewUserForm, LoginForm, Stock, UserStockForm
+from models import db, connect_db, User, Stock, User_Stock, finnhub_client
+from forms import NewUserForm, LoginForm, NewStockForm
+
 
 app = Flask(__name__)
 
@@ -23,17 +23,8 @@ app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', APP_KEY)
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
-# db.drop_all()
 # db.create_all()
 
-# Configure API key
-configuration = finnhub.Configuration(
-    api_key={
-        'token': API_KEY
-    }
-)
-
-finnhub_client = finnhub.DefaultApi(finnhub.ApiClient(configuration))
 
 # Configure Flask-Login
 login_manager = LoginManager()
@@ -61,6 +52,7 @@ def homepage():
     return render_template('home.html')
 
 
+# ************auth routes************
 @app.route('/login', methods=['GET', 'POST'])
 def login():
 
@@ -74,7 +66,7 @@ def login():
             return redirect(url_for('homepage'))
 
         flash("Invalid credentials.", 'danger')
-    return render_template('login.html', form=form)
+    return render_template('auth/login.html', form=form)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -98,11 +90,11 @@ def signup():
 
             flash('User Created', 'success')
 
-            return redirect(url_for('login'))
+            return redirect(url_for('portfolio'))
 
         flash('Username is already taken', 'danger')
 
-    return render_template('signup.html', form=form)
+    return render_template('auth/signup.html', form=form)
 
 
 @app.route('/logout')
@@ -111,3 +103,37 @@ def logout():
     logout_user()
     flash("You have been logged out", "success")
     return redirect(url_for('login'))
+
+
+# ************user routes************
+
+@app.route('/user')
+@login_required
+def portfolio():
+
+    form = NewStockForm(notification_period='weekly')
+    return render_template('user/index.html', form=form)
+
+
+@app.route('/user/add', methods=['POST'])
+@login_required
+def add_stock():
+
+    form = NewStockForm()
+    if form.validate_on_submit():
+        user_id = current_user.id
+
+        new_stock = User_Stock.add_stock(
+            user_id,
+            form.stock_symbol.data,
+            form.stock_num.data,
+            form.notification_period.data)
+
+        if new_stock:
+            db.session.commit()
+            flash('Stock added', 'success')
+            return redirect(url_for('portfolio'))
+
+        flash('error occurred', 'danger')
+
+    return redirect(url_for('homepage'))

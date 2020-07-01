@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{{current_user.username}} Portfolio{% endblock %}
+
+{% block content %}
+
+<h1>My Portfolio</h1>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-to-portfolio">
+    Add Stock to Portfolio
+</button>
+
+<!-- Modal -->
+{% include 'user/_add_stock_modal.html' %}
+
+{% endblock %}

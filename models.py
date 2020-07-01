@@ -1,8 +1,22 @@
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from enum import Enum
 from sqlalchemy_utils import EmailType, PasswordType
 from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
+import finnhub
+from secrets import API_KEY
+
+
+# Configure API key
+configuration = finnhub.Configuration(
+    api_key={
+        'token': API_KEY
+    }
+)
+
+finnhub_client = finnhub.DefaultApi(finnhub.ApiClient(configuration))
+
 
 db = SQLAlchemy()
 
@@ -63,8 +77,8 @@ class Stock(db.Model):
 
     __tablename__ = "stocks"
 
-    Stock_symbol = db.Column(db.String, primary_key=True)
-    Stock_name = db.Column(db.String, nullable=False)
+    stock_symbol = db.Column(db.String, primary_key=True)
+    stock_name = db.Column(db.String, nullable=False)
 
     def __repr__(self):
         s = self
@@ -83,15 +97,46 @@ class User_Stock(db.Model):
     __tablename__ = "user_stocks"
 
     id = db.Column(db.Integer, primary_key=True)
-    Stock_symbol = db.Column(db.String, db.ForeignKey('stocks.Stock_symbol'))
-    User_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    stock_symbol = db.Column(db.String, db.ForeignKey('stocks.stock_symbol'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     notification_period = db.Column(
         db.Enum(Notify_Period_Enum), nullable=False, default=Notify_Period_Enum.weekly.value)
-    Start_date = db.Column(db.DateTime, nullable=False)
-    Start_stock_price = db.Column(db.Numeric, nullable=False)
-    Current_date = db.Column(db.DateTime, nullable=False)
-    Curr_stock_price = db.Column(db.Numeric, nullable=False)
-    Stock_num = db.Column(db.Integer, default=None)
+    start_date = db.Column(db.DateTime, nullable=False)
+    start_stock_price = db.Column(db.Numeric, nullable=False)
+    current_date = db.Column(db.DateTime, nullable=False)
+    curr_stock_price = db.Column(db.Numeric, nullable=False)
+    stock_num = db.Column(db.Integer, default=None)
+
+    @classmethod
+    def add_stock(cls, user_id, stock_symbol, stock_num, notification_period):
+        time = datetime.now()
+        stock_symbol = stock_symbol.upper()
+        quote = finnhub_client.quote(stock_symbol)
+        price = quote.c
+
+        check_stock = Stock.query.get(stock_symbol)
+        if not check_stock:
+            new_stock_profile = finnhub_client.company_profile2(
+                symbol=stock_symbol)
+            stock_name = new_stock_profile.name
+
+            new_stock = Stock(stock_name=stock_name, stock_symbol=stock_symbol)
+
+            db.session.add(new_stock)
+            db.session.commit()
+
+        add_stock = User_Stock(
+            stock_symbol=stock_symbol,
+            user_id=user_id,
+            notification_period=notification_period,
+            start_date=time,
+            start_stock_price=price,
+            current_date=time,
+            curr_stock_price=price,
+            stock_num=stock_num
+        )
+        db.session.add(add_stock)
+        return add_stock
 
     def __repr__(self):
         u = self

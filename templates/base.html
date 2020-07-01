@@ -22,15 +22,21 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/">Home</a>
             </li>
+            {% if not current_user.username %}
             <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
+                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/signup">Sign up</a>
+                <a class="nav-link" href="{{ url_for('signup') }}">Sign up</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('portfolio') }}">My Portfolio</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/ogout">Logout</a>
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
             </li>
+            {% endif %}
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
