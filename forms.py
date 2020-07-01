@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms_alchemy import model_form_factory
 from models import db, User, Stock, User_Stock
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, RadioField
 from wtforms.validators import DataRequired
 
 BaseModelForm = model_form_factory(FlaskForm)

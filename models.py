@@ -15,24 +15,43 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    Username = db.Column(db.String, nullable=False, unique=True)
-    Email = db.Column(EmailType, nullable=False, unique=True)
-    Password = db.Column(PasswordType, nullable=False)
-    Country = db.Column(db.String, nullable=False)
-    State = db.Column(db.String)
+    username = db.Column(db.String, nullable=False, unique=True)
+    email = db.Column(EmailType, nullable=False, unique=True)
+    password = db.Column(db.String, nullable=False)
+    country = db.Column(db.String, nullable=False)
+    state = db.Column(db.String)
 
-    Stocks = db.relationship(
+    stocks = db.relationship(
         'Stock', secondary="user_stocks",  backref='users')
 
     @classmethod
-    def set_password(cls, password):
+    def signup(cls, username, email, password, country, state):
         """create hashed password"""
-        cls.password = bcrypt.generate_password_hash(password).decode('UTF-8')
+        hashed_password = bcrypt.generate_password_hash(
+            password).decode('UTF-8')
+
+        user = User(
+            username=username,
+            email=email,
+            password=hashed_password,
+            country=country, state=state
+        )
+        db.session.add(user)
+        return user
 
     @classmethod
     def check_password(cls, username, password):
         """check hashed password"""
-        cls.password = bcrypt.check_password_hash(cls.password, password)
+
+        user = User.query.filter_by(
+            username=username).first()
+
+        if user:
+            is_auth = bcrypt.check_password_hash(user.password, password)
+            if is_auth:
+                return user
+
+        return False
 
     def __repr__(self):
         u = self

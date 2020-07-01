@@ -28,6 +28,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/signup">Sign up</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/ogout">Logout</a>
+            </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -36,10 +39,13 @@
     </div>
 </nav>
 
+{% for category, message in get_flashed_messages(with_categories=True) %}
+<div class="alert alert-{{ category }}">{{ message }}</div>
+{% endfor %}
+
+
+
 <div class="container-fluid">
-    {% for category, message in get_flashed_messages(with_categories=True) %}
-    <div class="alert alert-{{ category }}">{{ message }}</div>
-    {% endfor %}
 
     {% block content %}
     {% endblock %}
