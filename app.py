@@ -46,11 +46,19 @@ def unauthorized():
     flash('You must be logged in to view that page.', 'warning')
     return redirect(url_for('login'))
 
+# ************base routes************
+
 
 @app.route('/')
 def homepage():
     """home page"""
     return render_template('home.html')
+
+
+@app.route('/about')
+def about():
+    """about page"""
+    return render_template('about.html')
 
 
 # ************auth routes************
@@ -64,7 +72,7 @@ def login():
         if user:
             login_user(user)
             flash(f"Hello, {user.username}!", "success")
-            return redirect(url_for('homepage'))
+            return redirect(url_for('portfolio'))
 
         flash("Invalid credentials.", 'warning')
     return render_template('auth/login.html', form=form)
@@ -115,6 +123,7 @@ def portfolio():
 
     form = NewStockForm()
     stock_details = User_Stock.get_users_stocks(current_user.id)
+    db.session.commit()
 
     return render_template('user/portfolio.html', form=form, stock_details=stock_details)
 
@@ -146,7 +155,7 @@ def add_stock():
 
         flash('Stock Symbol Not Recognized', 'warning')
 
-    return redirect(url_for('homepage'))
+    return redirect(url_for('portfolio'))
 
 
 @app.route('/user/settings', methods=['GET', 'POST'])

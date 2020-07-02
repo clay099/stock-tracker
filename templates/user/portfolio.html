@@ -25,38 +25,65 @@
         <tr>
             <th scope="col">Stock Symbol</th>
             <th scope="col">Start Tracking Date</th>
-            <th scope="col">Stock Start Price</th>
-            <th scope="col">Current Date</th>
-            <th scope="col">Stock Current Price</th>
-            <th scope="col">Change %</th>
             <th scope="col">Number of stocks</th>
+            <th scope="col">Start Stock Price</th>
+            <th scope="col">Start Stock Value</th>
+            <th scope="col">Current Date</th>
+            <th scope="col">Current Stock Price</th>
+            <th scope="col">Current Stock Value</th>
+            <th scope="col">Change %</th>
             <th scope="col">Change $</th>
         </tr>
 
     </thead>
     <tbody>
         {% for stock in stock_details[0] %}
-        <tr>
+        <tr id={{ stock.stock_symbol }}>
             <th scope="row">{{ stock.stock_symbol }}</th>
             <td>{{ stock.start_date.strftime("%m/%d/%y") }}</td>
-            <td>${{ stock.start_stock_price }}</td>
-            <td>{{ stock.current_date.strftime("%m/%d/%y") }}</td>
-            <td>${{ stock.curr_stock_price }}</td>
-            <td>{{ ((stock.curr_stock_price - stock.start_stock_price)/stock.start_stock_price)*100 }}%</td>
             {% if stock.stock_num %}
             <td>{{ stock.stock_num }}</td>
-            <td>${{ (stock.curr_stock_price*stock.stock_num) - (stock.start_stock_price*stock.stock_num) }}</td>
             {% else %}
             <td>1</td>
+            {% endif %}
+            <td>${{ "{:,.2f}".format(stock.start_stock_price) }}</td>
+            <td>${{ "{:,.2f}".format(stock.start_stock_price*stock.stock_num) }}</td>
+
+            <td>{{ stock.current_date.strftime("%m/%d/%y") }}</td>
+            <td>${{ "{:,.2f}".format(stock.curr_stock_price) }}</td>
+            <td>${{ "{:,.2f}".format(stock.curr_stock_price*stock.stock_num) }}</td>
+            <td>{{ "{:,.2f}".format(((stock.curr_stock_price - stock.start_stock_price)/stock.start_stock_price)*100) }}%
+            </td>
+            {% if stock.stock_num %}
+            <td>${{ (stock.curr_stock_price*stock.stock_num) - (stock.start_stock_price*stock.stock_num) }}</td>
+            {% else %}
             <td>${{ stock.curr_stock_price - stock.start_stock_price }}</td>
             {% endif %}
         </tr>
         {% endfor %}
         <tr class="bg-info text-white">
             <th scope="row">Total Portfolio</th>
-            <td colspan='4'></td>
-            <td colspan='2'><strong>{{ ((stock_details[2]-stock_details[1])/stock_details[2])*100 }}%</strong></td>
-            <td><strong>${{ (stock_details[2]-stock_details[1]) }}</strong></td>
+            <td colspan='3'></td>
+            <td colspan='3'>
+                <strong>
+                    ${{ "{:,.2f}".format(stock_details[2]) }}
+                </strong>
+            </td>
+            <td>
+                <strong>
+                    ${{ "{:,.2f}".format(stock_details[2]) }}
+                </strong>
+            </td>
+            <td>
+                <strong>
+                    {{ "{:,.2f}".format(((stock_details[2]-stock_details[1])/stock_details[2])*100) }}%
+                </strong>
+            </td>
+            <td>
+                <strong>
+                    ${{ (stock_details[2]-stock_details[1]) }}
+                </strong>
+            </td>
         </tr>
     </tbody>
 </table>

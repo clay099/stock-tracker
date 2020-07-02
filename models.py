@@ -8,6 +8,8 @@ import finnhub
 from secrets import API_KEY
 from sqlalchemy.exc import IntegrityError
 
+from decimal import Decimal
+
 # Configure API key
 configuration = finnhub.Configuration(
     api_key={
@@ -45,8 +47,8 @@ class User(db.Model, UserMixin):
         """
         signup with hashed password
 
-        Returns: 
-            flask_sqlalchemy Object: new user object to be added to database 
+        Returns:
+            flask_sqlalchemy Object: new user object to be added to database
         """
         hashed_password = bcrypt.generate_password_hash(
             password).decode('UTF-8')
@@ -142,7 +144,9 @@ class User_Stock(db.Model):
         check_stock = Stock.query.get(stock_symbol)
         # if Stock symbol not in our DB search finnhub
         if not check_stock:
-            cls.add_stock_symbol(cls, stock_symbol)
+            success = cls.add_stock_symbol(cls, stock_symbol)
+            if not success:
+                return None
 
         time = datetime.utcnow()
         quote = finnhub_client.quote(stock_symbol)
@@ -163,12 +167,12 @@ class User_Stock(db.Model):
 
     def add_stock_symbol(self, stock_symbol):
         """
-        searches finnhub for the stock symbol. 
+        searches finnhub for the stock symbol.
         if found adds stock to our DB
         if not found returns none
 
         Args:
-            stock_symbol (string): capitalized stock symbol to search 
+            stock_symbol (string): capitalized stock symbol to search
         """
         try:
             # search for stock on finnhub
@@ -182,14 +186,15 @@ class User_Stock(db.Model):
 
             db.session.add(new_stock)
             db.session.commit()
+            return True
         # stock not found
         except IntegrityError:
-            return None
+            return False
 
     @classmethod
     def get_users_stocks(cls, user_id):
         """
-        searches database for user stocks, calculates portfolio initial and current value 
+        searches database for user stocks, calculates portfolio initial and current value
 
         Args:
             user_id (int): user id to search
@@ -204,6 +209,8 @@ class User_Stock(db.Model):
         total_initial_val = 0
         total_curr_val = 0
         for stock in stocks:
+            stock = cls.update_stock(cls, stock)
+
             if stock.stock_num:
                 total_initial_val += (stock.start_stock_price *
                                       stock.stock_num)
@@ -212,6 +219,19 @@ class User_Stock(db.Model):
                 total_initial_val += stock.start_stock_price
                 total_curr_val += stock.curr_stock_price
         return (stocks, total_initial_val, total_curr_val)
+
+    def update_stock(self, user_stock):
+
+        print('******update*****')
+        time = datetime.utcnow()
+        quote = finnhub_client.quote(user_stock.stock_symbol)
+        price = "{: .2f}".format(quote.c)
+        dec_price = Decimal(price)
+
+        user_stock.current_date = time
+        user_stock.curr_stock_price = dec_price
+
+        return user_stock
 
     def __repr__(self):
         u = self
