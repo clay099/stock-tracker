@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}{{current_user.username}} Portfolio{% endblock %}
+
+{% block content %}
+
+<h1>My Portfolio</h1>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#add-to-portfolio">
+    Add Stock to Portfolio
+</button>
+
+<!-- Modal -->
+{% include 'user/_add_stock_modal.html' %}
+
+<!-- table -->
+{% if stocks[0] %}
+<table class="table table-striped table-responsive">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Stock Symbol</th>
+            <th scope="col">Start Tracking Date</th>
+            <th scope="col">Stock Start Price</th>
+            <th scope="col">Current Date</th>
+            <th scope="col">Stock Current Price</th>
+            <th scope="col">Change %</th>
+            <th scope="col">Change $</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for stock in stocks %}
+        <tr>
+            <th scope="row">{{ stock.stock_symbol }}</th>
+            <td>{{ stock.start_date.strftime("%m/%d/%y") }}</td>
+            <td>${{ stock.start_stock_price }}</td>
+            <td>{{ stock.current_date.strftime("%m/%d/%y") }}</td>
+            <td>${{ stock.curr_stock_price }}</td>
+            <td>{{ ((stock.curr_stock_price - stock.start_stock_price)/stock.start_stock_price)*100 }}%</td>
+            <td>${{ stock.curr_stock_price - stock.start_stock_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+
+<h3>No stocks have been added to your portfolio</h3>
+{% endif %}
+
+{% endblock %}

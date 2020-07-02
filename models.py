@@ -96,9 +96,10 @@ class User_Stock(db.Model):
 
     __tablename__ = "user_stocks"
 
-    id = db.Column(db.Integer, primary_key=True)
-    stock_symbol = db.Column(db.String, db.ForeignKey('stocks.stock_symbol'))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    stock_symbol = db.Column(db.String, db.ForeignKey(
+        'stocks.stock_symbol'), primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'users.id'), primary_key=True)
     notification_period = db.Column(
         db.Enum(Notify_Period_Enum), nullable=False, default=Notify_Period_Enum.weekly.value)
     start_date = db.Column(db.DateTime, nullable=False)
@@ -109,26 +110,34 @@ class User_Stock(db.Model):
 
     @classmethod
     def add_stock(cls, user_id, stock_symbol, stock_num, notification_period):
-        time = datetime.now()
+        time = datetime.utcnow()
+
         stock_symbol = stock_symbol.upper()
         quote = finnhub_client.quote(stock_symbol)
         price = quote.c
 
+        # check our DB for stock symbol
         check_stock = Stock.query.get(stock_symbol)
+        # if Stock symbol not in our DB search finnhub
         if not check_stock:
             try:
+                # search for stock on finnhub
                 new_stock_profile = finnhub_client.company_profile2(
                     symbol=stock_symbol)
                 stock_name = new_stock_profile.name
 
+                # add stock to our DB
                 new_stock = Stock(stock_name=stock_name,
                                   stock_symbol=stock_symbol)
 
                 db.session.add(new_stock)
                 db.session.commit()
+
+            # stock not found
             except IntegrityError:
                 return None
 
+        # create new User_Stock
         add_user_stock = User_Stock(
             stock_symbol=stock_symbol,
             user_id=user_id,
@@ -141,6 +150,11 @@ class User_Stock(db.Model):
         )
         db.session.add(add_user_stock)
         return add_user_stock
+
+    @classmethod
+    def get_users_stocks(cls, user_id):
+        stocks = User_Stock.query.filter_by(user_id=user_id)
+        return stocks
 
     def __repr__(self):
         u = self

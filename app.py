@@ -43,7 +43,7 @@ def load_user(user_id):
 @login_manager.unauthorized_handler
 def unauthorized():
     """Redirect unauthorized users to Login page."""
-    flash('You must be logged in to view that page.', 'danger')
+    flash('You must be logged in to view that page.', 'warning')
     return redirect(url_for('login'))
 
 
@@ -66,7 +66,7 @@ def login():
             flash(f"Hello, {user.username}!", "success")
             return redirect(url_for('homepage'))
 
-        flash("Invalid credentials.", 'danger')
+        flash("Invalid credentials.", 'warning')
     return render_template('auth/login.html', form=form)
 
 
@@ -93,7 +93,7 @@ def signup():
 
             return redirect(url_for('portfolio'))
 
-        flash('Username is already taken', 'danger')
+        flash('Username is already taken', 'warning')
 
     return render_template('auth/signup.html', form=form)
 
@@ -113,7 +113,9 @@ def logout():
 def portfolio():
 
     form = NewStockForm(notification_period='weekly')
-    return render_template('user/index.html', form=form)
+    stocks = User_Stock.get_users_stocks(current_user.id)
+
+    return render_template('user/portfolio.html', form=form, stocks=stocks)
 
 
 @app.route('/user/add', methods=['POST'])
@@ -133,10 +135,14 @@ def add_stock():
             form.notification_period.data)
 
         if new_stock:
-            db.session.commit()
-            flash('Stock added', 'success')
-            return redirect(url_for('portfolio'))
+            try:
+                db.session.commit()
+                flash('Stock added', 'success')
+                return redirect(url_for('portfolio'))
+            except IntegrityError:
+                flash('Stock already in portfolio', 'warning')
+                return redirect(url_for('portfolio'))
 
-        flash('Stock Symbol Not Recognized', 'danger')
+        flash('Stock Symbol Not Recognized', 'warning')
 
     return redirect(url_for('homepage'))
