@@ -72,8 +72,8 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    form = NewUserForm()
-    print("*****")
+    form = NewUserForm(notification_period='weekly')
+
     if form.validate_on_submit():
         existing_user = User.query.filter_by(
             username=form.username.data).first()
@@ -84,6 +84,7 @@ def signup():
                 password=form.password.data,
                 country=form.country.data,
                 state=form.state.data,
+                notification_period=form.notification_period.data
             )
 
             db.session.commit()
@@ -112,7 +113,7 @@ def logout():
 @login_required
 def portfolio():
 
-    form = NewStockForm(notification_period='weekly')
+    form = NewStockForm()
     stock_details = User_Stock.get_users_stocks(current_user.id)
 
     return render_template('user/portfolio.html', form=form, stock_details=stock_details)
@@ -146,3 +147,9 @@ def add_stock():
         flash('Stock Symbol Not Recognized', 'warning')
 
     return redirect(url_for('homepage'))
+
+
+@app.route('/user/settings', methods=['GET', 'POST'])
+@login_required
+def user_settings():
+    return render_template('user/settings.html')

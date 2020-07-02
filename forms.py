@@ -34,3 +34,6 @@ class NewStockForm(FlaskForm):
         'Number of Stocks (optional)', validators=[Optional()])
     notification_period = SelectField("Notification Period", choices=[
         ('daily', 'Daily'), ('weekly', 'Weekly'), ('monthly', 'Monthly')])
+
+class UserSettings(FlaskForm):
+    """edit user settings form"""

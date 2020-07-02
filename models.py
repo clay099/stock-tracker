@@ -34,12 +34,14 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String, nullable=False)
     country = db.Column(db.String, nullable=False)
     state = db.Column(db.String)
+    notification_period = db.Column(
+        db.Enum('daily', 'weekly', 'monthly', name="NotificationPeriod"), nullable=False, default='weekly')
 
     stocks = db.relationship(
         'Stock', secondary="user_stocks",  backref='users')
 
     @classmethod
-    def signup(cls, username, email, password, country, state):
+    def signup(cls, username, email, password, country, state, notification_period):
         """
         signup with hashed password
 
@@ -53,7 +55,9 @@ class User(db.Model, UserMixin):
             username=username,
             email=email,
             password=hashed_password,
-            country=country, state=state
+            country=country,
+            state=state,
+            notification_period=notification_period
         )
         db.session.add(user)
         return user
@@ -90,13 +94,6 @@ class Stock(db.Model):
         return f'< Stock: stock_symbol={s.stock_symbol}, stock_name={s.stock_name} >'
 
 
-class Notify_Period_Enum(Enum):
-    """notification period options"""
-    daily = 'daily'
-    weekly = 'weekly'
-    monthly = 'monthly'
-
-
 class User_Stock(db.Model):
     """user_stock model"""
 
@@ -106,8 +103,6 @@ class User_Stock(db.Model):
         'stocks.stock_symbol'), primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id'), primary_key=True)
-    notification_period = db.Column(
-        db.Enum(Notify_Period_Enum), nullable=False, default=Notify_Period_Enum.weekly.value)
     start_date = db.Column(db.DateTime, nullable=False)
     start_stock_price = db.Column(db.Numeric, nullable=False)
     current_date = db.Column(db.DateTime, nullable=False)
@@ -135,7 +130,7 @@ class User_Stock(db.Model):
         stock_symbol = stock_symbol.upper()
 
         # check our DB for stock symbol
-        check_stock = Stock.query.get(self.stock_symbol)
+        check_stock = Stock.query.get(stock_symbol)
         # if Stock symbol not in our DB search finnhub
         if not check_stock:
             add_stock_symbol(stock_symbol)

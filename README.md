@@ -20,6 +20,7 @@ I have outlined below some of the information which will be collected and displa
     - Password - sensitive to be secured
     - Country
     - State
+    - notification period - daily, weekly, monthly
 
 2. STOCKS TABLE
 
@@ -27,10 +28,10 @@ I have outlined below some of the information which will be collected and displa
     - Stock Name
 
 3. USER_STOCK_TABLE
+
     - id - primary key
     - stock symbol - foreign key
     - user_id - foreign key
-    - notification period - daily, weekly, monthly
     - start date
     - stock price start date
     - current date (first day this will be the same as start date, otherwise it will update to be the date the notification is issued)
