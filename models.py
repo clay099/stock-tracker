@@ -40,7 +40,12 @@ class User(db.Model, UserMixin):
 
     @classmethod
     def signup(cls, username, email, password, country, state):
-        """create hashed password"""
+        """
+        signup with hashed password
+
+        Returns: 
+            flask_sqlalchemy Object: new user object to be added to database 
+        """
         hashed_password = bcrypt.generate_password_hash(
             password).decode('UTF-8')
 
@@ -86,6 +91,7 @@ class Stock(db.Model):
 
 
 class Notify_Period_Enum(Enum):
+    """notification period options"""
     daily = 'daily'
     weekly = 'weekly'
     monthly = 'monthly'
@@ -106,36 +112,37 @@ class User_Stock(db.Model):
     start_stock_price = db.Column(db.Numeric, nullable=False)
     current_date = db.Column(db.DateTime, nullable=False)
     curr_stock_price = db.Column(db.Numeric, nullable=False)
-    stock_num = db.Column(db.Integer, default=None)
+    stock_num = db.Column(db.Integer, default=1)
 
     @classmethod
     def add_stock(cls, user_id, stock_symbol, stock_num, notification_period):
-        time = datetime.utcnow()
+        """
+        add stock to user_stock table
+
+        Args:
+            user_id (int): id to verify user
+            stock_symbol (string): stock symbol
+            stock_num (int): number of stocks to track
+            notification_period (string): how often to receive notifications
+
+        Returns:
+        if pass all functions:
+           flask_sqlalchemy object: object to be committed
+        if stock symbol is not found:
+            returns none
+        """
 
         stock_symbol = stock_symbol.upper()
-        quote = finnhub_client.quote(stock_symbol)
-        price = quote.c
 
         # check our DB for stock symbol
-        check_stock = Stock.query.get(stock_symbol)
+        check_stock = Stock.query.get(self.stock_symbol)
         # if Stock symbol not in our DB search finnhub
         if not check_stock:
-            try:
-                # search for stock on finnhub
-                new_stock_profile = finnhub_client.company_profile2(
-                    symbol=stock_symbol)
-                stock_name = new_stock_profile.name
+            add_stock_symbol(stock_symbol)
 
-                # add stock to our DB
-                new_stock = Stock(stock_name=stock_name,
-                                  stock_symbol=stock_symbol)
-
-                db.session.add(new_stock)
-                db.session.commit()
-
-            # stock not found
-            except IntegrityError:
-                return None
+        time = datetime.utcnow()
+        quote = finnhub_client.quote(stock_symbol)
+        price = quote.c
 
         # create new User_Stock
         add_user_stock = User_Stock(
@@ -151,10 +158,57 @@ class User_Stock(db.Model):
         db.session.add(add_user_stock)
         return add_user_stock
 
+    def add_stock_symbol(stock_symbol):
+        """
+        searches finnhub for the stock symbol. 
+        if found adds stock to our DB
+        if not found returns none
+
+        Args:
+            stock_symbol (string): capitalized stock symbol to search 
+        """
+        try:
+            # search for stock on finnhub
+            new_stock_profile = finnhub_client.company_profile2(
+                symbol=stock_symbol)
+            stock_name = new_stock_profile.name
+
+            # add stock to our DB
+            new_stock = Stock(stock_name=stock_name,
+                              stock_symbol=stock_symbol)
+
+            db.session.add(new_stock)
+            db.session.commit()
+        # stock not found
+        except IntegrityError:
+            return None
+
     @classmethod
     def get_users_stocks(cls, user_id):
+        """
+        searches database for user stocks, calculates portfolio initial and current value 
+
+        Args:
+            user_id (int): user id to search
+
+        Returns:
+            Tuple: tuple contains:
+                        flask_sqlalchemy Query Object: object representing all user stocks
+                        Decimal: total value of stocks (since purchase)
+                        Decimal: total current value of stocks
+        """
         stocks = User_Stock.query.filter_by(user_id=user_id)
-        return stocks
+        total_initial_val = 0
+        total_curr_val = 0
+        for stock in stocks:
+            if stock.stock_num:
+                total_initial_val += (stock.start_stock_price *
+                                      stock.stock_num)
+                total_curr_val += (stock.curr_stock_price * stock.stock_num)
+            else:
+                total_initial_val += stock.start_stock_price
+                total_curr_val += stock.curr_stock_price
+        return (stocks, total_initial_val, total_curr_val)
 
     def __repr__(self):
         u = self

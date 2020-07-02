@@ -113,9 +113,9 @@ def logout():
 def portfolio():
 
     form = NewStockForm(notification_period='weekly')
-    stocks = User_Stock.get_users_stocks(current_user.id)
+    stock_details = User_Stock.get_users_stocks(current_user.id)
 
-    return render_template('user/portfolio.html', form=form, stocks=stocks)
+    return render_template('user/portfolio.html', form=form, stock_details=stock_details)
 
 
 @app.route('/user/add', methods=['POST'])

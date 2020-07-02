@@ -15,8 +15,8 @@ I have outlined below some of the information which will be collected and displa
 1. USER TABLE
 
     - id - primary key
-    - Username - sensitive to be secured
-    - Email - sensitive to be secured
+    - Username
+    - Email
     - Password - sensitive to be secured
     - Country
     - State
