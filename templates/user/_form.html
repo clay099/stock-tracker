@@ -1,6 +1,5 @@
 {{ form.hidden_tag() }}
 
-{{ form.stock_symbol.label }}
 {% for field in form if field.widget.input_type !='hidden' %}
 
 <div class="form-group-row justify-content-start">

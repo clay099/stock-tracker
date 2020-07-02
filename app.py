@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from secrets import APP_KEY
 
 from models import db, connect_db, User, Stock, User_Stock, finnhub_client
-from forms import NewUserForm, LoginForm, NewStockForm
+from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword
 from sqlalchemy.exc import IntegrityError
 
 
@@ -152,4 +152,65 @@ def add_stock():
 @app.route('/user/settings', methods=['GET', 'POST'])
 @login_required
 def user_settings():
-    return render_template('user/settings.html')
+    user = User.query.get(current_user.id)
+    form = UserSettings(obj=user)
+    password_form = UpdatePassword()
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        db.session.commit()
+        flash(f"{user.username} settings have been updated", "success")
+        return redirect(url_for('portfolio'))
+    if password_form.validate_on_submit():
+        user = User.check_password(
+            current_user.username, form.current_password.data)
+
+        if user:
+            updated_user = User.update_password(
+                user, form.new_password.data, form.confirm_new_password.data)
+            if updated_user:
+                flash(f"{user.username} password has been updated", "success")
+                return redirect(url_for('portfolio'))
+
+            flash('New Passwords do not match', 'warning')
+
+    return render_template('user/settings.html', form=form, password_form=password_form)
+
+
+@app.route('/user/password', methods=['POST'])
+@login_required
+def edit_password():
+    password_form = UpdatePassword()
+    if password_form.validate_on_submit():
+        user = User.check_password(
+            current_user.username, password_form.current_password.data)
+
+        if user:
+            updated_user = User.update_password(
+                user, password_form.new_password.data, password_form.confirm_new_password.data)
+            if updated_user:
+                db.session.commit()
+                flash(f"{user.username} password has been updated", "success")
+                return redirect(url_for('portfolio'))
+
+            flash('New Passwords do not match', 'warning')
+        else:
+            flash("Invalid credentials.", 'warning')
+    return redirect(url_for('user_settings'))
+
+    ##############################################################################
+    # Turn off all caching in Flask
+    #   (useful for dev; in production, this kind of stuff is typically
+    #   handled elsewhere)
+    #
+    # https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
+
+
+@app.after_request
+def add_header(req):
+    """Add non-caching headers on every request."""
+
+    req.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    req.headers["Pragma"] = "no-cache"
+    req.headers["Expires"] = "0"
+    req.headers['Cache-Control'] = 'public, max-age=0'
+    return req

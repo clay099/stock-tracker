@@ -6,4 +6,20 @@
 
 <h1>User Settings</h1>
 
+<form method="POST">
+    {% include 'auth/_form.html' %}
+
+    <div class="form-group-row justify-content-start">
+        <label class="col-md-2 col-form-label" for="password">password</label>
+        <a href="#" data-toggle="modal" data-target="#edit-password">
+            <input class="col-md-5" id="state" name="password" type="password" value="yourpassword">
+        </a>
+    </div>
+
+    <a class='btn btn-outline-danger mt-2' href="{{ url_for('portfolio') }}">Go Back</a>
+    <button class="btn btn-success mt-2" type="submit">Update User Settings</button>
+</form>
+
+{% include 'user/_edit_password_modal.html' %}
+
 {% endblock %}

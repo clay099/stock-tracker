@@ -76,6 +76,15 @@ class User(db.Model, UserMixin):
 
         return False
 
+    @classmethod
+    def update_password(cls, user, password, confirm_password):
+        if password == confirm_password:
+            hashed_password = bcrypt.generate_password_hash(
+                password).decode('UTF-8')
+            user.password = hashed_password
+            return user
+        return False
+
     def __repr__(self):
         u = self
         return f'< User: id={u.id}, username={u.username}, email={u.email}, password=HIDDEN, country={u.country}, state={u.state} >'
@@ -133,7 +142,7 @@ class User_Stock(db.Model):
         check_stock = Stock.query.get(stock_symbol)
         # if Stock symbol not in our DB search finnhub
         if not check_stock:
-            add_stock_symbol(stock_symbol)
+            cls.add_stock_symbol(cls, stock_symbol)
 
         time = datetime.utcnow()
         quote = finnhub_client.quote(stock_symbol)
@@ -143,7 +152,6 @@ class User_Stock(db.Model):
         add_user_stock = User_Stock(
             stock_symbol=stock_symbol,
             user_id=user_id,
-            notification_period=notification_period,
             start_date=time,
             start_stock_price=price,
             current_date=time,
@@ -153,7 +161,7 @@ class User_Stock(db.Model):
         db.session.add(add_user_stock)
         return add_user_stock
 
-    def add_stock_symbol(stock_symbol):
+    def add_stock_symbol(self, stock_symbol):
         """
         searches finnhub for the stock symbol. 
         if found adds stock to our DB
