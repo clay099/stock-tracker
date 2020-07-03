@@ -133,7 +133,7 @@ class User_Stock(db.Model):
     curr_stock_price = db.Column(db.Numeric, nullable=False,
                                  info={'label': 'Current Stock Price'})
     stock_num = db.Column(db.Integer, default=1,
-                          info={'label': 'Number of Stocks'})
+                          info={'label': 'Number of Stocks', 'min': 1})
 
     @classmethod
     def add_stock(cls, user_id, stock_symbol, stock_num, notification_period):
@@ -239,7 +239,6 @@ class User_Stock(db.Model):
 
     def update_stock(self, user_stock):
 
-        print('******update*****')
         time = datetime.utcnow()
         quote = finnhub_client.quote(user_stock.stock_symbol)
         price = "{: .2f}".format(quote.c)

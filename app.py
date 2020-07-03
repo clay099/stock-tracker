@@ -210,11 +210,16 @@ def edit_password():
 @app.route('/user/stock', methods=['POST'])
 @login_required
 def edit_stock():
-    # TODO: IMPLEMENT THIS FUNCTION
     form = EditStock()
     if form.validate_on_submit():
+
         user_stock = User_Stock.query.filter_by(
             user_id=current_user.id).filter_by(stock_symbol=form.stock_symbol.data).first()
+        user_stock.stock_num = form.stock_num.data
+        user_stock.stock_symbol = form.stock_symbol.data
+
+        db.session.commit()
+        return redirect(url_for('portfolio'))
 
     return redirect(url_for('portfolio'))
 
@@ -226,7 +231,7 @@ def edit_stock():
     # https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
 
 
-@app.after_request
+@ app.after_request
 def add_header(req):
     """Add non-caching headers on every request."""
 
