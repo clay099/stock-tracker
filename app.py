@@ -8,7 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from secrets import APP_KEY
 
 from models import db, connect_db, User, Stock, User_Stock, finnhub_client
-from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword
+from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
 from sqlalchemy.exc import IntegrityError
 
 
@@ -122,10 +122,10 @@ def logout():
 def portfolio():
 
     form = NewStockForm()
+    edit_stock_form = EditStock()
     stock_details = User_Stock.get_users_stocks(current_user.id)
-    db.session.commit()
 
-    return render_template('user/portfolio.html', form=form, stock_details=stock_details)
+    return render_template('user/portfolio.html', form=form, stock_details=stock_details, edit_stock_form=edit_stock_form)
 
 
 @app.route('/user/add', methods=['POST'])
@@ -205,6 +205,18 @@ def edit_password():
         else:
             flash("Invalid credentials.", 'warning')
     return redirect(url_for('user_settings'))
+
+
+@app.route('/user/stock', methods=['POST'])
+@login_required
+def edit_stock():
+    # TODO: IMPLEMENT THIS FUNCTION
+    form = EditStock()
+    if form.validate_on_submit():
+        user_stock = User_Stock.query.filter_by(
+            user_id=current_user.id).filter_by(stock_symbol=form.stock_symbol.data).first()
+
+    return redirect(url_for('portfolio'))
 
     ##############################################################################
     # Turn off all caching in Flask

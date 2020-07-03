@@ -51,3 +51,11 @@ class NewStockForm(FlaskForm):
         'Number of Stocks (optional)', validators=[Optional()])
     notification_period = SelectField("Notification Period", choices=[
         ('daily', 'Daily'), ('weekly', 'Weekly'), ('monthly', 'Monthly')])
+
+
+class EditStock(ModelForm):
+    """edit user settings form"""
+
+    class Meta:
+        model = User_Stock
+        include = ['stock_num', 'stock_symbol']

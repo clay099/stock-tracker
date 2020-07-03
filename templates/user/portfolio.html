@@ -7,12 +7,12 @@
 <h1>{{current_user.username}} Portfolio</h1>
 
 
-<!-- Button trigger modal -->
+<!-- Button trigger add stock modal -->
 <button type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#add-to-portfolio">
     Add Stock to Portfolio
 </button>
 
-<!-- Modal -->
+<!-- add stock Modals -->
 {% include 'user/_add_stock_modal.html' %}
 
 <!-- table -->
@@ -25,7 +25,7 @@
         <tr>
             <th scope="col">Stock Symbol</th>
             <th scope="col">Start Tracking Date</th>
-            <th scope="col">Number of stocks</th>
+            <th scope="col">Number Of Stocks</th>
             <th scope="col">Start Stock Price</th>
             <th scope="col">Start Stock Value</th>
             <th scope="col">Current Date</th>
@@ -40,24 +40,26 @@
         {% for stock in stock_details[0] %}
         <tr id={{ stock.stock_symbol }}>
             <th scope="row">{{ stock.stock_symbol }}</th>
-            <td>{{ stock.start_date.strftime("%m/%d/%y") }}</td>
+            <td class="start_date">{{ stock.start_date.strftime("%m/%d/%y") }}</td>
             {% if stock.stock_num %}
-            <td>{{ stock.stock_num }}</td>
+            <td class="stock_num">{{ stock.stock_num }}</td>
             {% else %}
-            <td>1</td>
+            <td class="stock_num">1</td>
             {% endif %}
-            <td>${{ "{:,.2f}".format(stock.start_stock_price) }}</td>
-            <td>${{ "{:,.2f}".format(stock.start_stock_price*stock.stock_num) }}</td>
+            <td class="start_stock_price">${{ "{:,.2f}".format(stock.start_stock_price) }}</td>
+            <td class="start_stock_value">${{ "{:,.2f}".format(stock.start_stock_price*stock.stock_num) }}</td>
 
-            <td>{{ stock.current_date.strftime("%m/%d/%y") }}</td>
-            <td>${{ "{:,.2f}".format(stock.curr_stock_price) }}</td>
-            <td>${{ "{:,.2f}".format(stock.curr_stock_price*stock.stock_num) }}</td>
-            <td>{{ "{:,.2f}".format(((stock.curr_stock_price - stock.start_stock_price)/stock.start_stock_price)*100) }}%
+            <td class="current_date">{{ stock.current_date.strftime("%m/%d/%y") }}</td>
+            <td class="curr_stock_price">${{ "{:,.2f}".format(stock.curr_stock_price) }}</td>
+            <td class="curr_stock_value">${{ "{:,.2f}".format(stock.curr_stock_price*stock.stock_num) }}</td>
+            <td class="percent_change">
+                {{ "{:,.2f}".format(((stock.curr_stock_price - stock.start_stock_price)/stock.start_stock_price)*100) }}%
             </td>
             {% if stock.stock_num %}
-            <td>${{ (stock.curr_stock_price*stock.stock_num) - (stock.start_stock_price*stock.stock_num) }}</td>
+            <td class="dol_change">
+                ${{ (stock.curr_stock_price*stock.stock_num) - (stock.start_stock_price*stock.stock_num) }}</td>
             {% else %}
-            <td>${{ stock.curr_stock_price - stock.start_stock_price }}</td>
+            <td class="dol_change">${{ stock.curr_stock_price - stock.start_stock_price }}</td>
             {% endif %}
         </tr>
         {% endfor %}
@@ -87,6 +89,10 @@
         </tr>
     </tbody>
 </table>
+
+<!-- edit stock Modal -->
+{% include 'user/_edit_stock_modal.html' %}
+
 {% else %}
 
 <h3>No stocks have been added to your portfolio</h3>

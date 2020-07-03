@@ -31,13 +31,19 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, nullable=False, unique=True)
-    email = db.Column(EmailType, nullable=False, unique=True)
-    password = db.Column(db.String, nullable=False)
-    country = db.Column(db.String, nullable=False)
-    state = db.Column(db.String)
+    username = db.Column(db.String, nullable=False, unique=True,
+                         info={'label': 'Username'})
+    email = db.Column(EmailType, nullable=False, unique=True,
+                      info={'label': 'Email'})
+    password = db.Column(db.String, nullable=False,
+                         info={'label': 'Password'})
+    country = db.Column(db.String, nullable=False,
+                        info={'label': 'Country'})
+    state = db.Column(db.String,
+                      info={'label': 'State'})
     notification_period = db.Column(
-        db.Enum('daily', 'weekly', 'monthly', name="NotificationPeriod"), nullable=False, default='weekly')
+        db.Enum('daily', 'weekly', 'monthly', name="NotificationPeriod"), nullable=False, default='weekly',
+        info={'label': 'Notification Period'})
 
     stocks = db.relationship(
         'Stock', secondary="user_stocks",  backref='users')
@@ -97,8 +103,10 @@ class Stock(db.Model):
 
     __tablename__ = "stocks"
 
-    stock_symbol = db.Column(db.String, primary_key=True)
-    stock_name = db.Column(db.String, nullable=False)
+    stock_symbol = db.Column(db.String, primary_key=True,
+                             info={'label': 'Stock Symbol'})
+    stock_name = db.Column(db.String, nullable=False,
+                           info={'label': 'Stock Name'})
 
     def __repr__(self):
         s = self
@@ -111,14 +119,21 @@ class User_Stock(db.Model):
     __tablename__ = "user_stocks"
 
     stock_symbol = db.Column(db.String, db.ForeignKey(
-        'stocks.stock_symbol'), primary_key=True)
+        'stocks.stock_symbol'), primary_key=True,
+        info={'label': 'Stock Symbol'})
     user_id = db.Column(db.Integer, db.ForeignKey(
-        'users.id'), primary_key=True)
-    start_date = db.Column(db.DateTime, nullable=False)
-    start_stock_price = db.Column(db.Numeric, nullable=False)
-    current_date = db.Column(db.DateTime, nullable=False)
-    curr_stock_price = db.Column(db.Numeric, nullable=False)
-    stock_num = db.Column(db.Integer, default=1)
+        'users.id'), primary_key=True,
+        info={'label': 'User ID'})
+    start_date = db.Column(db.DateTime, nullable=False,
+                           info={'label': 'Start Date'})
+    start_stock_price = db.Column(db.Numeric, nullable=False,
+                                  info={'label': 'Starting Stock Price'})
+    current_date = db.Column(db.DateTime, nullable=False,
+                             info={'label': 'Current Date'})
+    curr_stock_price = db.Column(db.Numeric, nullable=False,
+                                 info={'label': 'Current Stock Price'})
+    stock_num = db.Column(db.Integer, default=1,
+                          info={'label': 'Number of Stocks'})
 
     @classmethod
     def add_stock(cls, user_id, stock_symbol, stock_num, notification_period):
@@ -210,6 +225,7 @@ class User_Stock(db.Model):
         total_curr_val = 0
         for stock in stocks:
             stock = cls.update_stock(cls, stock)
+            db.session.commit()
 
             if stock.stock_num:
                 total_initial_val += (stock.start_stock_price *
@@ -218,6 +234,7 @@ class User_Stock(db.Model):
             else:
                 total_initial_val += stock.start_stock_price
                 total_curr_val += stock.curr_stock_price
+
         return (stocks, total_initial_val, total_curr_val)
 
     def update_stock(self, user_stock):
