@@ -3,6 +3,10 @@ $(".table").on("click", "tr", function (evt) {
     console.log(evt);
     if (evt.target.classList.contains("fas")) {
         return;
+    } else if (evt.target.nodeName === "TH") {
+        return;
+    } else if (this.classList.contains("text-white")) {
+        return;
     } else {
         $("#edit-stock").modal("show");
         // change input value to the stock symbol of row selected. This input value is read only and the user cannot change this value
@@ -10,15 +14,6 @@ $(".table").on("click", "tr", function (evt) {
         $("input[name=stock_num]").val($(this).find("td.stock_num").text());
     }
 });
-
-// $(".trash").hover(
-//     function () {
-//         $(".trash").toggleClass("far fas");
-//     },
-//     function () {
-//         $(".trash").toggleClass("far fas");
-//     }
-// );
 
 $(".trash").hover(
     function () {
