@@ -223,6 +223,20 @@ def edit_stock():
 
     return redirect(url_for('portfolio'))
 
+
+@app.route('/user/stock/delete', methods=['POST'])
+@login_required
+def delete_stock():
+
+    symbol = request.form['stock_symbol']
+
+    user_stock = User_Stock.query.filter_by(
+        user_id=current_user.id).filter_by(stock_symbol=symbol).first()
+    db.session.delete(user_stock)
+    db.session.commit()
+
+    return redirect(url_for('portfolio'))
+
     ##############################################################################
     # Turn off all caching in Flask
     #   (useful for dev; in production, this kind of stuff is typically
