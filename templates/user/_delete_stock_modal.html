@@ -1,0 +1,26 @@
+<div class="modal fade" id="delete-stock" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Delete Stock</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="/user/stock/delete">
+                <div class="modal-body">
+                    <div class="form-group-row justify-content-start">
+                        <label class="col-md-4 col-form-label" for="stock_symbol" hidden>Delete Stock</label>
+                        <input class="col-md-6" id="stock_symbol" name="stock_symbol" value="" hidden>
+                    </div>
+                    <p>Are you sure you want to delete <strong><span id="symbol"></span></strong> from your portfolio?</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Cancel
+                    </button>
+                    <button type="submit" class="btn btn-primary">Delete Stock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
