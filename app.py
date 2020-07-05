@@ -232,8 +232,12 @@ def delete_stock():
 
     user_stock = User_Stock.query.filter_by(
         user_id=current_user.id).filter_by(stock_symbol=symbol).first()
-    db.session.delete(user_stock)
-    db.session.commit()
+    if user_stock:
+        db.session.delete(user_stock)
+        db.session.commit()
+        flash(f'{symbol} has been deleted from your portfolio', 'warning')
+    else:
+        flash(f'An error occured', 'warning')
 
     return redirect(url_for('portfolio'))
 

@@ -11,12 +11,21 @@ $(".table").on("click", "tr", function (evt) {
     }
 });
 
+// $(".trash").hover(
+//     function () {
+//         $(".trash").toggleClass("far fas");
+//     },
+//     function () {
+//         $(".trash").toggleClass("far fas");
+//     }
+// );
+
 $(".trash").hover(
     function () {
-        $(".trash").toggleClass("far fas");
+        $(this).toggleClass("far fas");
     },
     function () {
-        $(".trash").toggleClass("far fas");
+        $(this).toggleClass("far fas");
     }
 );
 
