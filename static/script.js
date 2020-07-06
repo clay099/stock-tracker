@@ -1,6 +1,5 @@
 $(".table").on("click", "tr", function (evt) {
 	// show edit form modal
-	console.log(evt);
 	if (evt.target.classList.contains("fas")) {
 		return;
 	} else if (evt.target.nodeName === "TH") {
@@ -24,16 +23,147 @@ $(".trash").hover(
 	}
 );
 
-$(".table").on("click", ".fas", function (evt) {
+$(".table").on("click", ".fa-trash-alt", function (evt) {
 	// show edit form modal
 	$("#delete-stock").modal("show");
 	$("#symbol").text(evt.target.closest("tr").id);
 	$("input[name=stock_symbol]").val(evt.target.closest("tr").id);
 });
 
-$(document).ready(function () {
-	negativeValues();
+$(".table").on("click", ".fa-sort", function (evt) {
+	val = evt.target.closest("th").innerText;
+	sorted = $(evt.target.closest("th")).hasClass("ascending");
+	let $table = $("table > tbody > tr");
+	let arr = [];
+	fillArray($table, arr);
+	if (val === "Stock Symbol ") {
+		let identification = "id";
+		sortSymbol(evt, sorted, arr, identification);
+	} else if (val === "Change % ") {
+		let identification = "percent";
+		sortChangePercent(evt, sorted, arr, identification);
+	} else if (val === "Change $ ") {
+		let identification = "currency";
+		sortChangeDol(evt, sorted, arr, identification);
+	}
+	arr = [];
 });
+
+function fillArray($table, arr) {
+	$table.each(function (i, row) {
+		let $row = $(row);
+
+		if ($row.hasClass("sort")) {
+			arr.push($row);
+		}
+	});
+}
+
+function sortSymbol(evt, sorted, arr, identification) {
+	if (sorted === false) {
+		smallSort(arr, identification);
+		$(evt.target.closest("th")).addClass("ascending");
+	} else {
+		largeSort(arr, identification);
+		$(evt.target.closest("th")).removeClass("ascending");
+	}
+}
+
+function sortChangePercent(evt, sorted, arr, identification) {
+	if (sorted === false) {
+		smallSort(arr, identification);
+		$(evt.target.closest("th")).addClass("ascending");
+	} else {
+		largeSort(arr, identification);
+		$(evt.target.closest("th")).removeClass("ascending");
+	}
+}
+
+function sortChangeDol(evt, sorted, arr, identification) {
+	if (sorted === false) {
+		smallSort(arr, identification);
+		$(evt.target.closest("th")).addClass("ascending");
+	} else {
+		largeSort(arr, identification);
+		$(evt.target.closest("th")).removeClass("ascending");
+	}
+}
+
+function smallSort(arr, identification) {
+	arr.sort(function (a, b) {
+		let A;
+		let B;
+		if (identification === "id") {
+			A = $(a)[0].id;
+			B = $(b)[0].id;
+		} else if (identification === "percent") {
+			A = $(a)[0].children[8].textContent;
+			A = A.replace(/\%/g, "");
+			A = A.trim();
+			B = $(b)[0].children[8].textContent;
+			B = B.replace(/\%/g, "");
+			B = B.trim();
+		} else if (identification === "currency") {
+			A = $(a)[0].children[9].textContent;
+			A = A.trim();
+			A = parseFloat(A.replace(/\$|,/g, ""));
+			B = $(b)[0].children[9].textContent;
+			B = B.trim();
+			B = parseFloat(B.replace(/\$|,/g, ""));
+		} else {
+			return;
+		}
+
+		if (A > B) {
+			return 1;
+		}
+		if (A < B) {
+			return -1;
+		}
+		return 0;
+	});
+	$.each(arr, function (index, row) {
+		$(row).insertBefore($("table > tbody tr.bg-info").closest("tr"));
+	});
+}
+
+function largeSort(arr, identification) {
+	arr.sort(function (a, b) {
+		let A;
+		let B;
+		if (identification === "id") {
+			A = $(a)[0].id;
+			B = $(b)[0].id;
+		} else if (identification === "percent") {
+			A = $(a)[0].children[8].textContent;
+			A = A.replace(/\%/g, "");
+			A = A.trim();
+			B = $(b)[0].children[8].textContent;
+			B = B.replace(/\%/g, "");
+			B = B.trim();
+		} else if (identification === "currency") {
+			A = $(a)[0].children[9].textContent;
+			A = A.trim();
+			A = parseFloat(A.replace(/\$|,/g, ""));
+			B = $(b)[0].children[9].textContent;
+			B = B.trim();
+			B = parseFloat(B.replace(/\$|,/g, ""));
+		} else {
+			return;
+		}
+
+		if (A < B) {
+			return 1;
+		}
+		if (A > B) {
+			return -1;
+		}
+		return 0;
+	});
+	$.each(arr, function (index, row) {
+		$(row).insertBefore($("table > tbody tr.bg-info").closest("tr"));
+	});
+}
 
 function negativeValues() {
 	let $table = $("table > tbody > tr");
@@ -73,3 +203,7 @@ function portfolioVal() {
 		$("#portfolio_val").addClass("negativeValue");
 	}
 }
+
+$(document).ready(function () {
+	negativeValues();
+});
