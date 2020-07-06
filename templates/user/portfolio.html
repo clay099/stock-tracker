@@ -4,12 +4,7 @@ block content %}
 <h1>{{current_user.username}} Portfolio</h1>
 
 <!-- Button trigger add stock modal -->
-<button
-    type="button"
-    class="btn btn-primary my-3"
-    data-toggle="modal"
-    data-target="#add-to-portfolio"
->
+<button type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#add-to-portfolio">
     Add Stock to Portfolio
 </button>
 
@@ -19,7 +14,7 @@ block content %}
 <!-- table -->
 {% if stock_details[0][0] %}
 
-<h5 class="mb-3">TOTAL PORTFOLIO VALUE: ${{"{:,.2f}".format(stock_details[2])}}</h5>
+<h5 class="mb-3" id="portfolio_val">TOTAL PORTFOLIO VALUE: ${{"{:,.2f}".format(stock_details[2])}}</h5>
 <table class="table table-striped table-responsive">
     <thead class="thead-dark">
         <tr>
@@ -72,12 +67,12 @@ block content %}
         <tr class="bg-info text-white">
             <th scope="row">Total Portfolio</th>
             <td colspan="3"></td>
-            <td colspan="3">
+            <td colspan="3" id="total_start_val">
                 <strong>
-                    ${{ "{:,.2f}".format(stock_details[2]) }}
+                    ${{ "{:,.2f}".format(stock_details[1]) }}
                 </strong>
             </td>
-            <td>
+            <td id="total_curr_val">
                 <strong>
                     ${{ "{:,.2f}".format(stock_details[2]) }}
                 </strong>
@@ -90,7 +85,7 @@ block content %}
             </td>
             <td>
                 <strong>
-                    ${{ (stock_details[2]-stock_details[1]) }}
+                    ${{ "{:,.2f}".format((stock_details[2]-stock_details[1])) }}
                 </strong>
             </td>
         </tr>

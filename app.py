@@ -237,7 +237,7 @@ def delete_stock():
         db.session.commit()
         flash(f'{symbol} has been deleted from your portfolio', 'warning')
     else:
-        flash(f'An error occured', 'warning')
+        flash(f'An error occurred', 'warning')
 
     return redirect(url_for('portfolio'))
 
