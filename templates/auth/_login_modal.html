@@ -13,24 +13,14 @@
 
                     {% for field in login_form if field.widget.input_type !='hidden' %}
 
-                    <div class="form-group-row justify-content-start">
-                        {{ field.label(class_='col-md-2 col-form-label') }}
-                        {{ field(class_='col-md-5')  }}
-
-                        {% if field.errors %}
-                        {% for err in field.errors %}
-                        <small class="form-text text-danger  col-md-2">
-                            {{ err }}
-                        </small>
-                        {% endfor %}
-                        {% endif %}
-                    </div>
+                    {% include 'auth/_form.html' %}
 
                     {% endfor %}
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn btn-primary">Login</button>
                     </div>
+                </div>
             </form>
         </div>
     </div>
