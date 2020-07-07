@@ -22,29 +22,29 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
+            <li class="nav-item" id="home">
                 <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="about">
                 <a class="nav-link" href="/">About</a>
             </li>
             {% if not current_user.username %}
-            <li class="nav-item">
+            <li class="nav-item" id="login">
                 <a class="nav-link" data-toggle="modal" data-target="#login-modal" href="#login-modal">Login</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="signup">
                 <a class="nav-link" data-toggle="modal" data-target="#signup-modal" href="#signup-modal">Sign Up</a>
             </li>
 
 
             {% else %}
-            <li class="nav-item">
+            <li class="nav-item" id="portfolio">
                 <a class="nav-link" href="{{ url_for('portfolio') }}">My Portfolio</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="settings">
                 <a class="nav-link" href="{{ url_for('user_settings') }}">User Settings</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="logout">
                 <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
             </li>
             {% endif %}
@@ -82,6 +82,7 @@
     </div>
 
 </div>
+<script src="/static/portfolio.js"></script>
 {% endif %}
 
 
