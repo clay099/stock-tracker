@@ -4,13 +4,20 @@
 }
 .home-body {
 	background-image: url("/static/images/homebackground.jpg");
-	height: 100vh;
+	position: absolute;
+	top: 55px;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	background-repeat: no-repeat;
+	background-position: center center;
 	background-size: cover;
-	background-position: center;
+	opacity: 0.6;
+	height: 500px;
 }
 
 .content-container {
+	padding-top: 2rem;
 	background-color: white;
 	height: 100vh;
 }
@@ -22,4 +29,26 @@
 
 .send-mail {
 	display: inline;
+}
+
+.bg-overlay {
+	position: absolute;
+	top: 55px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+#home-container {
+	position: relative;
+	z-index: 1;
+}
+.section-top {
+	padding-top: 5.5rem;
+	padding-bottom: 16rem;
+}
+
+.section-about {
+	padding-top: 2 rem;
+	padding-bottom: 2rem;
 }

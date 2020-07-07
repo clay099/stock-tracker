@@ -2,8 +2,158 @@
 
 {% block title %}Home Page{% endblock %}
 
-{% block content %}
+{% block home %}
 
-<h1>Home Page</h1>
+<section class="section section-top section-full">
 
+    <!-- Cover -->
+    <div class="bg-cover home-body"></div>
+
+    <!-- Overlay -->
+    <div class="bg-overlay"></div>
+
+    <!-- Content -->
+    <div class="container" id="home-container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-8 col-lg-7">
+                <!-- Heading -->
+                <h1 class="text-center mb-4 animate" data-toggle="animation" data-animation="fadeUp"
+                    data-animation-order="1" data-animation-trigger="load">
+                    Create and track your own stock portfolio with zero risk
+                </h1>
+
+                <!-- Button -->
+                <p class="text-center mb-0 animate" data-toggle="animation" data-animation="fadeUp"
+                    data-animation-order="3" data-animation-trigger="load">
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#login-modal"
+                        href="#login-modal">Login</a>
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#signup-modal" href="#signup-modal">Sign
+                        Up</a>
+                </p>
+            </div>
+        </div> <!-- / .row -->
+    </div> <!-- / .container -->
+
+</section>
+<section class="section section-about" id="about">
+    <!-- Heading -->
+    <h2 class="text-center mb-4">
+        About this project - to be completed
+    </h2>
+
+    <div class="container">
+        <div class="row justify-content-between mb-5">
+            <div class="col-lg-3 text-lg-right">
+                <h4 class="mb-4">Your role at Quick</h4>
+            </div>
+            <div class="col-lg-8">
+                <p>Often, the aforementioned badass stuff will be in the form of Bootstrap-based websites. So, it's
+                    critical that you're familiar with Bootstrap and feel pretty comfortable bending it to your will.
+                    Experience using popular page builders, like Beaver Builder, Visual Composer and Divi, is a big
+                    plus. Beaver Builder especially.</p>
+                <p>You don't need to be a hardcore developer to do this job (we've got some of those on staff, we
+                    intravenously pump them full of caffeine and try to avoid making direct eye contact). However, for
+                    you, a working knowledge of HTML and CSS will be fairly important.</p>
+            </div>
+        </div>
+        <div class="row justify-content-between mb-5">
+            <div class="col-lg-3 text-lg-right">
+                <h4 class="mb-4">Responsabilities</h4>
+            </div>
+            <div class="col-lg-8">
+                <ul class="list-unstyled list-bullet">
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Design websites, layouts, app interfaces and more</li>
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Help to build/code/assemble these things</li>
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Use WordPress, a lot</li>
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Collaborate closely with your team members</li>
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Always learn somthing new</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row justify-content-between mb-5">
+            <div class="col-lg-3 text-lg-right">
+                <h4 class="mb-4">Requirements</h4>
+            </div>
+            <div class="col-lg-8">
+                <ul class="list-unstyled list-bullet">
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Design websites, layouts, app interfaces and more</li>
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Help to build/code/assemble these things</li>
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Use WordPress, a lot</li>
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Collaborate closely with your team members</li>
+                    <li class="py-2"><span class="badge badge-circle badge-soft-success mr-2"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-check">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg></span> Always learn somthing new</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row justify-content-between mb-5">
+            <div class="col-lg-3 text-lg-right">
+                <h4 class="mb-4">Oue values</h4>
+            </div>
+            <div class="col-lg-8">
+                <h6>Be 20% Wrong</h6>
+                <p>As a startup, speed is extremely important. The quicker we move, the more mistakes we make. If we are
+                    making no mistakes, it means, quite simply, that we’re not moving fast enough. Therefore, a 20%
+                    error rate is, not only permissible, but expected. If you’re not wrong 20% of the time, you’re not
+                    moving fast or ambitious enough.</p>
+                <h6 class="mt-5">Be Fearless</h6>
+                <p>Fear is the primary motivator of human action. It drives people to cherish safety and complacency,
+                    coupled with an aversion to risk and change. However, it’s risk and change that advances the human
+                    race. Extreme risk and change is required to disrupt the digital commerce space as we know it. The
+                    outside world can’t possibly have the same knowledge that we have within our company walls. While
+                    we’re being called crazy, we must be fearless and driven by our internal conviction.</p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
 {% endblock %}
