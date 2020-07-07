@@ -30,11 +30,13 @@
             </li>
             {% if not current_user.username %}
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                <a class="nav-link" data-toggle="modal" data-target="#login-modal" href="#login-modal">Login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('signup') }}">Sign up</a>
+                <a class="nav-link" data-toggle="modal" data-target="#signup-modal" href="#signup-modal">Sign Up</a>
             </li>
+
+
             {% else %}
             <li class="nav-item">
                 <a class="nav-link" href="{{ url_for('portfolio') }}">My Portfolio</a>
@@ -58,14 +60,28 @@
 <div class="alert alert-{{ category }}">{{ message }}</div>
 {% endfor %}
 
+{% if request.url_rule.endpoint == 'homepage' %}
+<div class="container-fluid home-body">
 
-
-<div class="container-fluid">
-
-    {% block content %}
+    {% block home %}
     {% endblock %}
 
+    {% include 'auth/_login_modal.html' %}
+    {% include 'auth/_signup_modal.html' %}
+
 </div>
+{% else %}
+<div class="container-fluid page-body">
+    <div class="container content-container">
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</div>
+{% endif %}
+
 
 <script src="https://kit.fontawesome.com/9f5a1a1c5b.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

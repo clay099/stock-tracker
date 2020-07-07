@@ -3,9 +3,10 @@ block content %}
 
 <h1>{{current_user.username}} Portfolio</h1>
 
+
 <!-- Button trigger add stock modal -->
 <button type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#add-to-portfolio">
-    Add Stock to Portfolio
+    Add New Stock to Portfolio
 </button>
 
 <!-- add stock Modals -->
@@ -14,86 +15,14 @@ block content %}
 <!-- table -->
 {% if stock_details[0][0] %}
 
-<h5 class="mb-3" id="portfolio_val">TOTAL PORTFOLIO VALUE: ${{"{:,.2f}".format(stock_details[2])}}</h5>
-<table class="table table-striped table-responsive">
-    <thead class="thead-dark">
-        <tr>
-            <th class="" scope="col">Stock Symbol <i class="fas fa-sort"></i></th>
-            <th scope="col">Start Tracking Date</th>
-            <th scope="col">Number Of Stocks</th>
-            <th scope="col">Start Stock Price</th>
-            <th scope="col">Start Stock Value</th>
-            <th scope="col">Current Date</th>
-            <th scope="col">Current Stock Price</th>
-            <th scope="col">Current Stock Value</th>
-            <th class="" scope="col">Change % <i class="fas fa-sort"></i></th>
-            <th class="" scope="col">Change $ <i class="fas fa-sort"></i></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for stock in stock_details[0] %}
-        <tr id="{{ stock.stock_symbol }}" class="sort">
-            <th scope="row">{{ stock.stock_symbol }} <i class="far fa-trash-alt trash"></i></th>
-            <td class="start_date">{{ stock.start_date.strftime("%m/%d/%y") }}</td>
-            {% if stock.stock_num %}
-            <td class="stock_num">{{ stock.stock_num }}</td>
-            {% else %}
-            <td class="stock_num">1</td>
-            {% endif %}
-            <td class="start_stock_price">${{ "{:,.2f}".format(stock.start_stock_price) }}</td>
-            <td class="start_stock_value">
-                ${{ "{:,.2f}".format(stock.start_stock_price*stock.stock_num) }}
-            </td>
+{% include 'user/_portfolio_summary.html' %}
 
-            <td class="current_date">{{ stock.current_date.strftime("%m/%d/%y") }}</td>
-            <td class="curr_stock_price">${{ "{:,.2f}".format(stock.curr_stock_price) }}</td>
-            <td class="curr_stock_value">
-                ${{ "{:,.2f}".format(stock.curr_stock_price*stock.stock_num) }}
-            </td>
-            <td class="percent_change">
-                {{ "{:,.2f}".format(((stock.curr_stock_price -
-                stock.start_stock_price)/stock.start_stock_price)*100) }}%
-            </td>
-            {% if stock.stock_num %}
-            <td class="dol_change">
-                ${{ "{:,.2f}".format((stock.curr_stock_price*stock.stock_num) -
-                (stock.start_stock_price*stock.stock_num)) }}
-            </td>
-            {% else %}
-            <td class="dol_change">${{ "{:,.2f}".format(stock.curr_stock_price - stock.start_stock_price) }}</td>
-            {% endif %}
-        </tr>
-        {% endfor %}
-        <tr class="bg-info text-white">
-            <th scope="row">Total Portfolio</th>
-            <td colspan="3"></td>
-            <td colspan="3" id="total_start_val">
-                <strong>
-                    ${{ "{:,.2f}".format(stock_details[1]) }}
-                </strong>
-            </td>
-            <td id="total_curr_val">
-                <strong>
-                    ${{ "{:,.2f}".format(stock_details[2]) }}
-                </strong>
-            </td>
-            <td>
-                <strong>
-                    {{ "{:,.2f}".format(((stock_details[2]-stock_details[1])/stock_details[2])*100)
-                    }}%
-                </strong>
-            </td>
-            <td>
-                <strong>
-                    ${{ "{:,.2f}".format((stock_details[2]-stock_details[1])) }}
-                </strong>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<a href="{{url_for('send_portfolio')}}" class="btn btn-sm btn-primary text-white send-mail">Send Portfolio Via Email</a>
+<!-- edit & delete stock Modal -->
+{% include 'user/_edit_stock_modal.html' %}
+{% include 'user/_delete_stock_modal.html' %}
 
-<!-- edit stock Modal -->
-{% include 'user/_edit_stock_modal.html' %} {% include 'user/_delete_stock_modal.html' %} {% else %}
+{% else %}
 
 <h3>No stocks have been added to your portfolio</h3>
 {% endif %} {% endblock %}

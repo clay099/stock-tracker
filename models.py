@@ -136,7 +136,7 @@ class User_Stock(db.Model):
                           info={'label': 'Number of Stocks', 'min': 1})
 
     @classmethod
-    def add_stock(cls, user_id, stock_symbol, stock_num, notification_period):
+    def add_stock(cls, user_id, stock_symbol, stock_num):
         """
         add stock to user_stock table
 
@@ -144,7 +144,6 @@ class User_Stock(db.Model):
             user_id (int): id to verify user
             stock_symbol (string): stock symbol
             stock_num (int): number of stocks to track
-            notification_period (string): how often to receive notifications
 
         Returns:
         if pass all functions:

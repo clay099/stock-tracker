@@ -4,8 +4,9 @@ from flask import Flask, render_template, request, flash, redirect, session, url
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, logout_user, current_user, login_user, login_required
 from sqlalchemy.exc import IntegrityError
+from flask_mail import Mail, Message
 
-from secrets import APP_KEY
+from secrets import APP_KEY, MAIL_PASSWORD, MAIL_USER
 
 from models import db, connect_db, User, Stock, User_Stock, finnhub_client
 from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
@@ -20,6 +21,20 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', APP_KEY)
+
+
+app.config.update(
+    DEBUG=True,
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USE_SSL=False,
+    MAIL_USERNAME=os.environ.get('MAIL_USERNAME', MAIL_USER),
+    MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD', MAIL_PASSWORD),
+    MAIL_DEFAULT_SENDER=os.environ.get('MAIL_USERNAME', MAIL_USER)
+)
+
+mail = Mail(app)
 
 toolbar = DebugToolbarExtension(app)
 
@@ -49,25 +64,13 @@ def unauthorized():
 # ************base routes************
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def homepage():
     """home page"""
-    return render_template('home.html')
-
-
-@app.route('/about')
-def about():
-    """about page"""
-    return render_template('about.html')
-
-
-# ************auth routes************
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.check_password(form.username.data, form.password.data)
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        user = User.check_password(
+            login_form.username.data, login_form.password.data)
 
         if user:
             login_user(user)
@@ -75,24 +78,19 @@ def login():
             return redirect(url_for('portfolio'))
 
         flash("Invalid credentials.", 'warning')
-    return render_template('auth/login.html', form=form)
+    new_user_form = NewUserForm(notification_period='weekly')
 
-
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-    form = NewUserForm(notification_period='weekly')
-
-    if form.validate_on_submit():
+    if new_user_form.validate_on_submit():
         existing_user = User.query.filter_by(
-            username=form.username.data).first()
+            username=new_user_form.username.data).first()
         if existing_user is None:
             user = User.signup(
-                username=form.username.data,
-                email=form.email.data,
-                password=form.password.data,
-                country=form.country.data,
-                state=form.state.data,
-                notification_period=form.notification_period.data
+                username=new_user_form.username.data,
+                email=new_user_form.email.data,
+                password=new_user_form.password.data,
+                country=new_user_form.country.data,
+                state=new_user_form.state.data,
+                notification_period=new_user_form.notification_period.data
             )
 
             db.session.commit()
@@ -103,8 +101,13 @@ def signup():
             return redirect(url_for('portfolio'))
 
         flash('Username is already taken', 'warning')
+    return render_template('home.html', login_form=login_form, new_user_form=new_user_form)
 
-    return render_template('auth/signup.html', form=form)
+
+@app.route('/about')
+def about():
+    """about page"""
+    return render_template('about.html')
 
 
 @app.route('/logout')
@@ -112,7 +115,7 @@ def signup():
 def logout():
     logout_user()
     flash("You have been logged out", "success")
-    return redirect(url_for('login'))
+    return redirect(url_for('homepage'))
 
 
 # ************user routes************
@@ -141,8 +144,7 @@ def add_stock():
         new_stock = User_Stock.add_stock(
             user_id,
             form.stock_symbol.data,
-            form.stock_num.data,
-            form.notification_period.data)
+            form.stock_num.data)
 
         if new_stock:
             try:
@@ -241,12 +243,27 @@ def delete_stock():
 
     return redirect(url_for('portfolio'))
 
-    ##############################################################################
-    # Turn off all caching in Flask
-    #   (useful for dev; in production, this kind of stuff is typically
-    #   handled elsewhere)
-    #
-    # https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
+
+@app.route('/user/send-portfolio')
+@login_required
+def send_portfolio():
+
+    stock_details = User_Stock.get_users_stocks(current_user.id)
+
+    msg = Message('Porfolio SnapShot', recipients=[current_user.email])
+    msg.html = render_template(
+        'user/_portfolio_summary.html', stock_details=stock_details)
+    mail.send(msg)
+    flash(f"Portfolio Snap Shot Sent", "success")
+
+    return redirect(url_for('portfolio'))
+
+##############################################################################
+# Turn off all caching in Flask
+#   (useful for dev; in production, this kind of stuff is typically
+#   handled elsewhere)
+#
+# https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
 
 
 @ app.after_request

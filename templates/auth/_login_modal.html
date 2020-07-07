@@ -1,0 +1,37 @@
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                <div class="modal-body">
+                    {{ login_form.hidden_tag() }}
+
+                    {% for field in login_form if field.widget.input_type !='hidden' %}
+
+                    <div class="form-group-row justify-content-start">
+                        {{ field.label(class_='col-md-2 col-form-label') }}
+                        {{ field(class_='col-md-5')  }}
+
+                        {% if field.errors %}
+                        {% for err in field.errors %}
+                        <small class="form-text text-danger  col-md-2">
+                            {{ err }}
+                        </small>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    {% endfor %}
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>

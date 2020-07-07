@@ -49,8 +49,6 @@ class NewStockForm(FlaskForm):
     stock_symbol = StringField('Stock Symbol', validators=[DataRequired()])
     stock_num = IntegerField(
         'Number of Stocks (optional)', validators=[Optional(), NumberRange(min=1, message='Number of Stocks to be 1 or greater')])
-    notification_period = SelectField("Notification Period", choices=[
-        ('daily', 'Daily'), ('weekly', 'Weekly'), ('monthly', 'Monthly')])
 
 
 class EditStock(ModelForm):
