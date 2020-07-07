@@ -39,8 +39,8 @@ class UpdatePassword(FlaskForm):
 class LoginForm(FlaskForm):
     """Login form."""
 
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    login_username = StringField('Username', validators=[DataRequired()])
+    login_password = PasswordField('Password', validators=[DataRequired()])
 
 
 class NewStockForm(FlaskForm):

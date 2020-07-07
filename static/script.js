@@ -5,11 +5,15 @@
 
 $(document).ready(function () {
 	let loc = location.href;
-	if (loc === `http://127.0.0.1:5000/`) {
+	if (loc === `http://localhost:5000/`) {
 		$("#home").addClass("active");
-	} else if (loc === "http://127.0.0.1:5000/user") {
+	} else if (loc === "http://localhost:5000/user") {
 		$("#portfolio").addClass("active");
-	} else if (loc === "http://127.0.0.1:5000/user/settings") {
+	} else if (loc === "http://localhost:5000/user/settings") {
 		$("#settings").addClass("active");
 	}
+});
+
+$(document).on("click", function () {
+	$("#password").attr({ type: "password" });
 });

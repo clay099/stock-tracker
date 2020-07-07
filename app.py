@@ -78,7 +78,7 @@ def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
         user = User.check_password(
-            login_form.username.data, login_form.password.data)
+            login_form.login_username.data, login_form.login_password.data)
 
         if user:
             login_user(user)
