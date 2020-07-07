@@ -1,6 +1,5 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from enum import Enum
 from sqlalchemy_utils import EmailType, PasswordType
 from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
@@ -41,15 +40,12 @@ class User(db.Model, UserMixin):
                         info={'label': 'Country'})
     state = db.Column(db.String,
                       info={'label': 'State'})
-    notification_period = db.Column(
-        db.Enum('daily', 'weekly', 'monthly', name="NotificationPeriod"), nullable=False, default='weekly',
-        info={'label': 'Notification Period'})
 
     stocks = db.relationship(
         'Stock', secondary="user_stocks",  backref='users')
 
     @classmethod
-    def signup(cls, username, email, password, country, state, notification_period):
+    def signup(cls, username, email, password, country, state):
         """
         signup with hashed password
 
@@ -64,8 +60,7 @@ class User(db.Model, UserMixin):
             email=email,
             password=hashed_password,
             country=country,
-            state=state,
-            notification_period=notification_period
+            state=state
         )
         db.session.add(user)
         return user
@@ -250,7 +245,7 @@ class User_Stock(db.Model):
 
     def __repr__(self):
         u = self
-        return f'< User_Stock: id={u.id}, stock_symbol={u.stock_symbol}, user_id={u.user_id}, notification_period={u.notification_period}, start_date={u.start_date}, start_stock_price={u.start_stock_price}, current_date={u.current_date}, curr_stock_price={u.curr_stock_price}, stock_num={u.stock_num} >'
+        return f'< User_Stock: id={u.id}, stock_symbol={u.stock_symbol}, user_id={u.user_id}, start_date={u.start_date}, start_stock_price={u.start_stock_price}, current_date={u.current_date}, curr_stock_price={u.curr_stock_price}, stock_num={u.stock_num} >'
 
 
 def connect_db(app):

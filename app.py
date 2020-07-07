@@ -64,9 +64,17 @@ def unauthorized():
 # ************base routes************
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def homepage():
     """home page"""
+    login_form = LoginForm()
+    new_user_form = NewUserForm()
+
+    return render_template('home.html', login_form=login_form, new_user_form=new_user_form)
+
+
+@app.route('/login', methods=['POST'])
+def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
         user = User.check_password(
@@ -78,7 +86,12 @@ def homepage():
             return redirect(url_for('portfolio'))
 
         flash("Invalid credentials.", 'warning')
-    new_user_form = NewUserForm(notification_period='weekly')
+    return redirect(url_for('homepage'))
+
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    new_user_form = NewUserForm()
 
     if new_user_form.validate_on_submit():
         existing_user = User.query.filter_by(
@@ -89,8 +102,7 @@ def homepage():
                 email=new_user_form.email.data,
                 password=new_user_form.password.data,
                 country=new_user_form.country.data,
-                state=new_user_form.state.data,
-                notification_period=new_user_form.notification_period.data
+                state=new_user_form.state.data
             )
 
             db.session.commit()
@@ -101,7 +113,7 @@ def homepage():
             return redirect(url_for('portfolio'))
 
         flash('Username is already taken', 'warning')
-    return render_template('home.html', login_form=login_form, new_user_form=new_user_form)
+    return redirect(url_for('homepage'))
 
 
 @app.route('/about')
