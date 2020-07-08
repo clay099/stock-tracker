@@ -248,6 +248,69 @@ class User_Stock(db.Model):
         return f'< User_Stock: stock_symbol={u.stock_symbol}, user_id={u.user_id}, start_date={u.start_date}, start_stock_price={u.start_stock_price}, current_date={u.current_date}, curr_stock_price={u.curr_stock_price}, stock_num={u.stock_num} >'
 
 
+class StockDetails(db.Model):
+    """stock details model"""
+    
+    __tablename__ = "stock_details"
+
+    country = db.Column(db.String)
+    currency = db.Column(db.String)
+    exchange = db.Column(db.String)
+    ipo = db.Column(db.String)
+    marketCapitalization = db.Column(db.String)
+    name = db.Column(db.String)
+    phone = db.Column(db.String)
+    shareOutstanding = db.Column(db.String)
+    ticker = db.Column(db.String, primary_key=True)
+    weburl = db.Column(db.String)
+    logo = db.Column(db.String)
+    finnhubIndustry = db.Column(db.String)
+
+    @classmethod
+    def add_stock_details(cls, ticker):
+        # get stock details
+        stock_profile = finnhub_client.company_profile2(
+                symbol=ticker)
+        try:
+            # create new StockDetails
+            new_stock_details = StockDetails(
+                country = stock_profile.country,
+                currency = stock_profile.currency,
+                exchange = stock_profile.exchange,
+                ipo = stock_profile.ipo,
+                marketCapitalization = stock_profile.market_capitalization,
+                name = stock_profile.name,
+                phone = stock_profile.phone,
+                shareOutstanding = stock_profile.share_outstanding,
+                ticker = stock_profile.ticker,
+                weburl = stock_profile.weburl,
+                logo = stock_profile.logo,
+                finnhubIndustry = stock_profile.finnhub_industry
+            )
+            # add to database
+            db.session.add(new_stock_details)
+            return new_stock_details
+        # stock not found
+        except IntegrityError:
+            return False
+
+    def serialize(self):
+        """Returns a dict representation of stock which we can turn into JSON"""
+        return {
+            'country': self.country,
+            'currency': self.currency,
+            'exchange': self.exchange,
+            'ipo': self.ipo,
+            'marketCapitalization': self.marketCapitalization,
+            'name': self.name,
+            'phone': self.phone,
+            'shareOutstanding': self.shareOutstanding,
+            'ticker': self.ticker,
+            'weburl': self.weburl,
+            'logo': self.logo,
+            'finnhubIndustry': self.finnhubIndustry
+        }
+
 def connect_db(app):
     """Connect to database."""
 

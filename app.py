@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, url_for, abort
+from flask import Flask, render_template, request, flash, redirect, session, url_for, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, logout_user, current_user, login_user, login_required
 from sqlalchemy.exc import IntegrityError
@@ -8,7 +8,7 @@ from flask_mail import Mail, Message
 
 from secrets import APP_KEY, MAIL_PASSWORD, MAIL_USER
 
-from models import db, connect_db, User, Stock, User_Stock, finnhub_client
+from models import db, connect_db, User, Stock, User_Stock, finnhub_client, StockDetails
 from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
 from sqlalchemy.exc import IntegrityError
 
@@ -40,6 +40,7 @@ mail = Mail(app)
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
+# db.drop_all()
 # db.create_all()
 
 
@@ -52,7 +53,7 @@ login_manager.init_app(app)
 def load_user(user_id):
     """Check if user is logged-in on every page load."""
     if user_id is not None:
-        return User.query.get(user_id)
+        return User.query.get_or_404(user_id)
     return None
 
 
@@ -176,7 +177,7 @@ def add_stock():
 @app.route('/user/settings', methods=['GET', 'POST'])
 @login_required
 def user_settings():
-    user = User.query.get(current_user.id)
+    user = User.query.get_or_404(current_user.id)
     form = UserSettings(obj=user)
     password_form = UpdatePassword()
     if form.validate_on_submit():
@@ -272,6 +273,24 @@ def send_portfolio():
 
     return redirect(url_for('portfolio'))
 
+@app.route('/api/company-details', methods=['POST'])
+@login_required
+def send_stock_details():
+
+    ticker = request.json.get('ticker')
+
+    returned_stock_details = StockDetails.query.get(ticker)
+
+    if returned_stock_details:
+        return jsonify(stock=returned_stock_details.serialize())
+    
+    returned_stock_details = StockDetails.add_stock_details(ticker)
+    db.session.commit()
+    # import pdb; pdb.set_trace()
+    return jsonify(stock=returned_stock_details.serialize())
+
+    
+
 ##############################################################################
 # Turn off all caching in Flask
 #   (useful for dev; in production, this kind of stuff is typically
@@ -279,8 +298,7 @@ def send_portfolio():
 #
 # https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
 
-
-@ app.after_request
+@app.after_request
 def add_header(req):
     """Add non-caching headers on every request."""
 

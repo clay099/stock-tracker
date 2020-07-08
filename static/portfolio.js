@@ -1,5 +1,7 @@
+const BASE_URL = "http://localhost:5000/api";
+
 // company details modal
-$(".table").on("click", "tr", function (evt) {
+$(".table").on("click", "tr", async function (evt) {
 	// show edit form modal
 	if (evt.target.classList.contains("fas")) {
 		return;
@@ -8,9 +10,31 @@ $(".table").on("click", "tr", function (evt) {
 	} else if (this.classList.contains("text-white")) {
 		return;
 	} else {
+		let ticker = $(this).closest("tr")[0].id;
+		const returnedDetails = await axios.post(`${BASE_URL}/company-details`, { ticker });
+		console.log("*****************");
+		console.log(returnedDetails);
+		fillCompanyDetails(returnedDetails);
 		$("#company-details").modal("show");
 	}
 });
+
+function fillCompanyDetails(data) {
+	const base = data.data.stock;
+	$("#country").text(base.country);
+	$("#currency").text(base.currency);
+	$("#exchange").text(base.exchange);
+	$("#ipo").text(base.ipo);
+	$("#m-cap").text(base.marketCapitalization);
+	$("#c-name").text(base.name);
+	$("#phone").text(base.phone);
+	$("#outstanding").text(base.shareOutstanding);
+	$("#c-symbol").text(base.ticker);
+	$("#c-web").text(base.weburl);
+	$("#c-web").attr("href", base.weburl);
+	$("#logo").text(base.logo);
+	$("#industry").text(base.finnhubIndustry);
+}
 
 // edit stock modal
 $(".table").on("click", "th", function (evt) {
