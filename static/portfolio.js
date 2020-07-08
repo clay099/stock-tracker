@@ -30,7 +30,7 @@ function fillCompanyDetails(data) {
 	$("#c-web").attr("href", base.weburl);
 	$("#logo").attr("src", base.logo);
 	$("#industry").text(base.finnhubIndustry);
-
+}
 
 function formatCurrency(currencyString) {
 	let currency = parseFloat(currencyString).toFixed(0);
