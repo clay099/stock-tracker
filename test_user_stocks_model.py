@@ -21,6 +21,7 @@ app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 # disable csrf checks
 app.config['WTF_CSRF_ENABLED'] = False
 
+# drop all tables & create new ones
 db.drop_all()
 db.create_all()
 
@@ -30,7 +31,6 @@ class UserModelTestCase(TestCase):
 
     def setUp(self):
         """create test client, add sample data"""
-        # drop all tables & create new ones
 
         self.client = app.test_client()
 
@@ -55,7 +55,7 @@ class UserModelTestCase(TestCase):
         return res
 
     def test_adding_stock(self):
-        """test adding stock works"""
+        """basic test adding stock works"""
 
         new_user_stock = User_Stock.add_stock(9876, "MSFT", 1)
         db.session.add(new_user_stock)
@@ -96,15 +96,27 @@ class UserModelTestCase(TestCase):
         self.assertIsNone(new_user_stock)
 
     def test_get_users_stocks(self):
-        """tests that get_user_stocks function returns a tupel with flaskSQL object, value for current val and initial val"""
+        """tests that get_user_stocks function returns a tuple with flaskSQL object, value for current val and initial val"""
 
         returned = User_Stock.get_users_stocks(user_id=self.u.id)
-        # checks a value is returned for total initial val
-        self.assertIsNotNone(returned[1])
-        # checks a value is returned for total current val
-        self.assertIsNotNone(returned[2])
+        # checks a value is returned for total initial val is greater then the default 0
+        self.assertTrue(returned[1] > 0)
+        # checks a value is returned for total current val is greater then the default 0
+        self.assertTrue(returned[2] > 0)
         # checks that the original stock is returned
         self.assertIn(returned[0][0].stock_symbol, self.u_stock.stock_symbol)
+
+    def test_get_users_stocks_invalidID(self):
+        """tests that get_user_stocks function returns a tuple with flaskSQL object, value for current val and initial val"""
+
+        returned = User_Stock.get_users_stocks(123555)
+        # checks a value is returned for total initial val is greater then the default 0
+        self.assertTrue(returned[1] == 0)
+        # checks a value is returned for total current val is greater then the default 0
+        self.assertTrue(returned[2] == 0)
+        # checks that an index error is returned if a user can't be found
+        with self.assertRaises(IndexError):
+            returned[0][0]
 
     def test_update_stock(self):
         """test that update stock function updates the user_stock values"""

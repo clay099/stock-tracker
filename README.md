@@ -20,7 +20,6 @@ I have outlined below some of the information which will be collected and displa
     - Password - sensitive to be secured
     - Country
     - State
-    - notification period - daily, weekly, monthly
 
 2. STOCKS TABLE
 
@@ -29,7 +28,6 @@ I have outlined below some of the information which will be collected and displa
 
 3. USER_STOCK_TABLE
 
-    - id - primary key
     - stock symbol - foreign key
     - user_id - foreign key
     - start date
@@ -41,9 +39,15 @@ I have outlined below some of the information which will be collected and displa
 **Outline**  
 The user will be able to select stocks along with an amount to create a personalized portfolio.
 
-The user will also select a notification period which will set how often they are notified about their portfolio via email. The notification will show their performance from year to date (from start date), monthly to date, weekly to date and daily to date (if daily is selected you will be provided will all options, if weekly is selected you will be provided all above options (e.g. will exclude daily data) etc. The notifications will include % change along with total \$ change for each requested period.
+The user will need to register so that they can login to their profile, review their portfolio and add / remove stocks as they see necessary.
 
-The user will be able to login to their profile and review their portfolio and add / remove stocks as they see necessary. This will also give the user access to candle stick data for the historic performance of the stocks they are reviewing.
+The user will be able to see a summary of their portfolio including the date the start to track a stock, the number of stocks tracked, the starting stock price, the starting stock value (number of stocks times starting stock price), current date, current stock price, current stock value (number of stocks times current stock price), the change in % over this time, the change in dollars over this time.
+
+Users will have the functionality to be able to sort based on alphabetical order of the stock symbol, or the change in % or the change in dollars.
+
+The summary will also include a total portfolio position summarizing the total starting stock value, total current stock value, total change in %, total change in dollars over time.
+
+The user will also be able to send a email snapshot of their portfolio so they can save this position in time.
 
 **Stretch Goals**
 

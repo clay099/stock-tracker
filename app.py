@@ -233,6 +233,7 @@ def edit_stock():
         user_stock.stock_symbol = form.stock_symbol.data
 
         db.session.commit()
+        flash(f"stock has been edited", "success")
         return redirect(url_for('portfolio'))
 
     return redirect(url_for('portfolio'))
