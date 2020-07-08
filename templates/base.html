@@ -81,7 +81,7 @@
     </div>
 
 </div>
-<script src="/static/portfolio.js"></script>
+
 {% endif %}
 
 
@@ -96,6 +96,9 @@
     integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
     crossorigin="anonymous"></script>
 <script src="/static/script.js"></script>
+{% if request.url_rule.endpoint != 'homepage' %}
+<script src="/static/portfolio.js"></script>
+{% endif %}
 </body>
 
 </html>
