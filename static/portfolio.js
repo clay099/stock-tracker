@@ -1,8 +1,23 @@
+// company details modal
 $(".table").on("click", "tr", function (evt) {
 	// show edit form modal
 	if (evt.target.classList.contains("fas")) {
 		return;
 	} else if (evt.target.nodeName === "TH") {
+		return;
+	} else if (this.classList.contains("text-white")) {
+		return;
+	} else {
+		$("#company-details").modal("show");
+	}
+});
+
+// edit stock modal
+$(".table").on("click", "th", function (evt) {
+	// show edit form modal
+	if (evt.target.classList.contains("fas")) {
+		return;
+	} else if (evt.target.parentElement.parentElement.nodeName === "THEAD") {
 		return;
 	} else if (this.classList.contains("text-white")) {
 		return;
@@ -14,6 +29,7 @@ $(".table").on("click", "tr", function (evt) {
 	}
 });
 
+// change trash color
 $(".trash").hover(
 	function () {
 		$(this).toggleClass("far fas");
@@ -23,13 +39,15 @@ $(".trash").hover(
 	}
 );
 
+// delete stock modal
 $(".table").on("click", ".fa-trash-alt", function (evt) {
-	// show edit form modal
+	// show delete stock form modal
 	$("#delete-stock").modal("show");
 	$("#symbol").text(evt.target.closest("tr").id);
 	$("input[name=stock_symbol]").val(evt.target.closest("tr").id);
 });
 
+// sort table
 $(".table").on("click", ".fa-sort", function (evt) {
 	val = evt.target.closest("th").innerText;
 	sorted = $(evt.target.closest("th")).hasClass("ascending");
