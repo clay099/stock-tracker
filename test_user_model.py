@@ -77,23 +77,52 @@ class UserModelTestCase(TestCase):
             db.session.add(invalid_user)
             db.session.commit()
 
-    def test_user_repr(self):
-        """test user repr"""
+    def test_check_signup_hashed_password(self):
+        """test that upon signup the stored password is hashed"""
 
-        self.assertEqual(
-            repr(self.u), f'< User: id={self.u.id}, username={self.u.username}, email={self.u.email}, password=HIDDEN, country={self.u.country}, state={self.u.state} >')
+        u = User.signup("newUser", "newUser@gmail.com",
+                        "password", "USA", "CA")
+        db.session.commit()
+        # checks that stored password has been hashed
+        self.assertTrue(u.password != "password")
 
     def test_user_check_password(self):
         """test user class method check_password"""
 
+        # checks wrong password returns false
         self.assertFalse(User.check_password(self.u.username, "wrongPW"))
+        # checks correct password works
         self.assertEqual(User.check_password(
             self.u.username, 'password'), User.query.get(self.u.id))
 
     def test_user_update_password(self):
         """test user class method update_password"""
 
+        # checks two different passwords won't update
         self.assertFalse(User.update_password(
             User.query.get(self.u.id), "password", "pw"))
+        # checks that two of the same password will update
         self.assertEqual(User.update_password(User.query.get(
             self.u.id), "updatepw", "updatepw"), User.query.get(self.u.id))
+
+    def test_update_password_check_hashed(self):
+        """test update password returns a hashed password"""
+
+        u = User.query.get(
+            self.u.id)
+        original_pw = u.password
+        updated_u = User.update_password(User.query.get(
+            self.u.id), "updatepw", "updatepw")
+        db.session.add(updated_u)
+        db.session.commit()
+        # checks that stored password has been hashed
+        self.assertTrue(updated_u.password != "updatepw")
+
+        # checks that updated user password is different from the original password
+        self.assertTrue(updated_u.password != original_pw)
+
+    def test_user_repr(self):
+        """test user repr"""
+
+        self.assertEqual(
+            repr(self.u), f'< User: id={self.u.id}, username={self.u.username}, email={self.u.email}, password=HIDDEN, country={self.u.country}, state={self.u.state} >')
