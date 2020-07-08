@@ -1,6 +1,5 @@
 """model test"""
 
-from app import app
 import os
 from unittest import TestCase
 from models import db
@@ -9,13 +8,15 @@ from sqlalchemy import exc
 
 from models import User
 
-# use testing DB
+# use testing DB - needs to run before import app
 os.environ['DATABASE_URL'] = "postgresql:///stock-tracker-test"
-app.config['SQLALCHEMY_ECHO'] = False
+
+from app import app
 
 # Make Flask errors be real errors, rather than HTML pages with error info
 app.config['TESTING'] = True
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
+app.config['SQLALCHEMY_ECHO'] = False
 
 # disable csrf checks
 app.config['WTF_CSRF_ENABLED'] = False
