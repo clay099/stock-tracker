@@ -1,7 +1,7 @@
 const BASE_URL = "http://localhost:5000/api";
 
 // company details modal
-$(".table").on("click", "tr", async function (evt) {
+$("#portfolio-table").on("click", "tr", async function (evt) {
 	// show edit form modal
 	if (evt.target.classList.contains("fas")) {
 		return;
@@ -12,8 +12,6 @@ $(".table").on("click", "tr", async function (evt) {
 	} else {
 		let ticker = $(this).closest("tr")[0].id;
 		const returnedDetails = await axios.post(`${BASE_URL}/company-details`, { ticker });
-		console.log("*****************");
-		console.log(returnedDetails);
 		fillCompanyDetails(returnedDetails);
 		$("#company-details").modal("show");
 	}
@@ -24,20 +22,30 @@ function fillCompanyDetails(data) {
 	$("#country").text(base.country);
 	$("#currency").text(base.currency);
 	$("#exchange").text(base.exchange);
-	$("#ipo").text(base.ipo);
-	$("#m-cap").text(base.marketCapitalization);
+	$("#ipo").text(FormateDate(base.ipo));
+	$("#m-cap").text(formatCurrency(base.marketCapitalization));
 	$("#c-name").text(base.name);
-	$("#phone").text(base.phone);
-	$("#outstanding").text(base.shareOutstanding);
 	$("#c-symbol").text(base.ticker);
 	$("#c-web").text(base.weburl);
 	$("#c-web").attr("href", base.weburl);
-	$("#logo").text(base.logo);
+	$("#logo").attr("src", base.logo);
 	$("#industry").text(base.finnhubIndustry);
+
+
+function formatCurrency(currencyString) {
+	let currency = parseFloat(currencyString).toFixed(0);
+	let withCommas = Number(currency).toLocaleString("en");
+	let finalformat = `\$${withCommas}M`;
+	return finalformat;
+}
+
+function FormateDate(date) {
+	let p = date.split(/\D/g);
+	return [p[1], p[2], p[0]].join("/");
 }
 
 // edit stock modal
-$(".table").on("click", "th", function (evt) {
+$("#portfolio-table").on("click", "th", function (evt) {
 	// show edit form modal
 	if (evt.target.classList.contains("fas")) {
 		return;
@@ -64,7 +72,7 @@ $(".trash").hover(
 );
 
 // delete stock modal
-$(".table").on("click", ".fa-trash-alt", function (evt) {
+$("#portfolio-table").on("click", ".fa-trash-alt", function (evt) {
 	// show delete stock form modal
 	$("#delete-stock").modal("show");
 	$("#symbol").text(evt.target.closest("tr").id);
@@ -72,7 +80,7 @@ $(".table").on("click", ".fa-trash-alt", function (evt) {
 });
 
 // sort table
-$(".table").on("click", ".fa-sort", function (evt) {
+$("#portfolio-table").on("click", ".fa-sort", function (evt) {
 	val = evt.target.closest("th").innerText;
 	sorted = $(evt.target.closest("th")).hasClass("ascending");
 	let $table = $("table > tbody > tr");
