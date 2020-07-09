@@ -8,4 +8,10 @@ async function basicCompanyDetails() {
 	fillCompanyDetails(returnedDetails.data.stock);
 }
 
+async function companyNews() {
+	let stock_symbol = $("h1").attr("id");
+	const returnedDetails = await axios.post(`${BASE_URL}/company-details/news`, { stock_symbol });
+}
+
 basicCompanyDetails();
+companyNews();

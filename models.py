@@ -304,6 +304,66 @@ class User_Stock(db.Model):
         u = self
         return f'< User_Stock: stock_symbol={u.stock_symbol}, user_id={u.user_id}, start_date={u.start_date}, start_stock_price={u.start_stock_price}, current_date={u.current_date}, curr_stock_price={u.curr_stock_price}, stock_num={u.stock_num} >'
 
+class News(db.Model):
+    """news model"""
+
+    __tablename__ = "news"
+
+    id = db.Column(db.String, primary_key=True)
+    category = db.Column(db.String)
+    datetime = db.Column(db.String)
+    headline = db.Column(db.String)
+    image = db.Column(db.String)
+    related = db.Column(db.String)
+    source = db.Column(db.String)
+    summary = db.Column(db.String)
+    url = db.Column(db.String)
+
+    def get_news(self, company_symbol=None):
+        News.query.delete()
+        if company_symbol:
+            news = finnhub_client.company_news(company_symbol, _from="2020-07-07", to="2020-07-01")
+            print('***AAPL')
+            import pdb; pdb.set_trace()
+            for n in news[:5]:
+                print(n)
+                new_article = News(id=n.id, category=n.category, datetime=n.datetime, headline=n.headline, image=n.image, related=n.related, source=n.source, summary=n.summary, url=n.url)
+                db.session.add(new_article)
+                db.session.commit()
+            
+        else:
+            news = finnhub_client.general_news('general')
+            print('***general')
+
+            for n in news[:5]:
+                print(n)
+                new_article = News(id=n.id, category=n.category, datetime=n.datetime, headline=n.headline, image=n.image, related=n.related, source=n.source, summary=n.summary, url=n.url)
+                db.session.add(new_article)
+                db.session.commit()
+
+        # get all articles 
+        articles = News.query.all()
+        # return all articles
+        return articles
+        
+    def serialize_news(self):
+        """Returns a dict representation of news which we can turn into JSON"""
+        return {
+            'category': self.category,
+            'datetime': self.datetime,
+            'headline': self.headline,
+            'image': self.image,
+            'related': self.related,
+            'source': self.source,
+            'summary': self.summary,
+            'url': self.url,
+        }
+    
+
+    def __repr__(self):
+        n = self
+        return f'< News: id={n.id}, category={n.category}, datetime={n.datetime}, headline={n.headline}, image={n.image}, related={n.related}, source={n.source}, summary={n.summary}, url={n.url} >'
+        
 
 def connect_db(app):
     """Connect to database."""

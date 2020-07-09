@@ -8,7 +8,7 @@ from flask_mail import Mail, Message
 
 from secrets import APP_KEY, MAIL_PASSWORD, MAIL_USER
 
-from models import db, connect_db, User, Stock, User_Stock, finnhub_client
+from models import db, connect_db, User, Stock, User_Stock, finnhub_client, News
 from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
 from sqlalchemy.exc import IntegrityError
 
@@ -285,9 +285,39 @@ def send_stock_details():
     else:
         returned_stock_details = Stock.add_stock_details(stock_symbol)
         # add to database
-        db.session.add(stock_details)
+        db.session.add(returned_stock_details)
         db.session.commit()
         return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
+
+@app.route('/api/company-details/news', methods=['POST'])
+@login_required
+def get_news():
+    stock_symbol = request.json.get('stock_symbol')
+    # checks that a stock_symbol was provided with JSON
+    if stock_symbol:
+        # request for stock object
+        returned_stock_details = Stock.query.get(stock_symbol)
+        if returned_stock_details:
+            # get news for stock
+            returned_news = News.get_news(stock_symbol)
+
+            all_news = [news.serialize_news() for news in returned_news]
+            return jsonify(news=all_news)
+
+        # if stock object not in DB
+        else:
+            # search API for stock symbol
+            returned_stock_details = Stock.add_stock_symbol(stock_symbol)
+            # if stock symbol returned true (stock found and added to our DB)
+            if returned_stock_details:
+                returned_news = News.get_news(stock_symbol)
+                all_news = [news.serialize_news() for news in returned_news]
+                return jsonify(news=all_news)
+                
+            # if stock symbol returned false (stock not found in API)
+            else:
+                flash('Stock was not found', 'warning')
+                return url_for('homepage')
 
 @app.route('/company-details/<stock_symbol>')
 def company_details(stock_symbol):
