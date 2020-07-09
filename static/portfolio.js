@@ -13,40 +13,11 @@ $("#portfolio-table").on("click", "tr", async function (evt) {
 	} else {
 		let stock_symbol = $(this).closest("tr")[0].id;
 		const returnedDetails = await axios.post(`${BASE_URL}/company-details`, { stock_symbol });
-		fillCompanyDetails(returnedDetails);
+		// see stock_details.js
+		fillCompanyDetails(returnedDetails.data.stock);
 		$("#company-details").modal("show");
 	}
 });
-
-// fill company details modal
-function fillCompanyDetails(data) {
-	const base = data.data.stock;
-	$("#country").text(base.country);
-	$("#currency").text(base.currency);
-	$("#exchange").text(base.exchange);
-	$("#ipo").text(FormateDate(base.ipo));
-	$("#m-cap").text(formatCurrency(base.marketCapitalization));
-	$("#c-name").text(base.name);
-	$("#c-symbol").text(base.stock_symbol);
-	$("#c-web").text(base.weburl);
-	$("#c-web").attr("href", base.weburl);
-	$("#logo").attr("src", base.logo);
-	$("#industry").text(base.finnhubIndustry);
-}
-
-// format currency
-function formatCurrency(currencyString) {
-	let currency = parseFloat(currencyString).toFixed(0);
-	let withCommas = Number(currency).toLocaleString("en");
-	let finalformat = `\$${withCommas}M`;
-	return finalformat;
-}
-
-// format date
-function FormateDate(date) {
-	let p = date.split(/\D/g);
-	return [p[1], p[2], p[0]].join("/");
-}
 
 // ************edit stock functions****************
 // edit stock modal

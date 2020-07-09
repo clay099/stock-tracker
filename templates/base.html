@@ -99,7 +99,13 @@
     crossorigin="anonymous"></script>
 <script src="/static/script.js"></script>
 {% if request.url_rule.endpoint != 'homepage' %}
+<script src="/static/company_details_format.js"></script>
+{% endif %}
+{% if request.url_rule.endpoint == 'portfolio' %}
 <script src="/static/portfolio.js"></script>
+{% endif %}
+{% if request.url_rule.endpoint == 'company_details' %}
+<script src="/static/company_details.js"></script>
 {% endif %}
 </body>
 

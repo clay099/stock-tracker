@@ -1,7 +1,24 @@
-{% extends 'base.html' %} {% block title %}{{current_user.username}} Details{% endblock %}
+{% extends 'base.html' %} {% block title %}{{stock_symbol}} Details{% endblock %}
 
 {% block content %}
 
-<h1>Stock Details</h1>
-
+<h1 class="text-center" id={{ stock_symbol }}>{{ company_name }} Details</h1>
+<div class="row">
+    <div class="col-md-6 order-md-1 mb-4">
+        <table class="table table-striped" id="basic-company-details-table">
+            <thead>
+                <th colspan="2" class="bg-primary">
+                    <h5 class="modal-title" id=""><strong>Company Details</strong> <img id="logo" src="" alt="Logo">
+                    </h5>
+                </th>
+            </thead>
+            <tbody>
+                {% include 'stock/_basic_stock_details_table.html' %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 order-md-2 mb-4">
+        <p>right</p>
+    </div>
+</div>
 {% endblock %}

@@ -292,8 +292,8 @@ def send_stock_details():
 @app.route('/company-details/<stock_symbol>')
 def company_details(stock_symbol):
     returned_stock_details = Stock.query.get_or_404(stock_symbol)
-
-    return render_template('/stock/detailed_stock_view.html')
+    company_name = returned_stock_details.stock_name
+    return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
 
 ##############################################################################
 # Turn off all caching in Flask
