@@ -56,3 +56,15 @@ The user will also be able to send a email snapshot of their portfolio so they c
 3. Add Foreign Exchange and / or crypto currency functionality
 4. List news articles which mention the stock you are following
 
+**Requirements**
+please note if you download this code base you will need to:
+
+1. pip install the requirements.txt file
+2. Create a psql database called stock_tracker or create another database and save it your your environment variable
+3. create a secrets file including:
+
+    - API_KEY - This can be obtained from https://finnhub.io/dashboard
+    - APP_KEY - This can be any string
+    - MAIL_USER - gamil email address\*
+    - MAIL_PASSWORD - gmail password\*
+      please note if you wish to use a separate mail client you will need to change app.py lines 28-35
