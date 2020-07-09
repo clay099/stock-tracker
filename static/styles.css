@@ -1,11 +1,11 @@
 .page-body {
-	background-image: url("/static/images/background.jpg");
+	background-image: url("/static/images/background-gray.jpg");
 	height: 100vh;
 }
 .home-body {
 	background-image: url("/static/images/homebackground.jpg");
 	position: absolute;
-	top: 55px;
+	top: 5em;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -33,7 +33,7 @@
 
 .bg-overlay {
 	position: absolute;
-	top: 55px;
+	top: 5em;
 	bottom: 0;
 	left: 0;
 	right: 0;
@@ -58,4 +58,12 @@
 
 #logo {
 	height: 50px;
+}
+
+#logo-nav {
+	height: 3em;
+}
+
+.navbar-brand {
+	padding-top: 0;
 }
