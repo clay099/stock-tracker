@@ -300,9 +300,12 @@ def get_news():
         if returned_stock_details:
             # get news for stock
             returned_news = News.get_news(stock_symbol)
-
-            all_news = [news.serialize_news() for news in returned_news]
-            return jsonify(news=all_news)
+            # if no news was returned
+            if returned_news is False:
+                return jsonify(news='no news obtained')
+            else:    
+                all_news = [news.serialize_news() for news in returned_news]
+                return jsonify(news=all_news)
 
         # if stock object not in DB
         else:
@@ -311,9 +314,13 @@ def get_news():
             # if stock symbol returned true (stock found and added to our DB)
             if returned_stock_details:
                 returned_news = News.get_news(stock_symbol)
-                all_news = [news.serialize_news() for news in returned_news]
-                return jsonify(news=all_news)
-                
+                # if no news was returned
+                if returned_news is False:
+                    return jsonify(news='no news obtained')
+                else:    
+                    all_news = [news.serialize_news() for news in returned_news]
+                    return jsonify(news=all_news)
+
             # if stock symbol returned false (stock not found in API)
             else:
                 flash('Stock was not found', 'warning')

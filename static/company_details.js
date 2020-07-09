@@ -20,7 +20,7 @@ async function companyNews() {
 function generateNewsHTML(newsArticle) {
 	return `
     <div class="col mb-4">
-        <div class="card" style="width: 18rem;">
+        <div class="card">
             <img src="${newsArticle.image}" class="card-img-top" alt="Image failed to load">
             <div class="card-body">
                 <h5 class="card-title">${newsArticle.headline}</h5>

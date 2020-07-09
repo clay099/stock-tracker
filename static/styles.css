@@ -67,3 +67,9 @@
 .navbar-brand {
 	padding-top: 0;
 }
+
+.card {
+	width: 18rem;
+	max-height: 500px;
+	overflow: auto;
+}

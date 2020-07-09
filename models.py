@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import EmailType, PasswordType
 from flask_login import UserMixin
@@ -319,27 +319,42 @@ class News(db.Model):
     summary = db.Column(db.String)
     url = db.Column(db.String)
 
-    def get_news(self, company_symbol=None):
+    @classmethod
+    def get_news(self, stock_symbol=None):
+        # drop all articles (DB does not need to keep all articles)
         News.query.delete()
-        if company_symbol:
-            news = finnhub_client.company_news(company_symbol, _from="2020-07-07", to="2020-07-01")
-            print('***AAPL')
-            import pdb; pdb.set_trace()
-            for n in news[:5]:
-                print(n)
-                new_article = News(id=n.id, category=n.category, datetime=n.datetime, headline=n.headline, image=n.image, related=n.related, source=n.source, summary=n.summary, url=n.url)
-                db.session.add(new_article)
-                db.session.commit()
+        # if a stock symbol was passed through
+        if stock_symbol:
+            # todays date in format to be passed through
+            today = datetime.today().strftime('%Y-%m-%d')
+            #date 7 days ago in format to be passed through
+            one_week = (datetime.today()-timedelta(days=7)).strftime('%Y-%m-%d')
+
+            # get news articles from API
+            news = finnhub_client.company_news(stock_symbol, _from=one_week, to=today)
+            # no articles were found return false
+            if (news == []):
+                return False
+            else:
+                # for top 6 articles
+                for n in news[:6]:
+                    # create new article in DB
+                    new_article = News(id=n.id, category=n.category, datetime=n.datetime, headline=n.headline, image=n.image, related=n.related, source=n.source, summary=n.summary, url=n.url)
+                    db.session.add(new_article)
+                    db.session.commit()
             
         else:
             news = finnhub_client.general_news('general')
-            print('***general')
-
-            for n in news[:5]:
-                print(n)
-                new_article = News(id=n.id, category=n.category, datetime=n.datetime, headline=n.headline, image=n.image, related=n.related, source=n.source, summary=n.summary, url=n.url)
-                db.session.add(new_article)
-                db.session.commit()
+            # no articles were found return false
+            if (news == []):
+                return False
+            else:
+            # for top 6 articles
+                for n in news[:6]:
+                    # create new article in DB
+                    new_article = News(id=n.id, category=n.category, datetime=n.datetime, headline=n.headline, image=n.image, related=n.related, source=n.source, summary=n.summary, url=n.url)
+                    db.session.add(new_article)
+                    db.session.commit()
 
         # get all articles 
         articles = News.query.all()
