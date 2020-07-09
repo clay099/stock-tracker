@@ -1,5 +1,6 @@
-{% extends 'base.html' %} {% block title %}{{current_user.username}} Portfolio{% endblock %} {%
-block content %}
+{% extends 'base.html' %} {% block title %}{{current_user.username}} Portfolio{% endblock %}
+
+{% block content %}
 
 <h1>{{current_user.username}} Portfolio</h1>
 
@@ -12,7 +13,7 @@ block content %}
 <!-- add stock modal -->
 {% include 'user/_add_stock_modal.html' %}
 <!-- add company details modal -->
-{% include 'user/_company_details_modal.html' %}
+{% include 'stock/_company_details_modal.html' %}
 
 <!-- table -->
 {% if stock_details[0][0] %}

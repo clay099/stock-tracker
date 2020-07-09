@@ -1,0 +1,27 @@
+<div class="modal fade" id="company-details" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"><strong>Company Details</strong> <img id="logo" src=""
+                        alt="Logo"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-striped" id="company-details-table">
+                    <tbody>
+                        {% include 'stock/_basic_stock_details_table.html' %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Go Back
+                </button>
+                <a class="btn btn-primary" id="dcv" href="#">See Detailed Company View</a>
+            </div>
+        </div>
+    </div>
+</div>

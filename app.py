@@ -288,7 +288,12 @@ def send_stock_details():
         db.session.add(stock_details)
         db.session.commit()
         return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
-   
+
+@app.route('/company-details/<stock_symbol>')
+def company_details(stock_symbol):
+    returned_stock_details = Stock.query.get_or_404(stock_symbol)
+
+    return render_template('/stock/detailed_stock_view.html')
 
 ##############################################################################
 # Turn off all caching in Flask

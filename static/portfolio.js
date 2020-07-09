@@ -68,6 +68,7 @@ $("#portfolio-table").on("click", "th", function (evt) {
 	}
 });
 
+// ************delete stock functions****************
 // change trash color
 $(".trash").hover(
 	function () {
@@ -86,6 +87,7 @@ $("#portfolio-table").on("click", ".fa-trash-alt", function (evt) {
 	$("input[name=stock_symbol]").val(evt.target.closest("tr").id);
 });
 
+// ************sort table functions****************
 // sort table
 $("#portfolio-table").on("click", ".fa-sort", function (evt) {
 	val = evt.target.closest("th").innerText;
@@ -222,10 +224,14 @@ function largeSort(arr, identification) {
 	});
 }
 
+// ************edit stock color functions****************
+// reviews table and turns cells text-color red if change in stock value is negative
 function negativeValues() {
 	let $table = $("table > tbody > tr");
 
+	// for each row run the functions
 	$table.each((i, row) => {
+		// select values
 		let $row = $(row),
 			$startPrice = $row.find(".start_stock_price")[0],
 			$currPrice = $row.find(".curr_stock_price")[0],
@@ -234,23 +240,29 @@ function negativeValues() {
 			$percentChange = $row.find(".percent_change")[0],
 			$dolChange = $row.find(".dol_change")[0];
 
+		// create array of cells to change color
 		let selected = [$startPrice, $currPrice, $startVal, $currVal, $percentChange, $dolChange];
 
+		// push each rows array cells
 		tableLoop(selected);
-		portfolioVal();
 	});
+	// runs for total portfolio value (last line)
+	portfolioVal();
 }
 
+// runs for each row
 function tableLoop(arr) {
+	// checks if current val is less then initial val
 	if (arr[0] != undefined)
 		if (arr[0].innerText > arr[1].innerText) {
+			// if less then initial val select cell and add class negative value (turns text red & bold)
 			arr.forEach((cell) => {
 				let $cell = $(cell);
 				$cell.addClass("negativeValue");
 			});
 		}
 }
-
+// checks if current val is less then initial val
 function portfolioVal() {
 	let start = $("#total_start_val")[0].innerText;
 	let curr = $("#total_curr_val")[0].innerText;
@@ -261,6 +273,16 @@ function portfolioVal() {
 	}
 }
 
+// loads on page ready
 $(document).ready(function () {
 	negativeValues();
+});
+
+// **********see detailed company view functions****************
+$("#dcv").click(function (evt) {
+	evt.preventDefault();
+	console.log(evt);
+	console.log($("#c-symbol").text());
+	const stock_symbol = $("#c-symbol").text();
+	window.location.pathname = `/company-details/${stock_symbol}`;
 });
