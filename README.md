@@ -55,3 +55,4 @@ The user will also be able to send a email snapshot of their portfolio so they c
 2. Add notifications when stocks you are following post price sensitive information
 3. Add Foreign Exchange and / or crypto currency functionality
 4. List news articles which mention the stock you are following
+
