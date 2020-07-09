@@ -230,7 +230,7 @@ class User_Stock(db.Model):
         )
         db.session.add(add_user_stock)
         return add_user_stock
-
+    @classmethod
     def add_stock_symbol(self, stock_symbol):
         """
         searches finnhub for the stock symbol.

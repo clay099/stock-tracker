@@ -252,8 +252,6 @@ $(document).ready(function () {
 // **********see detailed company view functions****************
 $("#dcv").click(function (evt) {
 	evt.preventDefault();
-	console.log(evt);
-	console.log($("#c-symbol").text());
 	const stock_symbol = $("#c-symbol").text();
 	window.location.pathname = `/company-details/${stock_symbol}`;
 });

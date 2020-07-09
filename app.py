@@ -328,9 +328,26 @@ def get_news():
 
 @app.route('/company-details/<stock_symbol>')
 def company_details(stock_symbol):
-    returned_stock_details = Stock.query.get_or_404(stock_symbol)
-    company_name = returned_stock_details.stock_name
-    return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
+    # check DB for stock
+    returned_stock_details = Stock.query.get(stock_symbol)
+    if returned_stock_details:
+        company_name = returned_stock_details.stock_name
+        # render template
+        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
+    else:
+         # search API for stock symbol
+            returned_stock_details = User_Stock.add_stock_symbol(stock_symbol)
+            # if stock symbol returned true (stock found and added to our DB)
+            if returned_stock_details:
+                # add stock basic details
+                returned_stock_details = Stock.add_stock_details(stock_symbol)
+                company_name = returned_stock_details.stock_name
+                # render template
+                return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
+            # if stock symbol returned false (stock not found in API)
+            else:
+                flash('Stock was not found', 'warning')
+                return url_for('homepage')
 
 ##############################################################################
 # Turn off all caching in Flask

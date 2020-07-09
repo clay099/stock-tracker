@@ -17,3 +17,9 @@ $(document).ready(function () {
 $(document).on("click", function () {
 	$("#password").attr({ type: "password" });
 });
+
+$("#search-btn").click(function (evt) {
+	evt.preventDefault();
+	const stock_symbol = $("#search-company").val().toUpperCase();
+	window.location.pathname = `/company-details/${stock_symbol}`;
+});
