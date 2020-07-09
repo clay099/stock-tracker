@@ -162,7 +162,7 @@ class Stock(db.Model):
 
     def __repr__(self):
         s = self
-        return f'< Stock: stock_symbol={s.stock_symbol}, stock_name={s.stock_name} >'
+        return f'< Stock: stock_symbol={s.stock_symbol}, stock_name={s.stock_name}, country={s.country}, currency={s.currency}, exchange={s.exchange}, ipo={s.ipo}, marketCapitalization={s.marketCapitalization}, name={s.name}, phone={s.phone}, shareOutstanding={s.shareOutstanding}, stock_symbol={s.stock_symbol}, weburl={s.weburl}, logo={s.logo}, finnhubIndustry={s.finnhubIndustry} >'
 
 
 class User_Stock(db.Model):
