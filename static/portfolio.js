@@ -1,5 +1,6 @@
 const BASE_URL = "http://localhost:5000/api";
 
+// ************company details functions****************
 // company details modal
 $("#portfolio-table").on("click", "tr", async function (evt) {
 	// show edit form modal
@@ -17,6 +18,7 @@ $("#portfolio-table").on("click", "tr", async function (evt) {
 	}
 });
 
+// fill company details modal
 function fillCompanyDetails(data) {
 	const base = data.data.stock;
 	$("#country").text(base.country);
@@ -32,6 +34,7 @@ function fillCompanyDetails(data) {
 	$("#industry").text(base.finnhubIndustry);
 }
 
+// format currency
 function formatCurrency(currencyString) {
 	let currency = parseFloat(currencyString).toFixed(0);
 	let withCommas = Number(currency).toLocaleString("en");
@@ -39,11 +42,13 @@ function formatCurrency(currencyString) {
 	return finalformat;
 }
 
+// format date
 function FormateDate(date) {
 	let p = date.split(/\D/g);
 	return [p[1], p[2], p[0]].join("/");
 }
 
+// ************edit stock functions****************
 // edit stock modal
 $("#portfolio-table").on("click", "th", function (evt) {
 	// show edit form modal
@@ -56,8 +61,10 @@ $("#portfolio-table").on("click", "th", function (evt) {
 	} else {
 		$("#edit-stock").modal("show");
 		// change input value to the stock symbol of row selected. This input value is read only and the user cannot change this value
-		$("#edit-stock").find("input[name=stock_symbol]").val(evt.currentTarget.textContent);
-		$("#edit-stock").find("input[name=stock_num]").val($(this).find("td.stock_num").text());
+		$("#edit-stock").find("input[name=stock_symbol]").val(evt.currentTarget.parentElement.id);
+		$("#edit-stock")
+			.find("input[name=stock_num]")
+			.val($(evt.target.parentElement).find("td.stock_num").text());
 	}
 });
 
