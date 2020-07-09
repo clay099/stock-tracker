@@ -8,7 +8,7 @@ from flask_mail import Mail, Message
 
 from secrets import APP_KEY, MAIL_PASSWORD, MAIL_USER
 
-from models import db, connect_db, User, Stock, User_Stock, finnhub_client, StockDetails
+from models import db, connect_db, User, Stock, User_Stock, finnhub_client
 from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
 from sqlalchemy.exc import IntegrityError
 
@@ -276,19 +276,19 @@ def send_portfolio():
 @app.route('/api/company-details', methods=['POST'])
 @login_required
 def send_stock_details():
-    ticker = request.json.get('ticker')
+    stock_symbol = request.json.get('stock_symbol')
 
-    returned_stock_details = StockDetails.query.get(ticker)
+    returned_stock_details = Stock.query.get_or_404(stock_symbol)
 
-    if returned_stock_details:
-        return jsonify(stock=returned_stock_details.serialize())
-    
-    returned_stock_details = StockDetails.add_stock_details(ticker)
-    db.session.commit()
-    # import pdb; pdb.set_trace()
-    return jsonify(stock=returned_stock_details.serialize())
-
-    
+    if returned_stock_details.ipo:
+        return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
+    else:
+        returned_stock_details = Stock.add_stock_details(stock_symbol)
+        # add to database
+        db.session.add(stock_details)
+        db.session.commit()
+        return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
+   
 
 ##############################################################################
 # Turn off all caching in Flask

@@ -10,8 +10,8 @@ $("#portfolio-table").on("click", "tr", async function (evt) {
 	} else if (this.classList.contains("text-white")) {
 		return;
 	} else {
-		let ticker = $(this).closest("tr")[0].id;
-		const returnedDetails = await axios.post(`${BASE_URL}/company-details`, { ticker });
+		let stock_symbol = $(this).closest("tr")[0].id;
+		const returnedDetails = await axios.post(`${BASE_URL}/company-details`, { stock_symbol });
 		fillCompanyDetails(returnedDetails);
 		$("#company-details").modal("show");
 	}
@@ -25,7 +25,7 @@ function fillCompanyDetails(data) {
 	$("#ipo").text(FormateDate(base.ipo));
 	$("#m-cap").text(formatCurrency(base.marketCapitalization));
 	$("#c-name").text(base.name);
-	$("#c-symbol").text(base.ticker);
+	$("#c-symbol").text(base.stock_symbol);
 	$("#c-web").text(base.weburl);
 	$("#c-web").attr("href", base.weburl);
 	$("#logo").attr("src", base.logo);
