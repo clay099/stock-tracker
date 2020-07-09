@@ -276,7 +276,6 @@ def send_portfolio():
 @app.route('/api/company-details', methods=['POST'])
 @login_required
 def send_stock_details():
-
     ticker = request.json.get('ticker')
 
     returned_stock_details = StockDetails.query.get(ticker)

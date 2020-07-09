@@ -11,12 +11,12 @@
                 <div class="modal-body">
                     {{ edit_stock_form.hidden_tag() }}
                     <div class="form-group-row justify-content-start">
-                        {{ edit_stock_form.stock_symbol.label(class_='col-md-4 col-form-label') }}
-                        {{ edit_stock_form.stock_symbol(class_='col-md-6', readonly="readonly")  }}
+                        {{ edit_stock_form.stock_symbol.label(class_='col-4 col-form-label') }}
+                        {{ edit_stock_form.stock_symbol(class_='col-6', readonly="readonly")  }}
 
                         {% if edit_stock_form.stock_symbol.errors %}
                         {% for err in edit_stock_form.stock_symbol.errors %}
-                        <small class="form-text text-danger  col-md-2">
+                        <small class="form-text text-danger  col-md-8">
                             {{ err }}
                         </small>
                         {% endfor %}
