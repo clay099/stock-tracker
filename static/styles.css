@@ -40,11 +40,11 @@
 }
 
 .bg-overlay {
-	position: absolute;
 	top: 5em;
 	bottom: 0;
 	left: 0;
 	right: 0;
+	position: relative;
 }
 
 #home-container {
@@ -53,7 +53,8 @@
 }
 .section-top {
 	padding-top: 5.5rem;
-	padding-bottom: 16rem;
+	/* padding-bottom: 16rem; */
+	height: 31.4rem;
 }
 
 .section-about {
@@ -75,6 +76,10 @@
 
 .navbar-brand {
 	padding-top: 0;
+}
+
+.navbar {
+	z-index: 1;
 }
 
 .card {
