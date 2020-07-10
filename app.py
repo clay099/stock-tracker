@@ -274,7 +274,6 @@ def send_portfolio():
     return redirect(url_for('portfolio'))
 
 @app.route('/api/company-details', methods=['POST'])
-@login_required
 def send_stock_details():
     stock_symbol = request.json.get('stock_symbol')
 
@@ -282,15 +281,15 @@ def send_stock_details():
 
     if returned_stock_details.ipo:
         return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
-    else:
-        returned_stock_details = Stock.add_stock_details(stock_symbol)
-        # add to database
-        db.session.add(returned_stock_details)
-        db.session.commit()
-        return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
+
+    returned_stock_details = Stock.add_stock_details(stock_symbol)
+    # add to database
+    db.session.add(returned_stock_details)
+    db.session.commit()
+    return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
+
 
 @app.route('/api/company-details/news', methods=['POST'])
-@login_required
 def get_news():
     stock_symbol = request.json.get('stock_symbol')
     # checks that a stock_symbol was provided with JSON
@@ -325,6 +324,22 @@ def get_news():
             else:
                 flash('Stock was not found', 'warning')
                 return url_for('homepage')
+
+@app.route('/api/advanced-company-details', methods=['POST'])
+def send_advanced_details():
+    stock_symbol = request.json.get('stock_symbol')
+
+    returned_stock_details = Stock.query.get_or_404(stock_symbol)
+
+    returned_fin = Stock.add_basic_financial(stock_symbol)
+    returned_rec = Stock.add_rec_trend(stock_symbol)
+    returned_target = Stock.add_target(stock_symbol)
+    # add to database
+    returned_stock_details = Stock.query.get_or_404(stock_symbol)
+
+    
+
+    return jsonify(stock=returned_stock_details.serialize_advanced_stock_details())
 
 @app.route('/company-details/<stock_symbol>')
 def company_details(stock_symbol):

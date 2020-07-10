@@ -113,32 +113,49 @@ class Stock(db.Model):
     weburl = db.Column(db.String)
     logo = db.Column(db.String)
     finnhubIndustry = db.Column(db.String)
+    # start from here
+    yearlyHigh = db.Column(db.String)
+    yearlyHighDate = db.Column(db.String)
+    yearlyLow = db.Column(db.String)
+    yearlyLowDate = db.Column(db.String)
+    beta = db.Column(db.String)
+    buy = db.Column(db.String)
+    hold = db.Column(db.String)
+    period = db.Column(db.String)
+    sell = db.Column(db.String)
+    strongBuy = db.Column(db.String)
+    strongSell = db.Column(db.String)
+    lastUpdated = db.Column(db.String)
+    targetHigh = db.Column(db.String)
+    targetLow = db.Column(db.String)
+    targetMean = db.Column(db.String)
+    targetMedian = db.Column(db.String)
 
     @classmethod
     def add_stock_details(cls, stock_symbol):
         
         # get stock object
-        stock_details = Stock.query.get_or_404(stock_symbol)
+        s = Stock.query.get(stock_symbol)
         # get stock details
-        stock_profile = finnhub_client.company_profile2(
+        returned_data = finnhub_client.company_profile2(
                 symbol=stock_symbol)
         try:
             # fillstock details
-            stock_details.country = stock_profile.country,
-            stock_details.currency = stock_profile.currency,
-            stock_details.exchange = stock_profile.exchange,
-            stock_details.ipo = stock_profile.ipo,
-            stock_details.marketCapitalization = stock_profile.market_capitalization,
-            stock_details.name = stock_profile.name,
-            stock_details.phone = stock_profile.phone,
-            stock_details.shareOutstanding = stock_profile.share_outstanding,
-            stock_details.stock_symbol = stock_profile.ticker,
-            stock_details.weburl = stock_profile.weburl,
-            stock_details.logo = stock_profile.logo,
-            stock_details.finnhubIndustry = stock_profile.finnhub_industry
+            s.country = returned_data.country,
+            s.currency = returned_data.currency,
+            s.exchange = returned_data.exchange,
+            s.ipo = returned_data.ipo,
+            s.marketCapitalization = returned_data.market_capitalization,
+            s.name = returned_data.name,
+            s.phone = returned_data.phone,
+            s.shareOutstanding = returned_data.share_outstanding,
+            s.stock_symbol = returned_data.ticker,
+            s.weburl = returned_data.weburl,
+            s.logo = returned_data.logo,
+            s.finnhubIndustry = returned_data.finnhub_industry
             
             # return stock object
-            return stock_details
+            return s
         # stock not found
         except IntegrityError:
             return False
@@ -158,6 +175,101 @@ class Stock(db.Model):
             'weburl': self.weburl,
             'logo': self.logo,
             'finnhubIndustry': self.finnhubIndustry
+        }
+    
+   
+    @classmethod
+    def add_basic_financial(cls, stock_symbol):
+        # get stock object
+        s = Stock.query.get(stock_symbol)
+        # get basic financials
+        stock_financials = finnhub_client.company_basic_financials(symbol=stock_symbol, metric='price')
+        
+
+        print("*********************************")
+        print("stock_financials")
+    
+        try:
+            # fillstock details
+            s.yearlyHigh = stock_financials.metric['52WeekHigh']
+            s.yearlyHighDate = stock_financials.metric['52WeekHighDate']
+            s.yearlyLow = stock_financials.metric['52WeekLow']
+            s.yearlyLowDate = stock_financials.metric['52WeekLowDate']
+            s.beta = stock_financials.metric['beta']
+            
+            db.session.add(s)
+            db.session.commit()
+
+            return True
+        # stock not found
+        except IntegrityError:
+            return False
+    
+    @classmethod
+    def add_rec_trend(cls, stock_symbol):
+        # get stock object
+        s = Stock.query.get(stock_symbol)
+        # get stock details
+        returned_data = finnhub_client.recommendation_trends(
+                symbol=stock_symbol)
+        try:
+            # s.buy = returned_data.[0].buy
+            s.buy = returned_data[0].buy
+            s.hold = returned_data[0].hold
+            s.period = returned_data[0].period
+            s.sell = returned_data[0].sell
+            s.strongBuy = returned_data[0].strong_buy
+            s.strongSell = returned_data[0].strong_sell
+
+            db.session.add(s)
+            db.session.commit()
+
+            return True
+        # stock not found
+        except IntegrityError:
+            return False
+
+    @classmethod
+    def add_target(cls, stock_symbol):
+        # get stock object
+        s = Stock.query.get(stock_symbol)
+        # get stock details
+        returned_data = finnhub_client.price_target(
+                symbol=stock_symbol)
+        try:
+            s.lastUpdated = returned_data.last_updated
+            s.targetHigh = returned_data.target_high
+            s.targetLow = returned_data.target_low
+            s.targetMean = returned_data.target_mean
+            s.targetMedian = returned_data.target_median
+
+            db.session.add(s)
+            db.session.commit()
+
+            return True
+        # stock not found
+        except IntegrityError:
+            return False
+
+    def serialize_advanced_stock_details(self):
+        """Returns a dict representation of stock which we can turn into JSON"""
+        return {
+            "yearlyHigh": self.yearlyHigh,
+            "yearlyHighDate": self.yearlyHighDate,
+            "yearlyLow": self.yearlyLow,
+            "yearlyLowDate": self.yearlyLowDate,
+            "beta": self.beta,
+            "buy": self.buy,
+            "hold": self.hold,
+            "period": self.period,
+            "sell": self.sell,
+            "strongBuy": self.strongBuy,
+            "strongSell": self.strongSell,
+            "lastUpdated": self.lastUpdated,
+            "targetHigh": self.targetHigh,
+            "targetLow": self.targetLow,
+            "targetMean": self.targetMean,
+            "targetMedian": self.targetMedian
         }
 
     def __repr__(self):
