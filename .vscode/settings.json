@@ -10,6 +10,7 @@
     "python.testing.nosetestsEnabled": false,
     "python.testing.unittestEnabled": true,
     "cSpell.words": [
-        "gmail"
+        "gmail",
+        "img"
     ]
 }

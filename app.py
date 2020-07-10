@@ -265,7 +265,7 @@ def send_portfolio():
 
     stock_details = User_Stock.get_users_stocks(current_user.id)
 
-    msg = Message('Porfolio SnapShot', recipients=[current_user.email])
+    msg = Message('Portfolio SnapShot', recipients=[current_user.email])
     msg.html = render_template(
         'user/_portfolio_summary.html', stock_details=stock_details)
     mail.send(msg)
