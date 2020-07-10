@@ -12,9 +12,9 @@ async function advancedCompanyDetails() {
 	const returnedDetails = await axios.post(`${BASE_URL}/advanced-company-details`, {
 		stock_symbol,
 	});
-	console.log(returnedDetails.data);
 	fillBasicFinancial(returnedDetails.data.stock);
 	fillRecommendation(returnedDetails.data.stock);
+	fillPeers(returnedDetails.data.peers);
 }
 
 async function companyNews() {
@@ -30,7 +30,8 @@ function generateNewsHTML(newsArticle) {
 	return `
     <div class="col mb-4 ">
         <div class="card shadow-sm mb-5 bg-white rounded mx-auto">
-            <img src="${newsArticle.image}" class="card-img-top" alt="Image failed to load">
+            <img src="${newsArticle.image}" class="card-img-top"
+            onerror="this.onerror=null;this.src='/static/images/image-not-provided.jpg';" alt="image not provided">
             <div class="card-body">
                 <h5 class="card-title">${newsArticle.headline}</h5>
                 <p class="card-text">
@@ -41,6 +42,21 @@ function generateNewsHTML(newsArticle) {
         </div>
     </div>
     `;
+}
+function fillPeers(peersList) {
+	for (peerIndex in peersList) {
+		let peer = peersList[peerIndex];
+		let newPeer = $(generatePeerHTML(peer));
+		$("#peers").append(newPeer);
+	}
+}
+
+function generatePeerHTML(symbol) {
+	return `
+        <li class="list-inline-item">
+            <a class="peers-symbol" href="/company-details/${symbol}">${symbol}</a>
+        </li>
+        `;
 }
 
 // ******fill tables******
