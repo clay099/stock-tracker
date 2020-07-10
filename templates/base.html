@@ -29,6 +29,8 @@
             <li class="nav-item" id="about-nav">
                 <a class="nav-link" href="/#about">About</a>
             </li>
+
+
             {% if not current_user.username %}
             <li class="nav-item" id="login">
                 <a class="nav-link" data-toggle="modal" data-target="#login-modal" href="#login-modal">Login</a>
@@ -73,41 +75,45 @@
 
 
 <!-- </div> -->
+
 {% else %}
 <div class="container-fluid page-body bg-overlay">
-    <div class="container content-container">
+    {% if request.url_rule.endpoint == 'company_details' %}
+    <div class="container company-container">
+        {% else %}
+        <div class="container content-container">
+            {% endif %}
+            {% block content %}
+            {% endblock %}
 
-        {% block content %}
-        {% endblock %}
+        </div>
 
     </div>
 
-</div>
+    {% endif %}
 
-{% endif %}
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"
-    integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
-<script src="https://kit.fontawesome.com/9f5a1a1c5b.js" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-    crossorigin="anonymous"></script>
-<script src="/static/script.js"></script>
-{% if request.url_rule.endpoint != 'homepage' %}
-<script src="/static/company_details_format.js"></script>
-{% endif %}
-{% if request.url_rule.endpoint == 'portfolio' %}
-<script src="/static/portfolio.js"></script>
-{% endif %}
-{% if request.url_rule.endpoint == 'company_details' %}
-<script src="/static/company_details.js"></script>
-{% endif %}
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"
+        integrity="sha256-T/f7Sju1ZfNNfBh7skWn0idlCBcI3RwdLSS4/I7NQKQ=" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/9f5a1a1c5b.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script src="/static/script.js"></script>
+    {% if request.url_rule.endpoint != 'homepage' %}
+    <script src="/static/company_details_format.js"></script>
+    {% endif %}
+    {% if request.url_rule.endpoint == 'portfolio' %}
+    <script src="/static/portfolio.js"></script>
+    {% endif %}
+    {% if request.url_rule.endpoint == 'company_details' %}
+    <script src="/static/company_details.js"></script>
+    {% endif %}
+    </body>
 
 </html>
