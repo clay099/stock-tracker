@@ -4,22 +4,21 @@
 
 <h1 class="text-center" id={{ stock_symbol }}>{{ company_name }} Details <img id="logo" src="" alt=""></h1>
 <div class="row">
-    <div class="col-md-5 order-md-1 mb-4">
+    <div class="col-lg-5 order-md-1 mb-4">
+        <h4 class="text-center my-3">
+            <strong>Basic Company Details</strong>
+        </h4>
         <table class="table table-striped" id="basic-company-details-table">
-            <thead>
-                <th colspan="2" class="bg-primary">
-                    <h5 class="modal-title" id="">
-                        <strong>Basic Company Details</strong>
-                    </h5>
-                </th>
-            </thead>
             <tbody>
                 {% include 'stock/_basic_stock_details_table.html' %}
             </tbody>
         </table>
     </div>
-    <div class="col-md-7 order-md-2 mb-4">
-        <div class="row row-cols-1 row-cols-md-2" id="articles">
+    <div class="col-lg-7 order-md-2">
+        <h4 class="text-center my-3">
+            <strong>Company News</strong>
+        </h4>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-1 row-cols-xl-2" id="articles">
 
         </div>
     </div>
