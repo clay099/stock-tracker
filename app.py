@@ -291,24 +291,22 @@ def send_stock_details():
 
 @app.route('/api/company-details/news', methods=['POST'])
 def get_news():
-    stock_symbol = request.json.get('stock_symbol')
-    # checks that a stock_symbol was provided with JSON
-    if stock_symbol:
-        # request for stock object
-        returned_stock_details = Stock.query.get(stock_symbol)
-        if returned_stock_details:
-            # get news for stock
-            returned_news = News.get_news(stock_symbol)
-            # if no news was returned
-            if returned_news is False:
-                return jsonify(news='no news obtained')
-            else:    
+    if request.json:
+        stock_symbol = request.json.get('stock_symbol')
+        # checks that a stock_symbol was provided with JSON
+        if stock_symbol:
+            # request for stock object
+            returned_stock_details = Stock.query.get(stock_symbol)
+            if returned_stock_details:
+                # get news for stock
+                returned_news = News.get_news(stock_symbol)
+                # if no news was returned
+                if returned_news is False:
+                    return jsonify(news='no news obtained')
                 all_news = [news.serialize_news() for news in returned_news]
                 return jsonify(news=all_news)
 
-        # if stock object not in DB
-        else:
-            # search API for stock symbol
+            # if stock object not in DB - search API for stock symbol
             returned_stock_details = Stock.add_stock_symbol(stock_symbol)
             # if stock symbol returned true (stock found and added to our DB)
             if returned_stock_details:
@@ -316,14 +314,19 @@ def get_news():
                 # if no news was returned
                 if returned_news is False:
                     return jsonify(news='no news obtained')
-                else:    
-                    all_news = [news.serialize_news() for news in returned_news]
-                    return jsonify(news=all_news)
+                all_news = [news.serialize_news() for news in returned_news]
+                return jsonify(news=all_news)
 
-            # if stock symbol returned false (stock not found in API)
-            else:
+                # if stock symbol returned false (stock not found in API)
                 flash('Stock was not found', 'warning')
                 return url_for('homepage')
+    
+    # if no stock symbol passed as json
+    returned_news = News.get_news()
+    if returned_news is False:
+        return jsonify(news='no news obtained')
+    all_news = [news.serialize_news() for news in returned_news]
+    return jsonify(news=all_news)
 
 @app.route('/api/advanced-company-details', methods=['POST'])
 def send_advanced_details():

@@ -72,8 +72,6 @@
 {% include 'auth/_login_modal.html' %}
 {% include 'auth/_signup_modal.html' %}
 
-
-
 <!-- </div> -->
 
 {% else %}
@@ -113,6 +111,9 @@
     {% endif %}
     {% if request.url_rule.endpoint == 'company_details' %}
     <script src="/static/company_details.js"></script>
+    {% endif %}
+    {% if request.url_rule.endpoint == 'homepage' %}
+    <script src="/static/home.js"></script>
     {% endif %}
     </body>
 

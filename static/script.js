@@ -1,3 +1,5 @@
+const BASE_URL = "http://localhost:5000/api";
+
 $(document).ready(function () {
 	let loc = location.href;
 	if (loc === `http://localhost:5000/`) {
@@ -18,14 +20,6 @@ $("#search-btn").click(function (evt) {
 	const stock_symbol = $("#search-company").val().toUpperCase();
 	window.location.pathname = `/company-details/${stock_symbol}`;
 });
-
-async function companyNews() {
-	const returnedDetails = await axios.post(`${BASE_URL}/company-details/news`, { stock_symbol });
-	for (let article of returnedDetails.data.news) {
-		let newArticle = $(generateNewsHTML(article));
-		$("#articles").append(newArticle);
-	}
-}
 
 function generateNewsHTML(newsArticle) {
 	return `

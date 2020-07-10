@@ -1,4 +1,3 @@
-const BASE_URL = "http://localhost:5000/api";
 let stock_symbol = $("h1").attr("id");
 
 // base company details
@@ -56,6 +55,13 @@ function fillRecommendation(data) {
 	$("#l-target").text(formatCurrency(data.targetLow));
 	$("#target-mean").text(formatCurrency(data.targetMean));
 	$("#target-median").text(formatCurrency(data.targetMedian));
+}
+async function companyNews() {
+	const returnedDetails = await axios.post(`${BASE_URL}/company-details/news`, { stock_symbol });
+	for (let article of returnedDetails.data.news) {
+		let newArticle = $(generateNewsHTML(article));
+		$("#articles").append(newArticle);
+	}
 }
 
 basicCompanyDetails();
