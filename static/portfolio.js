@@ -1,5 +1,3 @@
-const BASE_URL = "http://localhost:5000/api";
-
 // ************company details functions****************
 // company details modal
 $("#portfolio-table").on("click", "tr", async function (evt) {

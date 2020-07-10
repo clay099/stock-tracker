@@ -345,14 +345,13 @@ class User_Stock(db.Model):
         if stock symbol is not found:
             returns none
         """
-
         stock_symbol = stock_symbol.upper()
 
         # check our DB for stock symbol
         check_stock = Stock.query.get(stock_symbol)
         # if Stock symbol not in our DB search finnhub
         if not check_stock:
-            success = cls.add_stock_symbol(cls, stock_symbol)
+            success = cls.add_stock_symbol(stock_symbol)
             if not success:
                 return None
 
@@ -469,11 +468,11 @@ class News(db.Model):
         if stock_symbol:
             # todays date in format to be passed through
             today = datetime.today().strftime('%Y-%m-%d')
-            #date 7 days ago in format to be passed through
-            one_week = (datetime.today()-timedelta(days=7)).strftime('%Y-%m-%d')
+            #date 28 days ago in format to be passed through
+            four_weeks = (datetime.today()-timedelta(days=28)).strftime('%Y-%m-%d')
 
             # get news articles from API
-            news = finnhub_client.company_news(stock_symbol, _from=one_week, to=today)
+            news = finnhub_client.company_news(stock_symbol, _from=four_weeks, to=today)
             # no articles were found return false
             if (news == []):
                 return False
