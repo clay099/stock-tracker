@@ -67,6 +67,7 @@ function fillBasicFinancial(data) {
 	$("#yearly-low").text(formatCurrency(data.yearlyLow));
 	$("#yearly-low-date").text(FormateDate(data.yearlyLowDate));
 	$("#beta").text(data.beta);
+	$("#quote").text(formatCurrency(data.price));
 }
 
 // fill recommendation table

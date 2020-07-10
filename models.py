@@ -131,6 +131,7 @@ class Stock(db.Model):
     targetLow = db.Column(db.String)
     targetMean = db.Column(db.String)
     targetMedian = db.Column(db.String)
+    price = db.Column(db.String)
     # peers
     peers = db.relationship(
         'Peer',  backref='stocks')
@@ -188,11 +189,10 @@ class Stock(db.Model):
         s = Stock.query.get(stock_symbol)
         # get basic financials
         stock_financials = finnhub_client.company_basic_financials(symbol=stock_symbol, metric='price')
-        
 
-        print("*********************************")
-        print("stock_financials")
-    
+        quote = finnhub_client.quote(stock_symbol)
+        price = quote.c
+        
         try:
             # fillstock details
             s.yearlyHigh = stock_financials.metric['52WeekHigh']
@@ -200,6 +200,7 @@ class Stock(db.Model):
             s.yearlyLow = stock_financials.metric['52WeekLow']
             s.yearlyLowDate = stock_financials.metric['52WeekLowDate']
             s.beta = stock_financials.metric['beta']
+            s.price = price
             
             db.session.add(s)
             db.session.commit()
@@ -296,7 +297,8 @@ class Stock(db.Model):
             "targetHigh": self.targetHigh,
             "targetLow": self.targetLow,
             "targetMean": self.targetMean,
-            "targetMedian": self.targetMedian
+            "targetMedian": self.targetMedian,
+            "price":self.price
         }
 
     def __repr__(self):
@@ -489,8 +491,8 @@ class News(db.Model):
             if (news == []):
                 return False
             else:
-            # for top 6 articles
-                for n in news[:6]:
+            # for top 20 articles
+                for n in news[:20]:
                     # create new article in DB
                     new_article = News(id=n.id, category=n.category, datetime=n.datetime, headline=n.headline, image=n.image, related=n.related, source=n.source, summary=n.summary, url=n.url)
                     db.session.add(new_article)
