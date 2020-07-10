@@ -12,6 +12,7 @@ async function advancedCompanyDetails() {
 	const returnedDetails = await axios.post(`${BASE_URL}/advanced-company-details`, {
 		stock_symbol,
 	});
+	console.log(returnedDetails.data);
 	fillBasicFinancial(returnedDetails.data.stock);
 	fillRecommendation(returnedDetails.data.stock);
 }

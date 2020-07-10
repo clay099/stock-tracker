@@ -334,10 +334,12 @@ def send_advanced_details():
     returned_fin = Stock.add_basic_financial(stock_symbol)
     returned_rec = Stock.add_rec_trend(stock_symbol)
     returned_target = Stock.add_target(stock_symbol)
+    returned_peer = Stock.add_peers(stock_symbol)
     # add to database
     returned_stock_details = Stock.query.get_or_404(stock_symbol)
+    peers = [peer.peer_stock_symbol for peer in returned_stock_details.peers]
 
-    return jsonify(stock=returned_stock_details.serialize_advanced_stock_details())
+    return jsonify(stock=returned_stock_details.serialize_advanced_stock_details(), peers=peers)
 
 @app.route('/company-details/<stock_symbol>')
 def company_details(stock_symbol):

@@ -98,6 +98,7 @@ class Stock(db.Model):
 
     __tablename__ = "stocks"
 
+    # basic details
     stock_symbol = db.Column(db.String, primary_key=True,
                              info={'label': 'Stock Symbol'})
     stock_name = db.Column(db.String, nullable=False,
@@ -113,7 +114,7 @@ class Stock(db.Model):
     weburl = db.Column(db.String)
     logo = db.Column(db.String)
     finnhubIndustry = db.Column(db.String)
-    # start from here
+    # advanced details
     yearlyHigh = db.Column(db.String)
     yearlyHighDate = db.Column(db.String)
     yearlyLow = db.Column(db.String)
@@ -130,6 +131,9 @@ class Stock(db.Model):
     targetLow = db.Column(db.String)
     targetMean = db.Column(db.String)
     targetMedian = db.Column(db.String)
+    # peers
+    peers = db.relationship(
+        'Peer',  backref='stocks')
 
     @classmethod
     def add_stock_details(cls, stock_symbol):
@@ -250,6 +254,29 @@ class Stock(db.Model):
         # stock not found
         except IntegrityError:
             return False
+    
+    @classmethod
+    def add_peers(cls, stock_symbol):
+        # remove saved peers
+        Peer.query.delete()
+        # get stock object
+        s = Stock.query.get(stock_symbol)
+        # get stock details
+        returned_data = finnhub_client.company_peers(
+                symbol=stock_symbol)
+        try:
+            for peer in returned_data:
+                if peer != stock_symbol:
+                    p = Peer(lead_stock_symbol=stock_symbol, peer_stock_symbol=peer)
+
+                    db.session.add(p)
+                    db.session.commit()
+
+            return True
+        # stock not found
+        except IntegrityError:
+            return False
+    
 
     def serialize_advanced_stock_details(self):
         """Returns a dict representation of stock which we can turn into JSON"""
@@ -298,6 +325,7 @@ class User_Stock(db.Model):
                                  info={'label': 'Current Stock Price'})
     stock_num = db.Column(db.Integer, default=1,
                           info={'label': 'Number of Stocks', 'min': 1})
+    
 
     @classmethod
     def add_stock(cls, user_id, stock_symbol, stock_num):
@@ -490,7 +518,20 @@ class News(db.Model):
     def __repr__(self):
         n = self
         return f'< News: id={n.id}, category={n.category}, datetime={n.datetime}, headline={n.headline}, image={n.image}, related={n.related}, source={n.source}, summary={n.summary}, url={n.url} >'
-        
+
+class Peer(db.Model):
+    """Peers model"""
+
+    __tablename__ = "peers"
+
+    id = db.Column(db.Integer, primary_key=True)
+    lead_stock_symbol = db.Column(db.String, db.ForeignKey(
+        'stocks.stock_symbol'))
+    peer_stock_symbol = db.Column(db.String)
+
+    def __repr__(self):
+        p = self
+        return f'< Peer: id={p.id}, lead_stock_symbol={p.lead_stock_symbol}, peer_stock_symbol={p.peer_stock_symbol} >'
 
 def connect_db(app):
     """Connect to database."""
