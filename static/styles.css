@@ -91,3 +91,12 @@
 .container-fluid {
 	overflow: auto;
 }
+
+.table td,
+.table th {
+	vertical-align: middle;
+}
+
+.detailed-table-information {
+	width: 100px;
+}

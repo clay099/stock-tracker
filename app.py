@@ -337,8 +337,6 @@ def send_advanced_details():
     # add to database
     returned_stock_details = Stock.query.get_or_404(stock_symbol)
 
-    
-
     return jsonify(stock=returned_stock_details.serialize_advanced_stock_details())
 
 @app.route('/company-details/<stock_symbol>')

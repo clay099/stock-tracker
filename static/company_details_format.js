@@ -1,10 +1,10 @@
-// fill company details modal
+// fill company details
 function fillCompanyDetails(data) {
 	$("#country").text(data.country);
 	$("#currency").text(data.currency);
 	$("#exchange").text(data.exchange);
 	$("#ipo").text(FormateDate(data.ipo));
-	$("#m-cap").text(formatCurrency(data.marketCapitalization));
+	$("#m-cap").text(formatCurrencyB(data.marketCapitalization));
 	$("#c-name").text(data.name);
 	$("#c-symbol").text(data.stock_symbol);
 	$("#c-web").text(data.weburl);
@@ -15,9 +15,21 @@ function fillCompanyDetails(data) {
 
 // format currency
 function formatCurrency(currencyString) {
-	let currency = parseFloat(currencyString).toFixed(0);
-	let withCommas = Number(currency).toLocaleString("en");
-	let finalformat = `\$${withCommas}M`;
+	let format = Number(currencyString).toLocaleString("en-IN", {
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2,
+	});
+	let finalformat = `$${format}`;
+	return finalformat;
+}
+
+function formatCurrencyB(currencyString) {
+	let value = currencyString * 1000;
+	let billions = (value / 1000000).toLocaleString(undefined, {
+		minimumFractionDigits: 2,
+		maximumFractionDigits: 2,
+	});
+	let finalformat = `$${billions}B`;
 	return finalformat;
 }
 

@@ -12,7 +12,8 @@ async function advancedCompanyDetails() {
 	const returnedDetails = await axios.post(`${BASE_URL}/advanced-company-details`, {
 		stock_symbol,
 	});
-	console.log("finished");
+	fillBasicFinancial(returnedDetails.data.stock);
+	fillRecommendation(returnedDetails.data.stock);
 }
 
 async function companyNews() {
@@ -39,6 +40,30 @@ function generateNewsHTML(newsArticle) {
         </div>
     </div>
     `;
+}
+
+// ******fill tables******
+// fill basic financial details table
+function fillBasicFinancial(data) {
+	$("#yearly-high").text(formatCurrency(data.yearlyHigh));
+	$("#yearly-high-date").text(FormateDate(data.yearlyHighDate));
+	$("#yearly-low").text(formatCurrency(data.yearlyLow));
+	$("#yearly-low-date").text(FormateDate(data.yearlyLowDate));
+	$("#beta").text(data.beta);
+}
+
+// fill recommendation table
+function fillRecommendation(data) {
+	$("#r-date").text(FormateDate(data.lastUpdated));
+	$("#s-buy").text(data.strongBuy);
+	$("#buy").text(data.buy);
+	$("#hold").text(data.hold);
+	$("#sell").text(data.sell);
+	$("#s-sell").text(data.strongSell);
+	$("#h-target").text(formatCurrency(data.targetHigh));
+	$("#l-target").text(formatCurrency(data.targetLow));
+	$("#target-mean").text(formatCurrency(data.targetMean));
+	$("#target-median").text(formatCurrency(data.targetMedian));
 }
 
 basicCompanyDetails();
