@@ -20,12 +20,12 @@
 
 {% include 'user/_portfolio_summary.html' %}
 
-<a href="{{url_for('send_portfolio')}}" class="btn  btn-primary text-white send-mail">Send Portfolio Via
-    Email</a>
 <!-- edit & delete stock Modal -->
 {% include 'user/_edit_stock_modal.html' %}
 {% include 'user/_delete_stock_modal.html' %}
 
+<a href="{{url_for('send_portfolio')}}" class="btn btn-primary text-white send-mail mb-5">Send Portfolio Via
+    Email</a>
 {% else %}
 
 <h3>No stocks have been added to your portfolio</h3>
