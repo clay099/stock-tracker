@@ -490,8 +490,8 @@ class News(db.Model):
             if (news == []):
                 return False
             else:
-            # for top 20 articles
-                for n in news[:20]:
+            # for top 21 articles
+                for n in news[:21]:
                     # create new article in DB
                     new_article = News(id=n.id, category=n.category, datetime=n.datetime, headline=n.headline, image=n.image, related=n.related, source=n.source, summary=n.summary, url=n.url)
                     db.session.add(new_article)

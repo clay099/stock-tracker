@@ -12,5 +12,6 @@
     "cSpell.words": [
         "gmail",
         "img"
-    ]
+    ],
+    "python.pythonPath": "venv\\Scripts\\python.exe"
 }

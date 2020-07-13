@@ -72,10 +72,15 @@
 {% block home %}
 {% endblock %}
 
+
 {% include 'auth/_login_modal.html' %}
 {% include 'auth/_signup_modal.html' %}
 
-<!-- </div> -->
+{% elif request.url_rule.endpoint == 'page_not_found' %}
+
+{% block error %}
+<h1>here</h1>
+{% endblock %}
 
 {% else %}
 <div class="container-fluid page-body bg-overlay">

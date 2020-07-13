@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="container d-flex justify-content-center" id="error-page">
+        <div class="my-auto">
+            <h1 class="mb-4">Page Not Found 404</h1>
+            <img id="error-image" src="/static/images/404.jpg" alt="">
+            <h4>We can't seem to find the page you're looking for.
+                <br>
+                <a class="btn btn-primary mt-4" href="{{ url_for('homepage') }}">Return to Homepage</a>
+        </div>
+    </div>
+</body>
+
+</html>
