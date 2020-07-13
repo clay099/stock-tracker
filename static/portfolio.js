@@ -151,7 +151,7 @@ function smallSort(arr, identification) {
 		return 0;
 	});
 	$.each(arr, function (index, row) {
-		$(row).insertBefore($("table > tbody tr.bg-info").closest("tr"));
+		$(row).insertBefore($("table > tbody tr.bg-primary").closest("tr"));
 	});
 }
 
@@ -189,7 +189,7 @@ function largeSort(arr, identification) {
 		return 0;
 	});
 	$.each(arr, function (index, row) {
-		$(row).insertBefore($("table > tbody tr.bg-info").closest("tr"));
+		$(row).insertBefore($("table > tbody tr.bg-primary").closest("tr"));
 	});
 }
 

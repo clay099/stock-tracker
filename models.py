@@ -158,13 +158,13 @@ class Stock(db.Model):
             s.weburl = returned_data.weburl,
             s.logo = returned_data.logo,
             s.finnhubIndustry = returned_data.finnhub_industry
-            
             # return stock object
             return s
         # stock not found
-        except IntegrityError:
+        except:
             return False
 
+    
     def serialize_basic_stock_details(self):
         """Returns a dict representation of stock which we can turn into JSON"""
         return {
@@ -207,7 +207,7 @@ class Stock(db.Model):
 
             return True
         # stock not found
-        except IntegrityError:
+        except KeyError:
             return False
     
     @classmethod
@@ -218,7 +218,6 @@ class Stock(db.Model):
         returned_data = finnhub_client.recommendation_trends(
                 symbol=stock_symbol)
         try:
-            # s.buy = returned_data.[0].buy
             s.buy = returned_data[0].buy
             s.hold = returned_data[0].hold
             s.period = returned_data[0].period
@@ -231,7 +230,7 @@ class Stock(db.Model):
 
             return True
         # stock not found
-        except IntegrityError:
+        except IndexError:
             return False
 
     @classmethod
@@ -239,21 +238,22 @@ class Stock(db.Model):
         # get stock object
         s = Stock.query.get(stock_symbol)
         # get stock details
-        returned_data = finnhub_client.price_target(
-                symbol=stock_symbol)
         try:
-            s.lastUpdated = returned_data.last_updated
-            s.targetHigh = returned_data.target_high
-            s.targetLow = returned_data.target_low
-            s.targetMean = returned_data.target_mean
-            s.targetMedian = returned_data.target_median
+            returned_data = finnhub_client.price_target(
+                symbol=stock_symbol)
+            if returned_data.last_updated != '':
+                s.lastUpdated = returned_data.last_updated
+                s.targetHigh = returned_data.target_high
+                s.targetLow = returned_data.target_low
+                s.targetMean = returned_data.target_mean
+                s.targetMedian = returned_data.target_median
 
-            db.session.add(s)
-            db.session.commit()
+                db.session.add(s)
+                db.session.commit()
 
-            return True
+                return True
         # stock not found
-        except IntegrityError:
+        except:
             return False
     
     @classmethod
@@ -265,7 +265,7 @@ class Stock(db.Model):
         # get stock details
         returned_data = finnhub_client.company_peers(
                 symbol=stock_symbol)
-        try:
+        if returned_data != []:
             for peer in returned_data:
                 if peer != stock_symbol:
                     p = Peer(lead_stock_symbol=stock_symbol, peer_stock_symbol=peer)
@@ -275,8 +275,7 @@ class Stock(db.Model):
 
             return True
         # stock not found
-        except IntegrityError:
-            return False
+        return False
     
 
     def serialize_advanced_stock_details(self):
@@ -303,7 +302,7 @@ class Stock(db.Model):
 
     def __repr__(self):
         s = self
-        return f'< Stock: stock_symbol={s.stock_symbol}, stock_name={s.stock_name}, country={s.country}, currency={s.currency}, exchange={s.exchange}, ipo={s.ipo}, marketCapitalization={s.marketCapitalization}, name={s.name}, phone={s.phone}, shareOutstanding={s.shareOutstanding}, stock_symbol={s.stock_symbol}, weburl={s.weburl}, logo={s.logo}, finnhubIndustry={s.finnhubIndustry} >'
+        return f'< Stock: stock_symbol={s.stock_symbol}, stock_name={s.stock_name}, country={s.country}, currency={s.currency}, exchange={s.exchange}, ipo={s.ipo}, marketCapitalization={s.marketCapitalization}, name={s.name}, phone={s.phone}, shareOutstanding={s.shareOutstanding}, stock_symbol={s.stock_symbol}, weburl={s.weburl}, logo={s.logo}, finnhubIndustry={s.finnhubIndustry}, yearlyHigh={s.yearlyHigh}, yearlyHighDate={s.yearlyHighDate}, yearlyLow={s.yearlyLow}, yearlyLowDate={s.yearlyLowDate}, beta={s.beta}, buy={s.buy}, hold={s.hold}, period={s.period}, sell={s.sell}, strongBuy={s.strongBuy}, strongSell={s.strongSell}, lastUpdated={s.lastUpdated}, targetHigh={s.targetHigh}, targetLow={s.targetLow}, targetMean={s.targetMean}, targetMedian={s.targetMedian}, price={s.price}, peers={s.peers} >'
 
 
 class User_Stock(db.Model):
