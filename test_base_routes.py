@@ -5,7 +5,7 @@ from unittest import TestCase
 from secrets import APP_KEY, MAIL_PASSWORD, MAIL_USER
 
 from sqlalchemy import exc
-from models import db, connect_db, User, Stock, User_Stock, finnhub_client, News, Peer
+from models import db, connect_db, User, finnhub_client, News, Peer
 from flask_login import login_user
 
 # use testing DB - needs to run before import app
@@ -35,21 +35,13 @@ class BaseViewsTestCase(TestCase):
                         "password", "USA", "CA")
         u.id = 9876
 
-        u_stock = User_Stock.add_stock(9876, "AAPL", "5")
-
-        db.session.add_all([u, u_stock])
+        db.session.add(u)
         db.session.commit()
         self.u = u
-        self.u_stock = u_stock
-        self.s = Stock.query.get('AAPL')
 
     def tearDown(self):
         res = super().tearDown()
         db.session.rollback()
-        Peer.query.delete()
-        User_Stock.query.delete()
-        Stock.query.delete()
-        News.query.delete()
         User.query.delete()
         return res
 

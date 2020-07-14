@@ -44,10 +44,10 @@ connect_db(app)
 # db.create_all()
 
 
-# Configure Flask-Login
+# ************Configure Flask-Login************
+
 login_manager = LoginManager()
 login_manager.init_app(app)
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -249,15 +249,17 @@ def edit_stock():
         # finds user_stock to edit
         user_stock = User_Stock.query.filter_by(
             user_id=current_user.id).filter_by(stock_symbol=form.stock_symbol.data).first()
-        # update User_stock
-        user_stock.stock_num = form.stock_num.data
-        user_stock.stock_symbol = form.stock_symbol.data
 
-        db.session.commit()
-        flash(f"stock has been edited", "success")
-        return redirect(url_for('portfolio'))
+        try:
+            # update User_stock
+            user_stock.stock_num = form.stock_num.data
+            user_stock.stock_symbol = form.stock_symbol.data
 
-    flash(f"an error occured", "warning")
+            db.session.commit()
+            flash(f"stock has been edited", "success")
+            return redirect(url_for('portfolio'))
+        except AttributeError:
+            flash(f"an error occurred", "warning")
     return redirect(url_for('portfolio'))
 
 
@@ -301,49 +303,7 @@ def send_portfolio():
 
     return redirect(url_for('portfolio'))
 
-# ************company details routes************
-
-@app.route('/company-details/<stock_symbol>')
-def company_details(stock_symbol):
-    """generate company details route"""
-    # check DB for stock
-    returned_stock_details = Stock.query.get(stock_symbol)
-    if returned_stock_details:
-        company_name = returned_stock_details.stock_name
-        # render template
-        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
-    
-    # if company was not found in DB - search API for stock symbol
-    returned_stock_details = User_Stock.add_stock_symbol(stock_symbol)
-    # if stock symbol returned true (stock found and added to our DB)
-    if returned_stock_details:
-        # add stock basic details to DB
-        returned_stock_details = Stock.add_stock_details(stock_symbol)
-        company_name = returned_stock_details.stock_name
-        # render template
-        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
-
-    # if stock symbol returned false (stock not found in API)
-    flash('Stock was not found', 'warning')
-    return url_for('homepage')
-
-@app.route('/api/company-details', methods=['POST'])
-def send_stock_details():
-    """returns JSON with basic company details - similar to what is found on portfolio page"""
-
-    stock_symbol = request.json.get('stock_symbol')
-
-    # 404 should not be an issue if we have gotten to this stage
-    returned_stock_details = Stock.query.get_or_404(stock_symbol)
-
-    # adds / updates stock details to DB
-    returned_stock_details = Stock.add_stock_details(stock_symbol)
-
-    db.session.add(returned_stock_details)
-    db.session.commit()
-
-    return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
-
+# ************news route************
 
 @app.route('/api/company-details/news', methods=['POST'])
 def get_news():
@@ -389,6 +349,50 @@ def get_news():
         return jsonify(news='no news obtained')
     all_news = [news.serialize_news() for news in returned_news]
     return jsonify(news=all_news)
+
+# ************company details routes************
+
+@app.route('/company-details/<stock_symbol>')
+def company_details(stock_symbol):
+    """generate company details route"""
+    # check DB for stock
+    returned_stock_details = Stock.query.get(stock_symbol)
+    if returned_stock_details:
+        company_name = returned_stock_details.stock_name
+        # render template
+        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
+    
+    # if company was not found in DB - search API for stock symbol
+    returned_stock_details = User_Stock.add_stock_symbol(stock_symbol)
+    # if stock symbol returned true (stock found and added to our DB)
+    if returned_stock_details:
+        # add stock basic details to DB
+        returned_stock_details = Stock.add_stock_details(stock_symbol)
+        company_name = returned_stock_details.stock_name
+        # render template
+        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
+
+    # if stock symbol returned false (stock not found in API)
+    flash('Stock was not found', 'warning')
+    return url_for('homepage')
+
+@app.route('/api/company-details', methods=['POST'])
+def send_stock_details():
+    """returns JSON with basic company details - similar to what is found on portfolio page"""
+
+    stock_symbol = request.json.get('stock_symbol')
+
+    # 404 should not be an issue if we have gotten to this stage
+    returned_stock_details = Stock.query.get_or_404(stock_symbol)
+
+    # adds / updates stock details to DB
+    returned_stock_details = Stock.add_stock_details(stock_symbol)
+
+    db.session.add(returned_stock_details)
+    db.session.commit()
+
+    return jsonify(stock=returned_stock_details.serialize_basic_stock_details())
+
 
 @app.route('/api/advanced-company-details', methods=['POST'])
 def send_advanced_details():
