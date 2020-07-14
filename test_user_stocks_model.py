@@ -54,7 +54,7 @@ class UserModelTestCase(TestCase):
         return res
 
     def test_adding_stock(self):
-        """basic test adding stock works"""
+        """basic test adding stock"""
 
         new_user_stock = User_Stock.add_stock(9876, "MSFT", 1)
         db.session.add(new_user_stock)
@@ -127,7 +127,7 @@ class UserModelTestCase(TestCase):
         self.assertIsNotNone(update_stock.curr_stock_price)
 
     def test_user_stock_repr(self):
-        """test user repr"""
+        """test user stock repr"""
 
         u = self.u_stock
         self.assertEqual(
