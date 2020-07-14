@@ -69,6 +69,10 @@ def unauthorized():
 def page_not_found(e):
      return render_template('404.html'), 404
 
+@app.errorhandler(405)
+def page_not_found(e):
+     return render_template('405.html'), 405
+
 @app.route('/')
 def homepage():
     """home page"""
@@ -117,14 +121,8 @@ def signup():
 
             return redirect(url_for('portfolio'))
 
-        flash('Username is already taken', 'warning')
+    flash('Username is already taken', 'warning')
     return redirect(url_for('homepage'))
-
-
-@app.route('/about')
-def about():
-    """about page"""
-    return render_template('about.html')
 
 
 @app.route('/logout')

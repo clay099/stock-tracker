@@ -32,11 +32,11 @@ class StockModelTestCase(TestCase):
         self.stock = stock
 
     def tearDown(self):
-        # res = super().tearDown()
+        res = super().tearDown()
         db.session.rollback()
         Peer.query.delete()
         Stock.query.delete()
-        # return res
+        return res
 
     def test_stock_model(self):
         """test base stock model"""
