@@ -2,11 +2,9 @@
 
 import os
 from unittest import TestCase
-from models import db
+from models import db, Peer, Stock
 
 from sqlalchemy import exc
-
-from models import Peer, Stock
 
 # use testing DB - needs to run before import app
 os.environ['DATABASE_URL'] = "postgresql:///stock-tracker-test"
