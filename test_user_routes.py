@@ -10,11 +10,14 @@ from models import db, connect_db, User, Stock, User_Stock, finnhub_client, News
 # use testing DB - needs to run before import app
 os.environ['DATABASE_URL'] = "postgresql:///stock-tracker-test"
 
-from app import app, mail
+from app import app
 # Make Flask errors be real errors, rather than HTML pages with error info
 app.config['TESTING'] = True
 app.config['DEBUG_TB_HOSTS'] = ['dont-show-debug-toolbar']
 app.config['SQLALCHEMY_ECHO'] = False
+
+# mail needs to be imported after app.config has been set to true to surpress the actual sending of emails.
+from app import mail
 
 # Don't have WTForms use CSRF at all
 app.config['WTF_CSRF_ENABLED'] = False
@@ -212,28 +215,6 @@ class UserViewsTestCase(TestCase):
             resp = c.post('/user/stock', data={'stock_num':'100000','stock_symbol':self.u_stock.stock_symbol}, follow_redirects=True)
 
             self.assertEqual(resp.status_code, 405)
-
-    def test_send_portfolio_route(self):
-        """test flask mail"""
-    
-        with mail.record_messages() as outbox:
-            with self.client as c:
-                login = c.post('/login', data={"login_username": self.u.username, "login_password": 'password'})
-
-                resp = c.get('/user/send-portfolio', follow_redirects=True)
-
-                self.assertEqual(resp.status_code, 200)
-                self.assertIn(b'Portfolio Snap Shot Sent', resp.data)
-                self.assertEqual(len(outbox), 1)
-                self.assertEqual(outbox[0].subject, 'Portfolio SnapShot')
-
-    def test_send_portfolio_login_required(self):
-        """test send portfolio route can only be accessed when logged in"""
-        with self.client as c:
-            resp = c.get('/user/send-portfolio', follow_redirects=True)
-
-            self.assertEqual(resp.status_code, 405)
-
     def test_delete_stock_route(self):
         """test delete stock route"""
 
@@ -263,5 +244,27 @@ class UserViewsTestCase(TestCase):
         """test delete stock route can only be accessed when logged in"""
         with self.client as c:
             resp = c.post('/user/stock/delete', data={'stock_symbol': 'NOTVALID'}, follow_redirects=True)
+
+            self.assertEqual(resp.status_code, 405)
+    
+    
+    def test_send_portfolio_route(self):
+        """test flask mail"""
+    
+        with mail.record_messages() as outbox:
+            with self.client as c:
+                login = c.post('/login', data={"login_username": self.u.username, "login_password": 'password'})
+
+                resp = c.get('/user/send-portfolio', follow_redirects=True)
+
+                self.assertEqual(resp.status_code, 200)
+                self.assertIn(b'Portfolio Snap Shot Sent', resp.data)
+                self.assertEqual(len(outbox), 1)
+                self.assertEqual(outbox[0].subject, 'Portfolio SnapShot')
+
+    def test_send_portfolio_login_required(self):
+        """test send portfolio route can only be accessed when logged in"""
+        with self.client as c:
+            resp = c.get('/user/send-portfolio', follow_redirects=True)
 
             self.assertEqual(resp.status_code, 405)
