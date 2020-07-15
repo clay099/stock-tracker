@@ -27,6 +27,7 @@ connect_db(app)
 
 # flask-migrate setup
 migrate = Migrate(app, db)
+# see the docs when you need to update model https://flask-migrate.readthedocs.io/en/latest/#
 
 
 # ************Configure Flask-Login************
