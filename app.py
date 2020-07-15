@@ -5,6 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, logout_user, current_user, login_user, login_required
 from sqlalchemy.exc import IntegrityError
 from flask_mail import Mail, Message
+from flask_migrate import Migrate
 
 from models import db, connect_db, User, Stock, User_Stock, finnhub_client, News
 from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
@@ -23,6 +24,9 @@ mail = Mail(app)
 connect_db(app)
 # db.drop_all()
 # db.create_all()
+
+# flask-migrate setup
+migrate = Migrate(app, db)
 
 
 # ************Configure Flask-Login************
