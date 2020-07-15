@@ -25,16 +25,55 @@ I have outlined below some of the information which will be collected and displa
 
     - Stock Symbol - primary key
     - Stock Name
+    - country
+    - currency
+    - exchange
+    - ipo
+    - marketCapitalization
+    - name
+    - phone
+    - shareOutstanding
+    - weburl
+    - logo
+    - finnhubIndustry
+    - yearlyHigh
+    - yearlyHighDate
+    - yearlyLow
+    - yearlyLowDate
+    - beta
+    - buy
+    - hold
+    - period
+    - sell
+    - strongBuy
+    - strongSell
+    - lastUpdated
+    - targetHigh
+    - targetLow
+    - targetMean
+    - targetMedian
+    - price
 
-3. USER_STOCK_TABLE
+3. USER_STOCK TABLE
 
-    - stock symbol - foreign key
-    - user_id - foreign key
-    - start date
-    - stock price start date
-    - current date (first day this will be the same as start date, otherwise it will update to be the date the notification is issued)
-    - stock price current date (first day this will be the same as start date)
-    - Number of stocks to track - sensitive to be secured
+    - stock symbol - foreign key - primary key
+    - user_id - foreign key - primary key
+    - start_date
+    - start_stock_price
+    - current_date (first day this will be the same as start date, otherwise it will update to be the date the notification is issued)
+    - curr_stock_price (first day this will be the same as start date)
+    - stock_num - sensitive to be secured
+
+4. NEWS TABLE
+    - id - primary key
+    - category
+    - datetime
+    - headline
+    - image
+    - related
+    - source
+    - summary
+    - url
 
 **Outline**  
 The user will be able to select stocks along with an amount to create a personalized portfolio.
@@ -49,22 +88,27 @@ The summary will also include a total portfolio position summarizing the total s
 
 The user will also be able to send a email snapshot of their portfolio so they can save this position in time.
 
+The user will be able to see general busienss news on the home page
+
+The user (login not required) will also be able to search for companies based on their stock symbol and obtain detailed company financial, stock recommendation and company news.
+
 **Stretch Goals**
 
-1. Add fundamental data to the users portfolio available online so they can review further company information
-2. Add notifications when stocks you are following post price sensitive information
-3. Add Foreign Exchange and / or crypto currency functionality
-4. List news articles which mention the stock you are following
+1. Add notifications when stocks you are following post price sensitive information
+2. Add Foreign Exchange and / or crypto currency functionality
 
 **Requirements**
 please note if you download this code base you will need to:
 
 1. pip install the requirements.txt file
-2. Create a psql database called stock_tracker or create another database and save it your your environment variable
+2. Create a psql database called stock_tracker OR create another database and save it your your environment variable
 3. create a secrets file including:
 
     - API_KEY - This can be obtained from https://finnhub.io/dashboard
     - APP_KEY - This can be any string
     - MAIL_USER - gamil email address\*
     - MAIL_PASSWORD - gmail password\*
-      please note if you wish to use a separate mail client you will need to change app.py lines 28-35
+      please note if you wish to use a separate mail client you will need to change app.py lines 25-32
+
+**Live Heroku Server**
+Should you wish to see a live example please visit https://github.com/clay099/stock-tracker
