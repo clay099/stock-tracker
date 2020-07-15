@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 
 from decimal import Decimal
 
+# set up finnhub API
 if os.environ.get('API_KEY') is None:
     from secrets import API_KEY
 else: 
