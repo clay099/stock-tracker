@@ -16,11 +16,21 @@ app = Flask(__name__)
 if os.environ.get('FLASK_ENV') != 'production':
     app.config.from_object('config.DevelopmentConfig')
     toolbar = DebugToolbarExtension(app)
-    from secrets import MAIL_USER
+    from secrets import MAIL_USER, MAIL_PASSWORD
 else:
     app.config.from_object('config.Config')
     MAIL_USER = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
+app.config.update(
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT = 587,
+    MAIL_USE_TLS = True,
+    MAIL_USE_SSL = False,
+    MAIL_USERNAME = MAIL_USER,
+    MAIL_PASSWORD = MAIL_PASSWORD,
+    MAIL_DEFAULT_SENDER = MAIL_USER
+	)
 
 mail = Mail(app)
 
