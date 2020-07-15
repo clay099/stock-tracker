@@ -22,7 +22,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config["SECRET_KEY"] = os.environ.get('SECRET_KEY', APP_KEY)
+app.config["SECRET_KEY"] = os.environ.get('APP_KEY', APP_KEY)
 
 
 app.config.update(
