@@ -16,8 +16,11 @@ app = Flask(__name__)
 if os.environ.get('FLASK_ENV') != 'production':
     app.config.from_object('config.DevelopmentConfig')
     toolbar = DebugToolbarExtension(app)
+    from secrets import MAIL_USER
 else:
     app.config.from_object('config.Config')
+    MAIL_USER = os.environ.get('MAIL_USERNAME')
+
 
 mail = Mail(app)
 
@@ -280,7 +283,7 @@ def send_portfolio():
     stock_details = User_Stock.get_users_stocks(current_user.id)
 
     # craft message
-    msg = Message('Portfolio SnapShot', recipients=[current_user.email])
+    msg = Message('Portfolio SnapShot', sender=MAIL_USER, recipients=[current_user.email])
     msg.html = render_template(
         'user/_portfolio_summary.html', stock_details=stock_details)
     # send message with flask-mail
