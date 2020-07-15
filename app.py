@@ -10,14 +10,13 @@ from models import db, connect_db, User, Stock, User_Stock, finnhub_client, News
 from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
 from sqlalchemy.exc import IntegrityError
 
-
 app = Flask(__name__)
-if os.environ.get('API_KEY') is None:
+
+if os.environ.get('FLASK_ENV') != 'production':
     app.config.from_object('config.DevelopmentConfig')
     toolbar = DebugToolbarExtension(app)
 else:
     app.config.from_object('config.Config')
-
 
 mail = Mail(app)
 
@@ -381,22 +380,3 @@ def send_advanced_details():
     peers = [peer.peer_stock_symbol for peer in returned_stock_details.peers]
 
     return jsonify(stock=returned_stock_details.serialize_advanced_stock_details(), peers=peers)
-
-
-
-##############################################################################
-# Turn off all caching in Flask
-#   (useful for dev; in production, this kind of stuff is typically
-#   handled elsewhere)
-#
-# https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
-
-@app.after_request
-def add_header(req):
-    """Add non-caching headers on every request."""
-
-    req.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    req.headers["Pragma"] = "no-cache"
-    req.headers["Expires"] = "0"
-    req.headers['Cache-Control'] = 'public, max-age=0'
-    return req
