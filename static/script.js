@@ -1,11 +1,8 @@
 let loc = location.href;
 
-let BASE_URL = "";
-let BASE_URL_API = "";
-if (loc.includes("herokuapp")) {
-	BASE_URL = "https://cw-stock-tracker.herokuapp.com";
-	BASE_URL_API = `${BASE_URL}/api`;
-} else if (loc.includes("localhost")) {
+let BASE_URL = "https://cw-stock-tracker.herokuapp.com";
+let BASE_URL_API = `${BASE_URL}/api`;
+if (loc.includes("localhost")) {
 	BASE_URL = "http://localhost:5000";
 	BASE_URL_API = `${BASE_URL}/api`;
 } else if (loc.includes("127")) {
