@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy_utils import EmailType, PasswordType
