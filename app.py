@@ -6,7 +6,7 @@ from flask_login import LoginManager, logout_user, current_user, login_user, log
 from sqlalchemy.exc import IntegrityError
 from flask_mail import Mail, Message
 
-if not os.environ.get('SECRET_KEY'):
+if os.environ.get('SECRET_KEY') is None:
     from secrets import APP_KEY, MAIL_PASSWORD, MAIL_USER
 
 from models import db, connect_db, User, Stock, User_Stock, finnhub_client, News
