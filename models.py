@@ -5,15 +5,16 @@ from sqlalchemy_utils import EmailType, PasswordType
 from flask_login import UserMixin
 from flask_bcrypt import Bcrypt
 import finnhub
-if os.environ.get('API_KEY') is None:
-    from secrets import API_KEY
 from sqlalchemy.exc import IntegrityError
 
 from decimal import Decimal
 
+if os.environ.get('API_KEY') is None:
+    from secrets import API_KEY
+else: 
+    API_KEY = os.environ.get('API_KEY')
+    
 # Configure API key
-API_KEY = os.environ.get('API_KEY', API_KEY)
-
 configuration = finnhub.Configuration(
     api_key={
         'token': API_KEY
