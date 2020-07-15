@@ -12,9 +12,11 @@ from sqlalchemy.exc import IntegrityError
 from decimal import Decimal
 
 # Configure API key
+API_KEY = os.environ.get('API_KEY', API_KEY)
+
 configuration = finnhub.Configuration(
     api_key={
-        'token': os.environ.get('API_KEY', API_KEY)
+        'token': API_KEY
     }
 )
 
