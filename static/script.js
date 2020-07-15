@@ -1,12 +1,25 @@
-const BASE_URL = "http://localhost:5000/api";
+let loc = location.href;
+
+let BASE_URL = "";
+let BASE_URL_API = "";
+if (loc.includes("herokuapp")) {
+	BASE_URL = "https://cw-stock-tracker.herokuapp.com";
+	BASE_URL_API = `${BASE_URL}/api`;
+} else if (loc.includes("localhost")) {
+	BASE_URL = "http://localhost:5000";
+	BASE_URL_API = `${BASE_URL}/api`;
+} else if (loc.includes("127")) {
+	BASE_URL = "http://127.0.0.1:5000";
+	BASE_URL_API = `${BASE_URL}/api`;
+}
 
 $(document).ready(function () {
 	let loc = location.href;
-	if (loc === `http://localhost:5000/`) {
+	if (loc === `${BASE_URL}/`) {
 		$("#home").addClass("active");
-	} else if (loc === "http://localhost:5000/user") {
+	} else if (loc === `${BASE_URL}/user`) {
 		$("#portfolio").addClass("active");
-	} else if (loc === "http://localhost:5000/user/settings") {
+	} else if (loc === `${BASE_URL}/user/settings`) {
 		$("#settings").addClass("active");
 	}
 });

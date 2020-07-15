@@ -10,7 +10,9 @@ $("#portfolio-table").on("click", "tr", async function (evt) {
 		return;
 	} else {
 		let stock_symbol = $(this).closest("tr")[0].id;
-		const returnedDetails = await axios.post(`${BASE_URL}/company-details`, { stock_symbol });
+		const returnedDetails = await axios.post(`${BASE_URL_API}/company-details`, {
+			stock_symbol,
+		});
 		// see stock_details.js
 		fillCompanyDetails(returnedDetails.data.stock);
 		$("#company-details").modal("show");
