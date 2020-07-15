@@ -1,4 +1,7 @@
 """model test"""
+import sys
+
+sys.path.insert(0, "..")
 
 from models import User, Stock, User_Stock
 from sqlalchemy import exc
@@ -6,6 +9,7 @@ from datetime import datetime
 from models import db
 from unittest import TestCase
 import os
+
 
 # use testing DB - needs to run before import app
 os.environ['DATABASE_URL'] = "postgresql:///stock-tracker-test"

@@ -1,4 +1,7 @@
 """model test"""
+import sys
+
+sys.path.insert(0, "..")
 
 from models import News
 from models import db

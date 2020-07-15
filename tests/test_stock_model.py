@@ -1,4 +1,7 @@
 """model test"""
+import sys
+
+sys.path.insert(0, "..")
 
 import os
 from unittest import TestCase
