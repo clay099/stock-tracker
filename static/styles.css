@@ -1,9 +1,10 @@
 .page-body {
 	background-image: url("/static/images/background-gray.jpg");
 	background-attachment: fixed;
-	background-size: contain;
 	position: relative;
 	min-height: 100vh;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .home-content {
