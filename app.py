@@ -8,6 +8,10 @@ from flask_mail import Mail, Message
 
 if os.environ.get('API_KEY') is None:
     from secrets import APP_KEY, MAIL_PASSWORD, MAIL_USER
+else:
+    APP_KEY = os.environ.get('APP_KEY')
+    MAIL_USER = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 from models import db, connect_db, User, Stock, User_Stock, finnhub_client, News
 from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
@@ -22,7 +26,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SQLALCHEMY_ECHO"] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config["SECRET_KEY"] = os.environ.get('APP_KEY', APP_KEY)
+app.config["SECRET_KEY"] = APP_KEY
 
 
 app.config.update(
@@ -31,9 +35,9 @@ app.config.update(
     MAIL_PORT=587,
     MAIL_USE_TLS=True,
     MAIL_USE_SSL=False,
-    MAIL_USERNAME=os.environ.get('MAIL_USERNAME', MAIL_USER),
-    MAIL_PASSWORD=os.environ.get('MAIL_PASSWORD', MAIL_PASSWORD),
-    MAIL_DEFAULT_SENDER=os.environ.get('MAIL_USERNAME', MAIL_USER)
+    MAIL_USERNAME=MAIL_USER,
+    MAIL_PASSWORD=MAIL_PASSWORD,
+    MAIL_DEFAULT_SENDER=MAIL_USER
 )
 
 mail = Mail(app)
