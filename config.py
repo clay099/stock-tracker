@@ -21,13 +21,13 @@ class Config(object):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'postgres:///stock_tracker')
 
     # flask-mail
-    MAIL_SERVER='smtp.gmail.com'
-    MAIL_PORT=587
-    MAIL_USE_TLS=True
-    MAIL_USE_SSL=False
-    MAIL_USERNAME=MAIL_USER
-    MAIL_PASSWORD=MAIL_PASSWORD
-    MAIL_DEFAULT_SENDER=MAIL_USER
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USE_SSL = False
+    MAIL_USERNAME = MAIL_USER
+    MAIL_PASSWORD = MAIL_PASSWORD
+    MAIL_DEFAULT_SENDER = MAIL_USER
 
 
 class DevelopmentConfig(Config):
