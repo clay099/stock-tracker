@@ -69,3 +69,8 @@ async function companyNews() {
 basicCompanyDetails();
 advancedCompanyDetails();
 companyNews();
+
+$("#add").click(function () {
+	$("input[name=stock_symbol]").val(stock_symbol);
+	$("input[name=stock_num]").val("1");
+});
