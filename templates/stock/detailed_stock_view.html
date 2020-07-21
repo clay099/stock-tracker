@@ -2,7 +2,20 @@
 
 {% block content %}
 
-<h1 class="text-center" id={{ stock_symbol }}>{{ company_name }} <img id="logo" src="" alt=""></h1>
+<h1 class="text-center" id={{ stock_symbol }}>{{ company_name }} <img id="logo" src="" alt="">
+
+    {% if stock_symbol not in stock_arr %}
+
+    <!-- Button trigger add stock modal -->
+    <button type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#add-to-portfolio">
+        Add New Stock to Portfolio
+    </button>
+</h1>
+
+<!-- add stock modal -->
+{% include 'user/_add_stock_modal.html' %}
+{% endif %}
+
 <div class="row">
     <div class="col-lg-5 order-md-1 mb-4">
         <h4 class="text-center my-3">

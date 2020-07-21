@@ -338,12 +338,23 @@ def get_news():
 @app.route('/company-details/<stock_symbol>')
 def company_details(stock_symbol):
     """generate company details route"""
+    # check user stocks
+    stock_arr = []
+    if (current_user.id):
+        stock_details = User_Stock.get_users_stocks(current_user.id)
+        
+        for details in stock_details[0]:
+            stock_arr.append(details.stock_symbol)
+    
+    # newStockForm is displayed as a Modal in the html
+    form = NewStockForm()
+
     # check DB for stock
     returned_stock_details = Stock.query.get(stock_symbol)
     if returned_stock_details:
         company_name = returned_stock_details.stock_name
         # render template
-        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
+        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name, stock_arr=stock_arr, form=form)
     
     # if company was not found in DB - search API for stock symbol
     returned_stock_details = User_Stock.add_stock_symbol(stock_symbol)
@@ -353,7 +364,7 @@ def company_details(stock_symbol):
         returned_stock_details = Stock.add_stock_details(stock_symbol)
         company_name = returned_stock_details.stock_name
         # render template
-        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name)
+        return render_template('/stock/detailed_stock_view.html', stock_symbol=stock_symbol, company_name=company_name, stock_arr=stock_arr, form=form)
 
     # if stock symbol returned false (stock not found in API)
     flash('Stock was not found', 'warning')
