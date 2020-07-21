@@ -340,7 +340,7 @@ def company_details(stock_symbol):
     """generate company details route"""
     # check user stocks
     stock_arr = []
-    if (current_user.id):
+    if (current_user.is_authenticated):
         stock_details = User_Stock.get_users_stocks(current_user.id)
         
         for details in stock_details[0]:
