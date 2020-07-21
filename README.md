@@ -111,4 +111,4 @@ please note if you download this code base you will need to:
       please note if you wish to use a separate mail client you will need to change app.py lines 25-32
 
 **Live Heroku Server**
-Should you wish to see a live example please visit https://github.com/clay099/stock-tracker
+Should you wish to see a live example please visit https://cw-stock-tracker.herokuapp.com/
