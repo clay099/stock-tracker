@@ -357,6 +357,11 @@ def company_details(stock_symbol):
 
     # if stock symbol returned false (stock not found in API)
     flash('Stock was not found', 'warning')
+    
+    db.session.rollback()
+    if (current_user.id):
+        return redirect(url_for('portfolio'))
+
     return redirect(url_for('homepage'))
 
 @app.route('/api/company-details', methods=['POST'])
