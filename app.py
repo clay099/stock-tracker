@@ -19,7 +19,7 @@ if os.environ.get('FLASK_ENV') != 'production':
     from secrets import MAIL_USER, MAIL_PASSWORD
 else:
     app.config.from_object('config.Config')
-    MAIL_USER = os.environ.get('MAIL_USERNAME')
+    MAIL_USER = os.environ.get('MAIL_USER')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 app.config.update(

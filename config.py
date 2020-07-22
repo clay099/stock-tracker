@@ -5,8 +5,6 @@ if os.environ.get('APP_KEY') is None:
     from secrets import APP_KEY, MAIL_PASSWORD, MAIL_USER
 else:
     APP_KEY = os.environ.get('APP_KEY')
-    MAIL_USER = os.environ.get('MAIL_USERNAME')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
 
 class Config(object):
     """set flask config variables"""
