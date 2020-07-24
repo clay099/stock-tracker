@@ -18,6 +18,7 @@
                     Create and track your own stock portfolio with zero risk
                 </h1>
 
+                {% if not current_user.id %}
                 <!-- Button -->
                 <p class="text-center mb-0 animate" data-toggle="animation" data-animation="fadeUp"
                     data-animation-order="3" data-animation-trigger="load">
@@ -26,6 +27,7 @@
                     <a class="btn btn-primary" data-toggle="modal" data-target="#signup-modal" href="#signup-modal">Sign
                         Up</a>
                 </p>
+                {% endif %}
             </div>
         </div> <!-- / .row -->
     </div> <!-- / .container -->
