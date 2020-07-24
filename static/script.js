@@ -32,6 +32,7 @@ $("#search-btn").click(function (evt) {
 });
 
 function generateNewsHTML(newsArticle) {
+	let d = newsArticle.datetime;
 	return `
     <div class="col mb-4 ">
         <div class="card shadow-sm mb-5 bg-white rounded mx-auto">
@@ -39,10 +40,13 @@ function generateNewsHTML(newsArticle) {
             onerror="this.onerror=null;this.src='/static/images/image-not-provided.jpg';" alt="image not provided">
             <div class="card-body">
                 <h5 class="card-title">${newsArticle.headline}</h5>
+                <small class="text-muted">Last updated ${new Date(
+					d * 1000
+				).toLocaleDateString()}</small>
                 <p class="card-text">
                     ${newsArticle.summary}
                 </p>
-                <a href="${newsArticle.url}" class="card-link">See Full Article</a>
+                <a href="${newsArticle.url}" target="_blank" class="card-link">See Full Article</a>
             </div>
         </div>
     </div>
