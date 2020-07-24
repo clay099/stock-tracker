@@ -87,6 +87,19 @@ class User(db.Model, UserMixin):
 
     @classmethod
     def update_password(cls, user, password, confirm_password):
+        """
+        updated and hash User object password if the two provided passwords match
+
+        Args:
+            user (SQL object): sql User Object
+            password (string): Password to update
+            confirm_password (string): Retyped Password to update
+
+        Returns:
+            User: SQL User Object
+            or 
+            False
+        """
         if password == confirm_password:
             hashed_password = bcrypt.generate_password_hash(
                 password).decode('UTF-8')
@@ -142,9 +155,18 @@ class Stock(db.Model):
     peers = db.relationship(
         'Peer',  backref='stocks')
 
+    
+
     @classmethod
     def add_stock_details(cls, stock_symbol):
-        
+        """adds stock details to Stock model
+
+        Args:
+            stock_symbol (string): company symbol
+
+        Returns:
+            stock: SQL Stock Object
+        """
         # get stock object
         s = Stock.query.get(stock_symbol)
         # get stock details
@@ -191,6 +213,14 @@ class Stock(db.Model):
    
     @classmethod
     def add_basic_financial(cls, stock_symbol):
+        """adds basic stock details to Stock model
+
+        Args:
+            stock_symbol (string): company symbol
+
+        Returns:
+            true or false if details are added
+        """
         # get stock object
         s = Stock.query.get(stock_symbol)
         # get basic financials
@@ -218,6 +248,14 @@ class Stock(db.Model):
     
     @classmethod
     def add_rec_trend(cls, stock_symbol):
+        """adds recomendation stock details to Stock model
+
+        Args:
+            stock_symbol (string): company symbol
+
+        Returns:
+            true or false if details are added
+        """
         # get stock object
         s = Stock.query.get(stock_symbol)
         # get stock details
@@ -241,6 +279,14 @@ class Stock(db.Model):
 
     @classmethod
     def add_target(cls, stock_symbol):
+        """adds analysis targets for stock to Stock model
+
+        Args:
+            stock_symbol (string): company symbol
+
+        Returns:
+            true or false if details are added
+        """
         # get stock object
         s = Stock.query.get(stock_symbol)
         # get stock details
@@ -264,6 +310,14 @@ class Stock(db.Model):
     
     @classmethod
     def add_peers(cls, stock_symbol):
+        """adds stock peers to Stock model
+
+        Args:
+            stock_symbol (string): company symbol
+
+        Returns:
+            true or false if details are added
+        """
         # remove saved peers
         Peer.query.delete()
         # get stock object
@@ -376,6 +430,7 @@ class User_Stock(db.Model):
         )
         db.session.add(add_user_stock)
         return add_user_stock
+
     @classmethod
     def add_stock_symbol(self, stock_symbol):
         """
@@ -390,7 +445,7 @@ class User_Stock(db.Model):
             # search for stock on finnhub
             new_stock_profile = finnhub_client.company_profile2(
                 symbol=stock_symbol)
-            stock_name = new_stock_profile.name
+            stock_name = new_stock_profile.namename
 
             # add stock to our DB
             new_stock = Stock(stock_name=stock_name,
@@ -467,6 +522,14 @@ class News(db.Model):
 
     @classmethod
     def get_news(self, stock_symbol=None):
+        """Get news areticles for a stock or get general business articles 
+
+        Args:
+            stock_symbol (string, optional): Pass in stock symbol to get news articles for the stock. Defaults to None.
+
+        Returns:
+            New Articles: SQL News Article Object
+        """
         # drop all articles (DB does not need to keep all articles)
         News.query.delete()
         # if a stock symbol was passed through
