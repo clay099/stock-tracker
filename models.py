@@ -155,8 +155,6 @@ class Stock(db.Model):
     peers = db.relationship(
         'Peer',  backref='stocks')
 
-    
-
     @classmethod
     def add_stock_details(cls, stock_symbol):
         """adds stock details to Stock model
@@ -445,7 +443,7 @@ class User_Stock(db.Model):
             # search for stock on finnhub
             new_stock_profile = finnhub_client.company_profile2(
                 symbol=stock_symbol)
-            stock_name = new_stock_profile.namename
+            stock_name = new_stock_profile.name
 
             # add stock to our DB
             new_stock = Stock(stock_name=stock_name,

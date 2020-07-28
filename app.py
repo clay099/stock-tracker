@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, redirect, session, url_for, jsonify
+from flask import Flask, render_template, request, flash, redirect, session, url_for, jsonify, g
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager, logout_user, current_user, login_user, login_required
 from sqlalchemy.exc import IntegrityError
@@ -370,10 +370,10 @@ def company_details(stock_symbol):
     flash('Stock was not found', 'warning')
     
     db.session.rollback()
-    if (current_user.id):
-        return redirect(url_for('portfolio'))
+    if not (current_user.is_active):
+        return redirect(url_for('homepage'))
 
-    return redirect(url_for('homepage'))
+    return redirect(url_for('portfolio'))
 
 @app.route('/api/company-details', methods=['POST'])
 def send_stock_details():
@@ -414,3 +414,22 @@ def send_advanced_details():
     peers = [peer.peer_stock_symbol for peer in returned_stock_details.peers]
 
     return jsonify(stock=returned_stock_details.serialize_advanced_stock_details(), peers=peers)
+
+# ************list of all stocks************
+all_possible_stocks = []
+
+def generate_all_stocks():
+    """returns a list of all us stocks"""
+    stocks_arr = finnhub_client.stock_symbols('US')
+    
+    for stock in stocks_arr:
+        all_possible_stocks.append({'description': stock.description, 'symbol': stock.symbol})
+    return all_possible_stocks
+
+
+# this is only run once at the creation of the server to reduce API calls. Looked into passing running function everytime someone logged on but there was too may API calls. 
+# Also looked to store this in the user session but array is too large. Need to make it a route
+@app.route('/api/_stock-autocomplete')
+def auto():
+    generate_all_stocks()
+    return jsonify(all_possible_stocks)

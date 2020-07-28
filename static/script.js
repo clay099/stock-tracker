@@ -1,4 +1,5 @@
 let loc = location.href;
+let ALL_STOCKS = [];
 
 let BASE_URL = "https://cw-stock-tracker.herokuapp.com";
 let BASE_URL_API = `${BASE_URL}/api`;
@@ -19,6 +20,7 @@ $(document).ready(function () {
 	} else if (loc === `${BASE_URL}/user/settings`) {
 		$("#settings").addClass("active");
 	}
+	generateAutoComplete();
 });
 
 $(document).on("click", function () {
@@ -52,3 +54,31 @@ function generateNewsHTML(newsArticle) {
     </div>
     `;
 }
+
+// send request to
+async function generateAutoComplete() {
+	let resp = await axios.get(`${BASE_URL_API}/_stock-autocomplete`);
+	ALL_STOCKS = resp.data;
+}
+
+$("#search-company").on("keyup", () => {
+	$searchVal = $("#search-company").val().toUpperCase();
+	console.log($searchVal);
+	console.log(ALL_STOCKS[0].description);
+	// fix this function
+	$("#search-company").autocomplete({
+		minLength: 3,
+		source: function (req, res) {
+			res(
+				$.map(ALL_STOCKS, (obj, key) => {
+					return {
+						label: obj.description,
+						val: obj.symbol,
+					};
+				})
+			);
+		},
+	});
+	// if ($searchVal.length >= 3) {
+	// }
+});
