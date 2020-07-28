@@ -20,7 +20,6 @@ $(document).ready(function () {
 	} else if (loc === `${BASE_URL}/user/settings`) {
 		$("#settings").addClass("active");
 	}
-	generateAutoComplete();
 });
 
 $(document).on("click", function () {
@@ -55,18 +54,27 @@ function generateNewsHTML(newsArticle) {
     `;
 }
 
+// make variable empty string
+let $searchVal = "";
 // send request to
-async function generateAutoComplete() {
-	let resp = await axios.get(`${BASE_URL_API}/_stock-autocomplete`);
+async function generateAutoComplete(name) {
+	let resp = await axios.get(`${BASE_URL_API}/_stock-autocomplete`, {
+		params: {
+			name,
+		},
+	});
 	ALL_STOCKS = resp.data;
+	console.log(ALL_STOCKS);
 }
 
 $("#search-company").on("keyup", () => {
-	$searchVal = $("#search-company").val().toUpperCase();
-	console.log($searchVal);
-	console.log(ALL_STOCKS[0].description);
+	let $searchComp = $("#search-company");
+	$searchVal = $searchComp.val().toUpperCase();
+	if ($searchVal.length == 2) {
+		generateAutoComplete($searchVal);
+	}
 	// fix this function
-	$("#search-company").autocomplete({
+	$searchComp.autocomplete({
 		minLength: 3,
 		source: function (req, res) {
 			res(
@@ -79,6 +87,5 @@ $("#search-company").on("keyup", () => {
 			);
 		},
 	});
-	// if ($searchVal.length >= 3) {
-	// }
+	//
 });

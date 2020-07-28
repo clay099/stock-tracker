@@ -418,18 +418,37 @@ def send_advanced_details():
 # ************list of all stocks************
 all_possible_stocks = []
 
-def generate_all_stocks():
-    """returns a list of all us stocks"""
+def generate_stocks(name):
+    """updates all_possible_stocks list and returns a list of all possible stocks"""
     stocks_arr = finnhub_client.stock_symbols('US')
     
+    # if no stock name was passed through, return all stocks
+    if name == None:
+        for stock in stocks_arr:
+            all_possible_stocks.append({'description': stock.description, 'symbol': stock.symbol})
+        return all_possible_stocks
+
+    # if a name was passed check only return stocks which 
     for stock in stocks_arr:
-        all_possible_stocks.append({'description': stock.description, 'symbol': stock.symbol})
+        if (stock.description.startswith(name)):
+            all_possible_stocks.append({'description': stock.description, 'symbol': stock.symbol})
     return all_possible_stocks
 
 
 # this is only run once at the creation of the server to reduce API calls. Looked into passing running function everytime someone logged on but there was too may API calls. 
 # Also looked to store this in the user session but array is too large. Need to make it a route
+# looked at returning a list of all stocks but this causes space issue in web browser. path provides string as a paramater to allow for us to cut down the number of returned values
 @app.route('/api/_stock-autocomplete')
 def auto():
-    generate_all_stocks()
+    """
+    requests for all possible stocks to be returned in a list which is then passed to the front end for manipulation 
+
+    Returns:
+        JSON: JSON list filled with objects which are possible stock name and symbols
+    """
+    # get the name passed through
+    name = request.args.get('name')
+    # generates all possible matching stocks
+    generate_stocks(name)
+    # return stocks
     return jsonify(all_possible_stocks)
