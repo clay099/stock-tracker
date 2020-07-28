@@ -56,7 +56,8 @@ function generateNewsHTML(newsArticle) {
 
 // make variable empty string
 let $searchVal = "";
-// send request to
+
+// send request to backend to provide possible stocks
 async function generateAutoComplete(name) {
 	let resp = await axios.get(`${BASE_URL_API}/_stock-autocomplete`, {
 		params: {
@@ -67,25 +68,30 @@ async function generateAutoComplete(name) {
 	console.log(ALL_STOCKS);
 }
 
+// listen for search and provide autocomplete options
 $("#search-company").on("keyup", () => {
 	let $searchComp = $("#search-company");
 	$searchVal = $searchComp.val().toUpperCase();
+	// to avoid a large list wait for two characters to be entered before requesting possible stocks
 	if ($searchVal.length == 2) {
 		generateAutoComplete($searchVal);
 	}
-	// fix this function
+	// autocomplete function
 	$searchComp.autocomplete({
 		minLength: 3,
 		source: function (req, res) {
 			res(
-				$.map(ALL_STOCKS, (obj, key) => {
-					return {
-						label: obj.description,
-						val: obj.symbol,
-					};
-				})
+				$.map(ALL_STOCKS, (obj) => {
+					let upperTerm = req.term.toUpperCase();
+					if (obj.description.includes(upperTerm) || obj.symbol.includes(upperTerm)) {
+						return {
+							label: `Name: ${obj.description} Symbol: ${obj.symbol}`,
+							value: obj.symbol,
+						};
+					}
+				}).slice(0, 6)
 			);
 		},
+		position: { my: "right top", at: "right bottom" },
 	});
-	//
 });

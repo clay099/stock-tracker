@@ -420,6 +420,7 @@ all_possible_stocks = []
 
 def generate_stocks(name):
     """updates all_possible_stocks list and returns a list of all possible stocks"""
+    all_possible_stocks.clear()
     stocks_arr = finnhub_client.stock_symbols('US')
     
     # if no stock name was passed through, return all stocks
@@ -430,7 +431,11 @@ def generate_stocks(name):
 
     # if a name was passed check only return stocks which 
     for stock in stocks_arr:
+        # add matches base on name
         if (stock.description.startswith(name)):
+            all_possible_stocks.append({'description': stock.description, 'symbol': stock.symbol})
+        # add matches based on symbol but make sure no duplicates are added
+        if (stock.symbol.startswith(name) and not stock.description.startswith(name)):
             all_possible_stocks.append({'description': stock.description, 'symbol': stock.symbol})
     return all_possible_stocks
 
