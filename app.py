@@ -446,7 +446,10 @@ def generate_stocks(name):
 @app.route('/api/_stock-autocomplete')
 def auto():
     """
-    requests for all possible stocks to be returned in a list which is then passed to the front end for manipulation 
+    requests for all possible stocks to be returned in a list which is then passed to the front end for manipulation.
+    
+    Accepts Params:
+        name: stock_name (this needs to be capital letters)
 
     Returns:
         JSON: JSON list filled with objects which are possible stock name and symbols

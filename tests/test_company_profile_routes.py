@@ -155,3 +155,12 @@ class CompanyAndNewsViewsTestCase(TestCase):
             # only testing the first news article returned
             self.assertIsNotNone(data[0]['category'])
             self.assertIsNotNone(data[0]['datetime'])
+
+    def test_auto_route_with_stock(self):
+        """test auto route with a stock passed through in params"""
+        with self.client as c:
+            resp = c.get('/api/_stock-autocomplete?name=APP')
+            self.assertEqual(resp.status_code, 200)
+            self.assertIsNotNone(resp.json)
+            self.assertIsNotNone(resp.json[0]['description'])
+            self.assertIsNotNone(resp.json[0]['symbol'])
