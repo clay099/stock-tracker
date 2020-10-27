@@ -3,63 +3,63 @@
 {% block content %}
 
 <h1 class="text-center" id={{ stock_symbol }}>{{ company_name }} <img id="logo" src="" alt="">
-    {% if current_user.id %}
-    {% if stock_symbol not in stock_arr %}
+  {% if current_user.id %}
+  {% if stock_symbol not in stock_arr %}
 
-    <!-- Button trigger add stock modal -->
-    <button id="add" type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#add-to-portfolio">
-        Add Stock to Portfolio
-    </button>
+  <!-- Button trigger add stock modal -->
+  <button id="add" type="button" class="btn btn-primary my-3" data-toggle="modal" data-target="#add-to-portfolio">
+    Add Stock to Portfolio
+  </button>
 
-    <!-- add stock modal -->
-    {% include 'user/_add_stock_modal.html' %}
-    {% endif %}
-    {% endif %}
+  <!-- add stock modal -->
+  {% include 'user/_add_stock_modal.html' %}
+  {% endif %}
+  {% endif %}
 </h1>
 
 <div class="row">
-    <div class="col-lg-5 order-md-1 mb-4">
-        <h4 class="text-center my-3">
-            <strong>Basic Company Details</strong>
-        </h4>
-        <table class="table table-striped" id="basic-company-details-table">
-            <tbody>
-                {% include 'stock/_basic_stock_details_table.html' %}
-            </tbody>
-        </table>
-        <h4 class="text-center my-3">
-            <strong>Basic Company Financial Details</strong>
-        </h4>
-        <table class="table table-striped" id="basic-company-details-table">
-            <tbody>
-                {% include 'stock/_basic_stock_financial_table.html' %}
-            </tbody>
-        </table>
-        <h4 class="text-center my-3">
-            <strong>Stock Recommendation</strong>
-        </h4>
-        <table class="table table-striped" id="basic-company-details-table">
-            <tbody>
-                {% include 'stock/_stock_recommendation_table.html' %}
-            </tbody>
-        </table>
-        <h4 class="text-center mt-3 mb-0">
-            <strong>{{company_name}} Peers</strong>
-        </h4>
-        <p class="text-center"><small>To see further peer details click on the below links</small></p>
-        <div>
-            <ul class="list-inline" id="peers">
+  <div class="col-lg-5 order-md-1 mb-4">
+    <h4 class="text-center my-3">
+      <strong>Basic Company Details</strong>
+    </h4>
+    <table class="table table-striped" id="basic-company-details-table">
+      <tbody>
+        {% include 'stock/_basic_stock_details_table.html' %}
+      </tbody>
+    </table>
+    <h4 class="text-center my-3">
+      <strong>Basic Company Financial Details</strong>
+    </h4>
+    <table class="table table-striped" id="basic-company-details-table">
+      <tbody>
+        {% include 'stock/_basic_stock_financial_table.html' %}
+      </tbody>
+    </table>
+    <h4 class="text-center my-3">
+      <strong>Stock Recommendation</strong>
+    </h4>
+    <table class="table table-striped" id="basic-company-details-table">
+      <tbody>
+        {% include 'stock/_stock_recommendation_table.html' %}
+      </tbody>
+    </table>
+    <h4 class="text-center mt-3 mb-0">
+      <strong>{{company_name}} Peers</strong>
+    </h4>
+    <p class="text-center"><small>To see further peer details click on the below links</small></p>
+    <div>
+      <ul class="list-inline" id="peers">
 
-            </ul>
-        </div>
+      </ul>
     </div>
-    <div class="col-lg-7 order-md-2">
-        <h4 class="text-center my-3">
-            <strong>Company News</strong>
-        </h4>
-        <div class="row row-cols-1 row-cols-xl-2" id="articles">
+  </div>
+  <div class="col-lg-7 order-md-2">
+    <h4 class="text-center my-3">
+      <strong>Company News</strong>
+    </h4>
+    <div class="row row-cols-1 row-cols-xl-2" id="articles">
 
-        </div>
     </div>
+  </div>
 </div>
 {% endblock %}

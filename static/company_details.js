@@ -2,15 +2,21 @@ let stock_symbol = $("h1").attr("id");
 
 // base company details
 async function basicCompanyDetails() {
-	const returnedDetails = await axios.post(`${BASE_URL_API}/company-details`, { stock_symbol });
+	const returnedDetails = await axios.post(
+		`${BASE_URL_API}/company-details`,
+		{ stock_symbol }
+	);
 	// see stock_details.js
 	fillCompanyDetails(returnedDetails.data.stock);
 }
 
 async function advancedCompanyDetails() {
-	const returnedDetails = await axios.post(`${BASE_URL_API}/advanced-company-details`, {
-		stock_symbol,
-	});
+	const returnedDetails = await axios.post(
+		`${BASE_URL_API}/advanced-company-details`,
+		{
+			stock_symbol,
+		}
+	);
 	fillBasicFinancial(returnedDetails.data.stock);
 	fillRecommendation(returnedDetails.data.stock);
 	fillPeers(returnedDetails.data.peers);
@@ -57,9 +63,12 @@ function fillRecommendation(data) {
 	$("#target-median").text(formatCurrency(data.targetMedian));
 }
 async function companyNews() {
-	const returnedDetails = await axios.post(`${BASE_URL_API}/company-details/news`, {
-		stock_symbol,
-	});
+	const returnedDetails = await axios.post(
+		`${BASE_URL_API}/company-details/news`,
+		{
+			stock_symbol,
+		}
+	);
 	for (let article of returnedDetails.data.news) {
 		let newArticle = $(generateNewsHTML(article));
 		$("#articles").append(newArticle);

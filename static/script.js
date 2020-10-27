@@ -47,7 +47,9 @@ function generateNewsHTML(newsArticle) {
                 <p class="card-text">
                     ${newsArticle.summary}
                 </p>
-                <a href="${newsArticle.url}" target="_blank" class="card-link">See Full Article</a>
+                <a href="${
+					newsArticle.url
+				}" target="_blank" class="card-link">See Full Article</a>
             </div>
         </div>
     </div>
@@ -83,7 +85,10 @@ $("#search-company").on("keyup", () => {
 			res(
 				$.map(ALL_STOCKS, (obj) => {
 					let upperTerm = req.term.toUpperCase();
-					if (obj.description.includes(upperTerm) || obj.symbol.includes(upperTerm)) {
+					if (
+						obj.description.includes(upperTerm) ||
+						obj.symbol.includes(upperTerm)
+					) {
 						return {
 							label: `Name: ${obj.description} Symbol: ${obj.symbol}`,
 							value: obj.symbol,
