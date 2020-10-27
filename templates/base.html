@@ -2,7 +2,36 @@
 <html lang="en">
 
 <head>
+  <!-- Meta -->
   <meta charset="UTF-8">
+  <!-- HTML Meta Tags -->
+  <title>Stock Tracking Application - Flask Python Project</title>
+  <meta name="description"
+    content="This Project allows for users to create a fake stock portfolio and track its profit & loss over time">
+
+  <!-- Google / Search Engine Tags -->
+  <meta itemprop="name" content="Stock Tracking Application - Flask Python Project">
+  <meta itemprop="description"
+    content="This Project allows for users to create a fake stock portfolio and track its profit & loss over time">
+  <meta itemprop="image" content="{{ url_for('static', filename='images/homebackground.jpg') }}">
+
+  <!-- Facebook Meta Tags -->
+  <meta property="og:url" content="http://cw-stock-tracker.herokuapp.com">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stock Tracking Application - Flask Python Project">
+  <meta property="og:description"
+    content="This Project allows for users to create a fake stock portfolio and track its profit & loss over time">
+  <meta property="og:image" content="{{ url_for('static', filename='images/homebackground.jpg') }}">
+
+  <!-- Twitter Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Stock Tracking Application - Flask Python Project">
+  <meta name="twitter:description"
+    content="This Project allows for users to create a fake stock portfolio and track its profit & loss over time">
+  <meta name="twitter:image" content="{{ url_for('static', filename='images/homebackground.jpg') }}">
+
+  <!-- Meta Tags Generated via http://heymeta.com -->
+
   <title>{% block title %}{% endblock %}</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
