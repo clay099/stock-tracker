@@ -6,12 +6,14 @@ from flask_login import LoginManager, logout_user, current_user, login_user, log
 from sqlalchemy.exc import IntegrityError
 from flask_mail import Mail, Message
 from flask_migrate import Migrate
+from flask_cors import CORS
 
 from models import db, connect_db, User, Stock, User_Stock, finnhub_client, News
 from forms import NewUserForm, LoginForm, NewStockForm, UserSettings, UpdatePassword, EditStock
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
+CORS(app)
 
 if os.environ.get('FLASK_ENV') != 'production':
     app.config.from_object('config.DevelopmentConfig')
