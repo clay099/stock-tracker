@@ -6,231 +6,232 @@
 
 <section class="section section-top section-full">
 
-    <!-- Cover -->
-    <div class="bg-cover home-body"></div>
-    <!-- Content -->
-    <div class="container" id="home-container">
-        <div class="row justify-content-center align-items-center">
-            <div id="home-heading" class="col-md-8 col-lg-7">
-                <!-- Heading -->
-                <h1 class="text-center mb-4 animate" data-toggle="animation" data-animation="fadeUp"
-                    data-animation-order="1" data-animation-trigger="load">
-                    Create and track your own stock portfolio with zero risk
-                </h1>
+  <!-- Cover -->
+  <div class="bg-cover home-body"></div>
+  <!-- Content -->
+  <div class="container" id="home-container">
+    <div class="row justify-content-center align-items-center">
+      <div id="home-heading" class="col-md-8 col-lg-7">
+        <!-- Heading -->
+        <h1 class="text-center mb-4 animate" data-toggle="animation" data-animation="fadeUp" data-animation-order="1"
+          data-animation-trigger="load">
+          Create and track your own stock portfolio with zero risk
+        </h1>
 
-                {% if not current_user.id %}
-                <!-- Button -->
-                <p class="text-center mb-0 animate" data-toggle="animation" data-animation="fadeUp"
-                    data-animation-order="3" data-animation-trigger="load">
-                    <a class="btn btn-primary" data-toggle="modal" data-target="#login-modal"
-                        href="#login-modal">Login</a>
-                    <a class="btn btn-primary" data-toggle="modal" data-target="#signup-modal" href="#signup-modal">Sign
-                        Up</a>
-                </p>
-                {% endif %}
-            </div>
-        </div> <!-- / .row -->
-    </div> <!-- / .container -->
+        {% if not current_user.id %}
+        <!-- Button -->
+        <p class="text-center mb-0 animate" data-toggle="animation" data-animation="fadeUp" data-animation-order="3"
+          data-animation-trigger="load">
+          <a class="btn btn-primary" data-toggle="modal" data-target="#login-modal" href="#login-modal">Login</a>
+          <a class="btn btn-primary" data-toggle="modal" data-target="#test-login-modal" href="#test-login-modal">Test
+            Login</a>
+          <a class="btn btn-primary" data-toggle="modal" data-target="#signup-modal" href="#signup-modal">Sign
+            Up</a>
+        </p>
+        {% endif %}
+      </div>
+    </div> <!-- / .row -->
+  </div> <!-- / .container -->
 </section>
 <section class="section section-news home-content " id="news">
-    <div class="container content-container">
-        <h4 class="text-center my-3">
-            <strong>General News</strong>
-        </h4>
-        <div class="row row-cols-1 row-cols-lg-3" id="articles">
+  <div class="container content-container">
+    <h4 class="text-center my-3">
+      <strong>General News</strong>
+    </h4>
+    <div class="row row-cols-1 row-cols-lg-3" id="articles">
 
-        </div>
     </div>
+  </div>
 </section>
 <section class="section section-about home-content " id="about">
 
-    <div class="container content-container">
-        <!-- Heading -->
-        <h2 class="text-center mb-4">
-            About This Project
-        </h2>
-        <div class="row justify-content-between mb-5">
-            <div class="col-lg-3 text-lg-right">
-                <h4 class="mb-4">Project Goals</h4>
-            </div>
-            <div class="col-lg-8">
-                <p>
-                    The website is be designed to assist with understanding the historic stock changes. It will allow
-                    for users to select in real time current stock ticket codes and review their historic performance.
-                    It will also allow for a user to save multiple stocks to their portfolio and select notification
-                    frequency to allow for daily, weekly, or monthly update on the performance of their portfolio.
-                </p>
-            </div>
-        </div>
-        <div class="row justify-content-between mb-5">
-            <div class="col-lg-3 text-lg-right">
-                <h4 class="mb-4">The Data</h4>
-            </div>
-            <div class="col-lg-8">
-                <p>
-                    This Site connects to Finhub.io API(documentation:
-                    https://finnhub.io/docs/api, & Official Python Library https://github.com/Finnhub-Stock-API). This
-                    API
-                    provides access to real-time stock API, institutional-grade fundamental and alternative data to
-                    supercharge your investment.
-                </p>
-                <p>
-                    <strong>Please Note:</strong> the project is connected to a free API which allows for 60 calls per
-                    minute. Should you
-                    have a large portfolio of of stocks, continually refresh your portfolio or multiple other users are
-                    searching at the same time the API key may become overloaded, please wait one minute and try again.
-                </p>
-                <p>
-                    This project's original function is to focus on stock market investments, In the futures
-                    functionality will be extended to Foreign Exchange and Crypto Currency as allowed by the API.
-                </p>
-            </div>
-        </div>
-        <div class="row justify-content-between mb-5">
-            <div class="col-lg-3 text-lg-right">
-                <h4 class="mb-4">Project Functionality</h4>
-            </div>
-            <div class="col-lg-8">
-                <ul class="list-unstyled list-bullet">
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Create unique user profile including hashed password
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Edit user profile details with further security for changing your password
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Create a mock portfolio of stock to track movement
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> See a snap shot summary of your portfolio (starting stock price (from tracking
-                        date), current stock price, change in value as a percent and Dollar Value etc.)
-
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Send an email summary of your portfolio
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Edit & Delete stocks from your portfolio
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Sort your portfolio by stock symbol, percentage change in value or percentage
-                        change in currency
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Review basic company details (Website, Market Capitalization, Industry etc. )
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Review detailed information including; company financial details, stock
-                        recommendations, company peers and company news (headline & summary with line to full articles)
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Review general news articles (headline & summary with line to full articles)
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="row justify-content-between mb-5">
-            <div class="col-lg-3 text-lg-right">
-                <h4 class="mb-4">Major Technologies Incorporated</h4>
-            </div>
-            <div class="col-lg-8">
-                <ul class="list-unstyled list-bullet">
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Flask - Python Web Framework
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Flask SQLAlchemy - Python SQL Object Relational Mapper
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Flask-Bcrypt - Password Hashing
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Flask-Login - Login Manager
-
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> WTForms - form validation
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> finnhub-python - Official
-                        Finhub.io API Python library
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Styling - CSS & Bootstrap
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> DOM manipulation - Javascript & Jinja
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Documentation - HTML & Jinja
-                    </li>
-                    <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="feather feather-check">
-                                <polyline points="20 6 9 17 4 12"></polyline>
-                            </svg></span> Unittest - Python Testing
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <div class="container content-container">
+    <!-- Heading -->
+    <h2 class="text-center mb-4">
+      About This Project
+    </h2>
+    <div class="row justify-content-between mb-5">
+      <div class="col-lg-3 text-lg-right">
+        <h4 class="mb-4">Project Goals</h4>
+      </div>
+      <div class="col-lg-8">
+        <p>
+          The website is be designed to assist with understanding the historic stock changes. It will allow
+          for users to select in real time current stock ticket codes and review their historic performance.
+          It will also allow for a user to save multiple stocks to their portfolio and select notification
+          frequency to allow for daily, weekly, or monthly update on the performance of their portfolio.
+        </p>
+      </div>
     </div>
+    <div class="row justify-content-between mb-5">
+      <div class="col-lg-3 text-lg-right">
+        <h4 class="mb-4">The Data</h4>
+      </div>
+      <div class="col-lg-8">
+        <p>
+          This Site connects to Finhub.io API(documentation:
+          https://finnhub.io/docs/api, & Official Python Library https://github.com/Finnhub-Stock-API). This
+          API
+          provides access to real-time stock API, institutional-grade fundamental and alternative data to
+          supercharge your investment.
+        </p>
+        <p>
+          <strong>Please Note:</strong> the project is connected to a free API which allows for 60 calls per
+          minute. Should you
+          have a large portfolio of of stocks, continually refresh your portfolio or multiple other users are
+          searching at the same time the API key may become overloaded, please wait one minute and try again.
+        </p>
+        <p>
+          This project's original function is to focus on stock market investments, In the futures
+          functionality will be extended to Foreign Exchange and Crypto Currency as allowed by the API.
+        </p>
+      </div>
+    </div>
+    <div class="row justify-content-between mb-5">
+      <div class="col-lg-3 text-lg-right">
+        <h4 class="mb-4">Project Functionality</h4>
+      </div>
+      <div class="col-lg-8">
+        <ul class="list-unstyled list-bullet">
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Create unique user profile including hashed password
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Edit user profile details with further security for changing your password
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Create a mock portfolio of stock to track movement
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> See a snap shot summary of your portfolio (starting stock price (from tracking
+            date), current stock price, change in value as a percent and Dollar Value etc.)
+
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Send an email summary of your portfolio
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Edit & Delete stocks from your portfolio
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Sort your portfolio by stock symbol, percentage change in value or percentage
+            change in currency
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Review basic company details (Website, Market Capitalization, Industry etc. )
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Review detailed information including; company financial details, stock
+            recommendations, company peers and company news (headline & summary with line to full articles)
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Review general news articles (headline & summary with line to full articles)
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row justify-content-between mb-5">
+      <div class="col-lg-3 text-lg-right">
+        <h4 class="mb-4">Major Technologies Incorporated</h4>
+      </div>
+      <div class="col-lg-8">
+        <ul class="list-unstyled list-bullet">
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Flask - Python Web Framework
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Flask SQLAlchemy - Python SQL Object Relational Mapper
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Flask-Bcrypt - Password Hashing
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Flask-Login - Login Manager
+
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> WTForms - form validation
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> finnhub-python - Official
+            Finhub.io API Python library
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Styling - CSS & Bootstrap
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> DOM manipulation - Javascript & Jinja
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Documentation - HTML & Jinja
+          </li>
+          <li class="py-2"><span class="badge mr-2"><svg width="1em" height="1em" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="feather feather-check">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg></span> Unittest - Python Testing
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 
 </section>
 

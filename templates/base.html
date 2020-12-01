@@ -82,6 +82,9 @@
         <li class="nav-item" id="login">
           <a class="nav-link" data-toggle="modal" data-target="#login-modal" href="#login-modal">Login</a>
         </li>
+        <li class="nav-item" id="test-login">
+          <a class="nav-link" data-toggle="modal" data-target="#test-login-modal" href="#test-login-modal">Login</a>
+        </li>
         <li class="nav-item" id="signup">
           <a class="nav-link" data-toggle="modal" data-target="#signup-modal" href="#signup-modal">Sign Up</a>
         </li>
@@ -118,6 +121,7 @@
 
 
   {% include 'auth/_login_modal.html' %}
+  {% include 'auth/_test_login_modal.html' %}
   {% include 'auth/_signup_modal.html' %}
 
   {% elif request.url_rule.endpoint == 'page_not_found' %}
